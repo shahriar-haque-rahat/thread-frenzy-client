@@ -8,7 +8,7 @@ const Join = () => {
                 <p className="text-sm mb-6">Where style meets substance</p>
                 <p className="text-base md:text-lg">Dive into the world of fashion with our exclusive updates.</p>
                 <p className="text-base md:text-lg mb-6">Sign up now and stay ahead of the curve.</p>
-                <button className=" border w-72 md:w-96 py-1 hover:bg-black">Sign Up Now</button>
+                <button className=" border w-72 md:w-96 py-1 hover:bg-white hover:text-black">Sign Up Now</button>
             </div>
         </div>
 

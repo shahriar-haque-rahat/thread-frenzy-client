@@ -5,7 +5,7 @@ import banner3 from "../../assets/images/banner3.jpg";
 const Banner = () => {
     return (
         <>
-            <div className="grid grid-cols-5 h-fit gap-1">
+            <div className="grid grid-cols-1 md:grid-cols-5 h-fit gap-1">
                 <div className="col-span-2 grid grid-rows-2 h-[550px] xl:h-[700px] gap-1">
                     <div className="relative w-full h-full">
                         <img src={banner2} className="w-full h-full object-cover object-center" alt="Banner 2" />

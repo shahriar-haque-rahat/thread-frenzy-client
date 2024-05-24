@@ -39,8 +39,13 @@ const Men = () => {
                                 }
                             </div>
                         </Swiper>
-                        <h1>{item.name}</h1>
-                        <p>Color: {item?.color[0]}</p>
+                        <div className=" p-2">
+                            <h1 className=" text-lg font-semibold">{item.name}</h1>
+                            <div className=" flex justify-between">
+                                <p>Color: {item?.color[0]}</p>
+                                <p>Price: ${item?.price}</p>
+                            </div>
+                        </div>
                     </div>
                 ))
             }

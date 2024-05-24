@@ -52,22 +52,40 @@ const Products = () => {
 
     return (
         <div className=" bg-[#16315a] py-10 space-y-6">
-            <h1 className=" text-yellow-400 text-xl font-bold text-center">Trending Styles</h1>
-            <Swiper modules={[Scrollbar, Autoplay]} spaceBetween={50} slidesPerView={3} scrollbar={{ draggable: true }} autoplay={{ delay: 5000 }}>
+            <h1 className=" text-yellow-400 text-2xl font-bold text-center">Trending Styles</h1>
+            <Swiper
+                modules={[Scrollbar, Autoplay]}
+                spaceBetween={20}
+                breakpoints={{
+                    320: {
+                        slidesPerView: 2,
+                        spaceBetween: 5
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 15
+                    },
+
+                }}
+                scrollbar={{ draggable: true }}
+                autoplay={{ delay: 5000 }}>
 
                 {
                     shuffledProducts.map((item, index) => (
                         <SwiperSlide key={index}>
                             <div className=" h-fit py-6 space-y-2">
-                                <img className=" h-96 w-80 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="loading..." />
-                                <h1 className="text-white text-base">{item.name}</h1>
-                                <p className="text-white text-sm">Price: ${item.price}</p>
+                                <img className=" h-[300px] lg:h-[400px] xl:h-[500px] w-full object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="loading..." />
+                                <h1 className="text-white text-sm md:text-base px-2">{item.name}</h1>
+                                <p className="text-white text-xs md:text-sm px-2">Price: ${item.price}</p>
                             </div>
                         </SwiperSlide>
                     ))
                 }
 
             </Swiper>
+            <div className=" w-full flex justify-center pr-[5%]">
+                <button className=" text-white border text-xs px-3 py-1">Shop Now</button>
+            </div>
         </div>
     );
 };

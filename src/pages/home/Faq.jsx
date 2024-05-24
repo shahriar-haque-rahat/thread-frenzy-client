@@ -12,8 +12,8 @@ const Faq = () => {
 
     return (
         <div className=" my-10 ">
-            <h1 className=" text-3xl text-center mb-6">Thread Talks</h1>
-            <div className=" grid grid-cols-1 md:grid-cols-2 md:pr-[2%]">
+            <h1 className=" text-3xl text-center font-bold mb-6">Thread Talks</h1>
+            <div className=" grid grid-cols-1 md:grid-cols-2 justify-center items-center md:pr-[2%]">
                 {View}
                 <div className="join join-vertical w-full">
                     <div className="collapse collapse-arrow join-item border border-base-300">

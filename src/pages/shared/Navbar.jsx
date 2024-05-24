@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { BsMoonStars, BsSun } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoBagOutline } from "react-icons/io5";
+import { HiMenuAlt4 } from "react-icons/hi";
 
 const Navbar = () => {
     const navbarRef = useRef(null);
@@ -74,10 +75,10 @@ const Navbar = () => {
                     <div className="dropdown">
                         <div tabIndex={0} className="pr-4 lg:hidden" onClick={toggleMenu}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                            <HiMenuAlt4 size={22}/>
                             </svg>
                         </div>
-                        <ul className={`menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow-sm rounded w-40 ${isOpen ? "translate-x-0" : "-translate-x-96"
+                        <ul className={`menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow-sm w-40 space-y-3 ${isOpen ? "translate-x-0" : "-translate-x-96"
                             } bg-white border border-black transition-transform duration-300 ease-in-out`}>
                             {links}
                         </ul>

@@ -70,7 +70,7 @@ const Navbar = () => {
     )
     return (
         <>
-            <div className="navbar flex justify-between px-0 bg-transparent py-6 " ref={navbarRef}>
+            <div className="navbar flex justify-between px-0 bg-transparent py-6 text-black" ref={navbarRef}>
                 <div>
                     <div className="dropdown">
                         <div tabIndex={0} className="pr-4 lg:hidden" onClick={toggleMenu}>

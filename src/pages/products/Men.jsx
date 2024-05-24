@@ -19,7 +19,7 @@ const Men = () => {
 
     return (
         <div className=" px-[5%]">
-            <div className=" flex justify-center items-center h-40 mb-10 border shadow-lg">
+            <div className=" flex justify-center items-center h-40 mb-10 border-b shadow-lg">
                 <h1 className=" text-4xl">Men Collections</h1>
             </div>
             <div className=" grid grid-cols-3 gap-3">

@@ -7,24 +7,19 @@ const Banner = () => {
         <>
             <div className="grid grid-cols-1 md:grid-cols-5 h-fit gap-1">
                 <div className="col-span-2 grid grid-rows-2 h-[550px] xl:h-[700px] gap-1">
-                    <div className="relative w-full h-full">
-                        <img src={banner2} className="w-full h-full object-cover object-center" alt="Banner 2" />
-                        <div className="absolute inset-0 bg-black bg-opacity-30 flex items-end text-white text-xl pl-5 pb-10">
-                            Comfortable and easy to maintain
-                        </div>
+                    <div className="relative w-full h-full overflow-hidden">
+                        <div className="absolute inset-0 hover:scale-110 duration-[.6s] bg-cover bg-center" style={{ backgroundImage: `url(${banner2})` }}></div>
+                        {/* <h1 className=" fixed text-white text-xl pl-5 pb-10">Comfortable and easy to maintain</h1> */}
                     </div>
-                    <div className="relative w-full h-full">
-                        <img src={banner3} className="w-full h-full object-cover object-top" alt="Banner 3" />
-                        <div className="absolute inset-0 bg-black bg-opacity-30 flex items-end text-white text-xl pl-5 pb-10">
-                            Everyday essential for effortless style
-                        </div>
+                    <div className="relative w-full h-full overflow-hidden">
+                        <div className="absolute inset-0 hover:scale-110 duration-[.6s] bg-cover bg-center" style={{ backgroundImage: `url(${banner3})` }}></div>
+                        {/* <h1 className=" fixed text-white text-xl pl-5 pb-10">Everyday essential for effortless style</h1> */}
                     </div>
                 </div>
-                <div className="relative col-span-3 h-[550px] xl:h-[700px] w-full">
-                    <img src={banner1} className="w-full h-full object-cover object-center" alt="Banner 1" />
-                    <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end text-white text-xl pl-5 pb-10">
-                        Versatile and casual attire for people of all ages
-                    </div>
+
+                <div className="relative w-full col-span-3 h-[550px] xl:h-[700px] overflow-hidden">
+                    <div className="absolute inset-0 hover:scale-110 duration-[.6s] bg-cover bg-center" style={{ backgroundImage: `url(${banner1})` }}></div>
+                    {/* <h1 className=" fixed text-white text-xl pl-5 pb-10">Versatile and casual attire for people of all ages</h1> */}
                 </div>
             </div>
         </>

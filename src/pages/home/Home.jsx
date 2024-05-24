@@ -2,6 +2,7 @@ import Banner from "./Banner";
 import Features from "./Features";
 import Parallax from "./Parallax";
 import Products from "./Products";
+import JoinNow from "./JoinNow";
 
 
 
@@ -13,6 +14,7 @@ const Home = () => {
                 <Features></Features>
                 <Products></Products>
                 <Parallax></Parallax>
+                <JoinNow></JoinNow>
             </div>
         </>
     );

@@ -2,7 +2,7 @@ import parallaxBg from "../../assets/images/parallax.jpg"
 
 const Parallax = () => {
     return (
-        <div className="h-[700px] lg:h-[1000px] bg-top bg-cover bg-fixed relative" style={{ backgroundImage: `url(${parallaxBg})` }}>
+        <div className="h-[700px] bg-top bg-cover bg-fixed relative" style={{ backgroundImage: `url(${parallaxBg})` }}>
             <div className="absolute inset-0 flex justify-center items-center text-white bg-black bg-opacity-40">
                 <div className="text-center w-2/3 ">
                     <h1 className="mb-6 text-xl md:text-4xl font-bold leading-tight">T-Shirts Speak Louder Than Words</h1>

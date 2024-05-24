@@ -16,7 +16,7 @@ const Men = () => {
             dispatch(allData());
         }
     }, [status, dispatch]);
-    console.log(menCollections);
+
     return (
         <div className=" px-[5%]">
             <div className=" flex justify-center items-center h-40 mb-10 border shadow-lg">
@@ -35,7 +35,7 @@ const Men = () => {
 
                                 <div>
                                     {
-                                        item.images[item.color[0]].map((image, index) => (
+                                        item.images[item.color[0]]?.map((image, index) => (
                                             <SwiperSlide key={index}>
                                                 <img className=" h-96 w-full object-cover object-top" src={image} alt={`${item.name} ${item.color[0]} ${index}`} />
                                             </SwiperSlide>

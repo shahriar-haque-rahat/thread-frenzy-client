@@ -1,34 +1,34 @@
 [
     {
-        "brand": "Everlane",
-        "image": "https://i.ibb.co/xgC7bwC/Everlane.jpg"
+        "brand": "Lacoste",
+        "image": "https://i.ibb.co/sKktVWW/Lacoste.png"
     },
     {
         "brand": "Calvin Klein",
-        "image": "https://i.ibb.co/yYCmxM0/Calvin-Klein.jpg"
+        "image": "https://i.ibb.co/L5TsM85/Calvin-Klein.png"
     },
     {
-        "brand": "Lacoste",
-        "image": "https://i.ibb.co/74BhxsH/Lacoste.jpg"
+        "brand": "Everlane",
+        "image": "https://i.ibb.co/fnt69dh/Everlane.png"
     },
     {
         "brand": "Allen Solly",
-        "image": "https://i.ibb.co/f8DKBW8/Allen-Solly.jpg"
+        "image": "https://i.ibb.co/sHHd8qc/Allen-Solly.png"
     },
     {
         "brand": "Buck Mason",
-        "image": "https://i.ibb.co/tBckZNN/Buck-Mason.jpg"
+        "image": "https://i.ibb.co/FwNMhnY/Buck-Mason.png"
     },
     {
         "brand": "Nike",
-        "image": "https://i.ibb.co/wcxjJdm/Nike.jpg"
+        "image": "https://i.ibb.co/zmdRzzP/Nike.png"
     },
     {
         "brand": "Levi's",
-        "image": "https://i.ibb.co/G91RkL3/Levis.jpg"
+        "image": "https://i.ibb.co/sJ3C4r5/Levis.png"
     },
     {
         "brand": "Adidas",
-        "image": "https://i.ibb.co/mDPrvg5/Adidas.jpg"
+        "image": "https://i.ibb.co/xM4v6Qs/Adidas.png"
     }
 ]

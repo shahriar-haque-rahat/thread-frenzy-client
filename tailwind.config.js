@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        raleway: '"Raleway", sans-serif'
+        prompt: '"Prompt", sans-serif'
       },
       colors: {
         primary: '',

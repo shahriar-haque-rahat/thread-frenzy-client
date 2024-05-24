@@ -9,7 +9,7 @@ import 'swiper/css/autoplay';
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { data, status, error } = useSelector((state) => state.data);
+    const { data, status } = useSelector((state) => state.data);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -51,7 +51,7 @@ const Products = () => {
     const shuffledProducts = shuffleArray(selectedProducts);
 
     return (
-        <div className=" bg-[#16315a] py-10 space-y-6">
+        <div className=" bg-[#000000] py-10 space-y-6">
             <h1 className=" text-yellow-400 text-3xl font-bold text-center">Trending Styles</h1>
             <Swiper
                 modules={[Scrollbar, Autoplay]}

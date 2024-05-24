@@ -22,8 +22,18 @@ const dataSlice = createSlice({
     name: 'data',
     initialState: {
         data: [],
+        menCollections: [],
+        womenCollections: [],
         status: 'idle',
         error: null,
+    },
+    reducers: {
+        filterMenCollections: (state) => {
+            state.menCollections = state.data?.filter(item => item.gender === 'Male');
+        },
+        filterWomenCollections: (state) => {
+            state.womenCollections = state.data?.filter(item => item.gender === 'Female');
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -33,6 +43,8 @@ const dataSlice = createSlice({
             .addCase(allData.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.data = action.payload;
+                state.menCollections = action.payload.filter(item => item.gender === 'Male');
+                state.womenCollections = action.payload.filter(item => item.gender === 'Female');
             })
             .addCase(allData.rejected, (state, action) => {
                 state.status = 'failed';
@@ -40,5 +52,7 @@ const dataSlice = createSlice({
             });
     },
 });
+
+export const { filterMenCollections, filterWomenCollections } = dataSlice.actions;
 
 export default dataSlice.reducer;

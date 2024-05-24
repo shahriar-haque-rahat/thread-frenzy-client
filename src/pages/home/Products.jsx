@@ -58,11 +58,11 @@ const Products = () => {
                 spaceBetween={20}
                 breakpoints={{
                     320: {
-                        slidesPerView: 2,
+                        slidesPerView: 2.3,
                         spaceBetween: 5
                     },
                     768: {
-                        slidesPerView: 3,
+                        slidesPerView: 3.8,
                         spaceBetween: 15
                     },
 

@@ -1,6 +1,6 @@
 import joinNow from "../../assets/images/joinNow.jpg"
 
-const JoinNow = () => {
+const Join = () => {
     return (
         <div className="h-[550px] bg-cover bg-center relative" style={{ backgroundImage: `url(${joinNow})` }}>
             <div className=" absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50 text-white">
@@ -15,4 +15,4 @@ const JoinNow = () => {
     );
 };
 
-export default JoinNow;
+export default Join;

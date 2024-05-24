@@ -2,7 +2,8 @@ import Banner from "./Banner";
 import Features from "./Features";
 import Parallax from "./Parallax";
 import Products from "./Products";
-import JoinNow from "./JoinNow";
+import Faq from "./Faq";
+import Join from "./Join";
 
 
 
@@ -14,7 +15,8 @@ const Home = () => {
                 <Features></Features>
                 <Products></Products>
                 <Parallax></Parallax>
-                <JoinNow></JoinNow>
+                <Faq></Faq>
+                <Join></Join>
             </div>
         </>
     );

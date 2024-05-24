@@ -52,7 +52,7 @@ const Products = () => {
 
     return (
         <div className=" bg-[#16315a] py-10 space-y-6">
-            <h1 className=" text-yellow-400 text-2xl font-bold text-center">Trending Styles</h1>
+            <h1 className=" text-yellow-400 text-3xl font-bold text-center">Trending Styles</h1>
             <Swiper
                 modules={[Scrollbar, Autoplay]}
                 spaceBetween={20}
@@ -84,7 +84,7 @@ const Products = () => {
 
             </Swiper>
             <div className=" w-full flex justify-center pr-[5%]">
-                <button className=" text-white border text-xs px-3 py-1">Shop Now</button>
+                <button className=" text-white border text-sm px-3 py-1">Shop Now</button>
             </div>
         </div>
     );

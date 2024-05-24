@@ -24,11 +24,11 @@
         "image": "https://i.ibb.co/zmdRzzP/Nike.png"
     },
     {
-        "brand": "Levi's",
-        "image": "https://i.ibb.co/sJ3C4r5/Levis.png"
-    },
-    {
         "brand": "Adidas",
         "image": "https://i.ibb.co/xM4v6Qs/Adidas.png"
+    },
+    {
+        "brand": "Levi's",
+        "image": "https://i.ibb.co/sJ3C4r5/Levis.png"
     }
 ]

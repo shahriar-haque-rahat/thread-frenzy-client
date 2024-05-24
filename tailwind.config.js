@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        prompt: '"Prompt", sans-serif'
+        clashGrotesk: '"ClashGrotesk", sans-serif'
       },
       colors: {
         primary: '',

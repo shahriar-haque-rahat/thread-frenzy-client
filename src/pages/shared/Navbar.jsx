@@ -60,7 +60,7 @@ const Navbar = () => {
             </NavLink>
             <NavLink to={"/women"} className={({ isActive }) =>
                 isActive
-                    ? "border-b-2 border-black font-bold ${}"
+                    ? "border-b-2 border-black font-bold"
                     : " "
             }>
                 Women

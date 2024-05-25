@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL } from '../constent/constent';
 
 
-export const allData = createAsyncThunk('data/fetchData', async (_, { rejectWithValue }) => {
+export const allData = createAsyncThunk('data/allData', async (_, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${BASE_URL}/t-shirt`);
         return res.data;
@@ -17,17 +17,37 @@ export const allData = createAsyncThunk('data/fetchData', async (_, { rejectWith
     }
 });
 
+export const getItemById = createAsyncThunk('data/getItemById', async (itemId, { rejectWithValue }) => {
+    console.log(itemId);
+    try {
+        const res = await axios.get(`${BASE_URL}/t-shirt/${itemId}`);
+        return res.data;
+    }
+    catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+}
+);
+
 // Data slice
 const dataSlice = createSlice({
     name: 'data',
     initialState: {
         data: [],
+        selectedItem: null,
         menCollections: [],
         womenCollections: [],
         status: 'idle',
         error: null,
     },
     reducers: {
+        setSelectedItem: (state, action) => {
+            state.selectedItem = action.payload;
+        },
         filterMenCollections: (state) => {
             state.menCollections = state.data?.filter(item => item.gender === 'Male');
         },
@@ -49,10 +69,21 @@ const dataSlice = createSlice({
             .addCase(allData.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload || action.error.message;
+            })
+            .addCase(getItemById.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(getItemById.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.selectedItem = action.payload;
+            })
+            .addCase(getItemById.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload || action.error.message;
             });
     },
 });
 
-export const { filterMenCollections, filterWomenCollections } = dataSlice.actions;
+export const { setSelectedItem, filterMenCollections, filterWomenCollections } = dataSlice.actions;
 
 export default dataSlice.reducer;

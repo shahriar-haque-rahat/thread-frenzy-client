@@ -10,13 +10,22 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { data, status } = useSelector((state) => state.data);
+    const { data, status, error } = useSelector((state) => state.data);
 
     useEffect(() => {
         if (status === 'idle') {
             dispatch(allData());
         }
     }, [status, dispatch]);
+
+    // TODO: loading and failed status set korte hobe
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (status === 'failed') {
+        return <div>Error: {error}</div>;
+    }
 
 
     // Filter data
@@ -84,11 +93,13 @@ const Products = () => {
                 {
                     shuffledProducts.map((item, index) => (
                         <SwiperSlide key={index}>
-                            <div className=" h-fit py-6 space-y-2">
-                                <img className=" h-[300px] lg:h-[400px] xl:h-[500px] w-full object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="loading..." />
-                                <h1 className="text-white text-sm md:text-base px-2">{item.name}</h1>
-                                <p className="text-white text-xs md:text-sm px-2">Price: ${item.price}</p>
-                            </div>
+                            <Link to={`/product-details/${item._id}`}>
+                                <div className=" h-fit py-6 space-y-2">
+                                    <img className=" h-[300px] lg:h-[400px] xl:h-[500px] w-full object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="loading..." />
+                                    <h1 className="text-white text-sm md:text-base px-2">{item.name}</h1>
+                                    <p className="text-white text-xs md:text-sm px-2">Price: ${item.price}</p>
+                                </div>
+                            </Link>
                         </SwiperSlide>
                     ))
                 }

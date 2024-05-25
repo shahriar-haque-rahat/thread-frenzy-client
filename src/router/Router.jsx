@@ -4,6 +4,7 @@ import Error from "../pages/Error";
 import Home from "../pages/home/Home";
 import Men from "../pages/products/Men";
 import Women from "../pages/products/Women";
+import ProductDetails from "../pages/products/ProductDetails";
 
 
 const Router = createBrowserRouter (
@@ -24,6 +25,10 @@ const Router = createBrowserRouter (
                 {
                     path:'/women',
                     element:<Women></Women>
+                },
+                {
+                    path:'/product-details/:itemId',
+                    element:<ProductDetails></ProductDetails>
                 },
             ],
         }

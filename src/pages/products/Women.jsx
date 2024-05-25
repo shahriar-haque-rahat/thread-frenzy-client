@@ -10,13 +10,13 @@ import { Link } from "react-router-dom";
 
 const Women = () => {
     const dispatch = useDispatch();
-    const { womenCollections, status } = useSelector(state => state.data)
+    const { womenCollections, allDataStatus } = useSelector(state => state.data)
 
     useEffect(() => {
-        if (status === 'idle') {
+        if (allDataStatus === 'idle') {
             dispatch(allData());
         }
-    }, [status, dispatch]);
+    }, [allDataStatus, dispatch]);
 
     return (
         <div className=" px-[5%]">

@@ -41,7 +41,8 @@ const dataSlice = createSlice({
         selectedItem: null,
         menCollections: [],
         womenCollections: [],
-        status: 'idle',
+        allDataStatus: 'idle',
+        singleProductStatus: 'idle',
         error: null,
     },
     reducers: {
@@ -58,27 +59,27 @@ const dataSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(allData.pending, (state) => {
-                state.status = 'loading';
+                state.allDataStatus = 'loading';
             })
             .addCase(allData.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.allDataStatus = 'succeeded';
                 state.data = action.payload;
                 state.menCollections = action.payload.filter(item => item.gender === 'Male');
                 state.womenCollections = action.payload.filter(item => item.gender === 'Female');
             })
             .addCase(allData.rejected, (state, action) => {
-                state.status = 'failed';
+                state.allDataStatus = 'failed';
                 state.error = action.payload || action.error.message;
             })
             .addCase(getItemById.pending, (state) => {
-                state.status = 'loading';
+                state.singleProductStatus = 'loading';
             })
             .addCase(getItemById.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.singleProductStatus = 'succeeded';
                 state.selectedItem = action.payload;
             })
             .addCase(getItemById.rejected, (state, action) => {
-                state.status = 'failed';
+                state.singleProductStatus = 'failed';
                 state.error = action.payload || action.error.message;
             });
     },

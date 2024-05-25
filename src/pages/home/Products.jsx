@@ -10,20 +10,20 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { data, status, error } = useSelector((state) => state.data);
+    const { data, allDataStatus, error } = useSelector((state) => state.data);
 
     useEffect(() => {
-        if (status === 'idle') {
+        if (allDataStatus === 'idle') {
             dispatch(allData());
         }
-    }, [status, dispatch]);
+    }, [allDataStatus, dispatch]);
 
     // TODO: loading and failed status set korte hobe
-    if (status === 'loading') {
+    if (allDataStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
-    if (status === 'failed') {
+    if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
 

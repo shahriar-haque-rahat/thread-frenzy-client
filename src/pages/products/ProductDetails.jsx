@@ -7,22 +7,21 @@ import { getItemById } from "../../redux/dataSlice";
 const ProductDetails = () => {
     const { itemId } = useParams();
     const dispatch = useDispatch();
-    const { selectedItem, status, error } = useSelector(state => state.data);
+    const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
 
-    console.log(itemId);
     
     useEffect(() => {
-        if (status === 'idle') {
+        if (singleProductStatus === 'idle') {
             dispatch(getItemById(itemId));
         }
-    }, [status, itemId, dispatch])
+    }, [singleProductStatus, itemId, dispatch])
 
     // TODO: loading and failed status set korte hobe
-    if (status === 'loading') {
+    if (singleProductStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
-    if (status === 'failed') {
+    if (singleProductStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
 

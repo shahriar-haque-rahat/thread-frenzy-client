@@ -69,15 +69,11 @@ const Filters = ({ collections, setFilteredData }) => {
                     Brand {isBrandOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <div className="collapse-content ">
-                    <ul className="pl-5">
+                    <ul >
                         {brands.map(brand => (
                             <li key={brand}>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedBrands.includes(brand)}
-                                        onChange={() => handleBrandChange(brand)}
-                                    />
+                                <label className=" flex gap-3">
+                                    <input type="checkbox" checked={selectedBrands.includes(brand)} onChange={() => handleBrandChange(brand)} />
                                     {brand}
                                 </label>
                             </li>
@@ -92,15 +88,11 @@ const Filters = ({ collections, setFilteredData }) => {
                     Price {isPriceOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <div className="collapse-content ">
-                    <ul className="flex flex-col list-disc pl-5">
+                    <ul>
                         {prices.map(price => (
                             <li key={price}>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedPrices.includes(price)}
-                                        onChange={() => handlePriceChange(price)}
-                                    />
+                                <label className=" flex gap-3">
+                                    <input type="checkbox" checked={selectedPrices.includes(price)} onChange={() => handlePriceChange(price)} />
                                     {price}
                                 </label>
                             </li>
@@ -115,15 +107,11 @@ const Filters = ({ collections, setFilteredData }) => {
                     Size {isSizeOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <div className="collapse-content ">
-                    <ul className="pl-5">
+                    <ul >
                         {sizes.map(size => (
                             <li key={size}>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedSizes.includes(size)}
-                                        onChange={() => handleSizeChange(size)}
-                                    />
+                                <label className=" flex gap-3">
+                                    <input type="checkbox" checked={selectedSizes.includes(size)} onChange={() => handleSizeChange(size)} />
                                     {size.toUpperCase()}
                                 </label>
                             </li>
@@ -138,15 +126,11 @@ const Filters = ({ collections, setFilteredData }) => {
                     Rating {isRatingOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <div className="collapse-content ">
-                    <ul className="pl-5">
+                    <ul >
                         {ratings.map(rating => (
                             <li key={rating}>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedRatings.includes(rating)}
-                                        onChange={() => handleRatingChange(rating)}
-                                    />
+                                <label className=" flex gap-3">
+                                    <input type="checkbox" checked={selectedRatings.includes(rating)} onChange={() => handleRatingChange(rating)} />
                                     {rating}
                                 </label>
                             </li>

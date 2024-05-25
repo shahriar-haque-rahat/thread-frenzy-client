@@ -5,6 +5,8 @@ import Home from "../pages/home/Home";
 import Men from "../pages/products/Men";
 import Women from "../pages/products/Women";
 import ProductDetails from "../pages/products/ProductDetails";
+import SignIn from "../pages/loginRegister/SignIn";
+import SignUp from "../pages/loginRegister/SignUp";
 
 
 const Router = createBrowserRouter (
@@ -29,6 +31,14 @@ const Router = createBrowserRouter (
                 {
                     path:'/product-details/:itemId',
                     element:<ProductDetails></ProductDetails>
+                },
+                {
+                    path:'/sign-in',
+                    element:<SignIn></SignIn>
+                },
+                {
+                    path:'/sign-up',
+                    element:<SignUp></SignUp>
                 },
             ],
         }

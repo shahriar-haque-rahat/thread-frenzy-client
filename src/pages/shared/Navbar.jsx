@@ -75,11 +75,10 @@ const Navbar = () => {
                     <div className="dropdown">
                         <div tabIndex={0} className="pr-4 lg:hidden" onClick={toggleMenu}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <HiMenuAlt4 size={22}/>
+                                <HiMenuAlt4 size={22} />
                             </svg>
                         </div>
-                        <ul className={`menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow-sm w-40 space-y-3 ${isOpen ? "translate-x-0" : "-translate-x-96"
-                            } bg-white border border-black transition-transform duration-300 ease-in-out`}>
+                        <ul className={`menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow-sm w-40 space-y-3 ${isOpen ? "translate-x-0" : "-translate-x-96"} bg-white border border-black transition-transform duration-300 ease-in-out`}>
                             {links}
                         </ul>
                     </div>
@@ -102,6 +101,9 @@ const Navbar = () => {
                             <BsMoonStars onClick={handleTheme} size={22} />
                         )}
                     </div>
+                    <div>
+                        <IoBagOutline size={25} />
+                    </div>
                     <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
                         <div tabIndex={0} role="button">
                             <AiOutlineUser size={25} />
@@ -109,9 +111,6 @@ const Navbar = () => {
                         <ul tabIndex={0} className="dropdown-content dark:bg-[#292929] dark:text-white z-[50] menu p-3 shadow bg-base-100 rounded w-44 space-y-2">
 
                         </ul>
-                    </div>
-                    <div>
-                        <IoBagOutline size={25} />
                     </div>
                 </div>
             </div>

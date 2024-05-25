@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getItemById } from "../../redux/dataSlice";
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import ReactStars from "react-rating-stars-component";
+import SimilarProducts from "./SimilarProducts";
 
 
 const ProductDetails = () => {
@@ -48,12 +49,16 @@ const ProductDetails = () => {
                                 ))
                             }
                         </div>
+
                         <div className=" col-span-2 space-y-6">
                             <h1 className=" text-2xl font-semibold">{selectedItem.name}</h1>
+                            
                             <div>
                                 <ReactStars value={selectedItem.rating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} />
                             </div>
+                            
                             <p className=" text-xl text-green-500 font-semibold">${selectedItem.price}</p>
+                            
                             <ul className="flex gap-3">Colors:
                                 {
                                     selectedItem.color?.map((item, index) => (
@@ -63,6 +68,7 @@ const ProductDetails = () => {
                                     ))
                                 }
                             </ul>
+                            
                             <ul className=" flex gap-3 items-center">Sizes:
                                 {
                                     selectedItem.size?.map((item, index) => (
@@ -72,6 +78,7 @@ const ProductDetails = () => {
                                     ))
                                 }
                             </ul>
+                            
                             <div className=" flex gap-6 items-center">
                                 <div className="flex items-center gap-4">
                                     <p onClick={() => handleQuantity("-")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> - </p>
@@ -99,6 +106,7 @@ const ProductDetails = () => {
                                         </ul>
                                     </div>
                                 </div>
+                                
                                 <div className="collapse border-y border-gray-400 rounded-none">
                                     <input type="checkbox" className="peer" checked={isShippingOpen} onChange={() => setIsShippingOpen(!isShippingOpen)} />
                                     <div className="collapse-title font-semibold flex items-center justify-between">
@@ -117,6 +125,7 @@ const ProductDetails = () => {
                     </div>
                 )
             }
+            <SimilarProducts itemBrand={selectedItem?.brand}></SimilarProducts>
         </div>
     );
 };

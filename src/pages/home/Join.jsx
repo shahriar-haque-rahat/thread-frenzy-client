@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import joinNow from "../../assets/images/joinNow.jpg"
 
 const Join = () => {
@@ -8,7 +9,7 @@ const Join = () => {
                 <p className="text-sm mb-6">Where style meets substance</p>
                 <p className="text-base md:text-lg">Dive into the world of fashion with our exclusive updates.</p>
                 <p className="text-base md:text-lg mb-6">Sign up now and stay ahead of the curve.</p>
-                <button className=" border w-72 md:w-96 py-1 hover:bg-white hover:text-black duration-300">Sign Up Now</button>
+                <Link to={'/sign-up'}><button className=" border w-72 md:w-96 py-1 hover:bg-white hover:text-black duration-300">Sign Up Now</button></Link>
             </div>
         </div>
 

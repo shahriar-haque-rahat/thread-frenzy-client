@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { BsMoonStars, BsSun } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoBagOutline } from "react-icons/io5";
 import { HiMenuAlt4 } from "react-icons/hi";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Navbar = () => {
+    const { user } = useContext(AuthContext);
     const navbarRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState("light");
@@ -104,14 +106,18 @@ const Navbar = () => {
                     <div>
                         <IoBagOutline size={25} />
                     </div>
-                    <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
-                        <div tabIndex={0} role="button">
-                            <AiOutlineUser size={25} />
-                        </div>
-                        <ul tabIndex={0} className="dropdown-content dark:bg-[#292929] dark:text-white z-[50] menu p-3 shadow bg-base-100 rounded w-44 space-y-2">
+                    {
+                        user
+                            ? <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                                <div tabIndex={0} role="button">
+                                    <AiOutlineUser size={25} />
+                                </div>
+                                <ul tabIndex={0} className="dropdown-content dark:bg-[#292929] dark:text-white z-[50] menu p-3 shadow bg-base-100 rounded w-44 space-y-2">
 
-                        </ul>
-                    </div>
+                                </ul>
+                            </div>
+                            : <Link to={'/sign-in'}><button className=" bg-black text-white px-2 py-1">Sign In</button></Link>
+                    }
                 </div>
             </div>
         </>

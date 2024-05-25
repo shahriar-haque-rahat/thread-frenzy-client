@@ -58,14 +58,14 @@ const SignIn = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className=" space-y-6">
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text font-bold dark:text-white">Email address</span>
+                            <span className="label-text font-bold">Email address</span>
                         </label>
                         <input name="email" type="email" placeholder="Enter your email address" className="bg-transparent input rounded-none border-b border-b-black focus:outline-none focus:border-0 focus:border-b focus:border-black" {...register("email", { required: true })} />
                         {errors.email && <span className=" text-red-500">This field is required</span>}
                     </div>
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text font-bold dark:text-white">Password</span>
+                            <span className="label-text font-bold">Password</span>
                         </label>
                         <span className=" flex relative">
                             <input name="password" type={showPass ? 'text' : 'password'} placeholder="Enter your password" className=" w-full bg-transparent input rounded-none border-b border-b-black focus:outline-none focus:border-0 focus:border-b focus:border-black" {...register("password", { required: true })} />
@@ -78,7 +78,7 @@ const SignIn = () => {
                         {errors.password && <span className=" text-red-500">This field is required</span>}
                     </div>
                     <div>
-                        <p className=" text-end text-gray-500 dark:text-white">Forgot password?</p>
+                        <p className=" text-end text-gray-500">Forgot password?</p>
                     </div>
                     <div className="form-control mt-6">
                         <button className=" border border-black py-2 hover:bg-white transition duration-300 ease-in-out">Sign In</button>

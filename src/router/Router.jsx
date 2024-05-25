@@ -7,6 +7,8 @@ import Women from "../pages/products/Women";
 import ProductDetails from "../pages/products/ProductDetails";
 import SignIn from "../pages/loginRegister/SignIn";
 import SignUp from "../pages/loginRegister/SignUp";
+import User from "../pages/profile/User";
+import Admin from "../pages/profile/Admin";
 
 
 const Router = createBrowserRouter (
@@ -39,6 +41,14 @@ const Router = createBrowserRouter (
                 {
                     path:'/sign-up',
                     element:<SignUp></SignUp>
+                },
+                {
+                    path:'/profile',
+                    element:<User></User>
+                },
+                {
+                    path:'/admin-profile',
+                    element:<Admin></Admin>
                 },
             ],
         }

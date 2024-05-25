@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
+import { Link } from "react-router-dom";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -54,12 +55,12 @@ const Products = () => {
         <div className=" bg-[#000000] py-10 space-y-6">
             <h1 className=" text-white text-3xl font-bold text-center">Trending Styles</h1>
             <div className="w-full flex justify-center gap-10">
-                <button className="relative text-white w-20 text-sm px-3 py-1 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full before:content-[''] before:absolute before:left-1/2 before:-translate-x-1/2 before:top-0 before:h-0.5 before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full">
+                <Link to={'/men'}><button className="relative text-white w-20 text-sm px-3 py-1 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full before:content-[''] before:absolute before:left-1/2 before:-translate-x-1/2 before:top-0 before:h-0.5 before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full">
                     Men
-                </button>
-                <button className="relative text-white w-20 text-sm px-3 py-1 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full before:content-[''] before:absolute before:left-1/2 before:-translate-x-1/2 before:top-0 before:h-0.5 before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full">
+                </button></Link>
+                <Link to={'/women'}><button className="relative text-white w-20 text-sm px-3 py-1 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full before:content-[''] before:absolute before:left-1/2 before:-translate-x-1/2 before:top-0 before:h-0.5 before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full">
                     Women
-                </button>
+                </button></Link>
             </div>
 
 

@@ -18,7 +18,6 @@ export const allData = createAsyncThunk('data/allData', async (_, { rejectWithVa
 });
 
 export const getItemById = createAsyncThunk('data/getItemById', async (itemId, { rejectWithValue }) => {
-    console.log(itemId);
     try {
         const res = await axios.get(`${BASE_URL}/t-shirt/${itemId}`);
         return res.data;

@@ -39,7 +39,7 @@ const ProductDetails = () => {
 
     return (
         <div>
-            <div className=" px-[3%]">
+            <div className=" px-[3%] mt-16">
                 {
                     selectedItem && (
                         <div className=" grid grid-cols-5 gap-5">
@@ -80,13 +80,13 @@ const ProductDetails = () => {
                                     }
                                 </ul>
 
-                                <div className=" flex gap-6 items-center">
-                                    <div className="flex items-center gap-4">
+                                <div className=" flex items-center">
+                                    <div className="flex items-center gap-4 w-1/2">
                                         <p onClick={() => handleQuantity("-")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> - </p>
                                         <p className="px-5 py-1 font-semibold border ">{productQuantity}</p>
                                         <p onClick={() => handleQuantity("+")} className=" w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> + </p>
                                     </div>
-                                    <button className=" bg-black text-white w-full h-10">Add to Cart</button>
+                                    <button className=" bg-black text-white w-1/2 h-10">Add to Cart</button>
                                 </div>
 
                                 <div>

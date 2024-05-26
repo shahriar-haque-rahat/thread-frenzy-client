@@ -44,12 +44,13 @@ const ProductDetails = () => {
         const cartItem = {
             id: selectedItem._id,
             name: selectedItem.name,
+            image: selectedItem.images[selectedItem.color[colorIndex]][0],
             price: selectedItem.price,
             color: selectedItem.color[colorIndex],
             size: selectedSize,
             quantity: productQuantity,
             userEmail: user.email
-        };
+        };console.log(cartItem);
 
         dispatch(addToCart(cartItem));
     };

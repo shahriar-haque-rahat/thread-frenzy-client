@@ -42,7 +42,7 @@ const ProductDetails = () => {
         }
 
         const cartItem = {
-            id: selectedItem.id,
+            id: selectedItem._id,
             name: selectedItem.name,
             price: selectedItem.price,
             color: selectedItem.color[colorIndex],

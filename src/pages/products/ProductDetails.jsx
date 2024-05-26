@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getItemById } from "../../redux/dataSlice";
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import ReactStars from "react-rating-stars-component";
 import SimilarProducts from "./SimilarProducts";
+import { AuthContext } from "../../provider/AuthProvider";
 
 
 const ProductDetails = () => {
+    const { user } = useContext(AuthContext);
     const { itemId } = useParams();
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
@@ -24,9 +26,22 @@ const ProductDetails = () => {
         setProductQuantity(newQuantity);
     };
 
+    const handleAddCart = () => {
+        const cartItem = {
+            id: selectedItem.id,
+            name: selectedItem.name,
+            price: selectedItem.price,
+            color: selectedItem.color[colorIndex],
+            quantity: productQuantity,
+            userEmail: user.email
+        }
+    }
+
     useEffect(() => {
+        setColorIndex(0);
+        setProductQuantity(0);
         dispatch(getItemById(itemId));
-    }, [itemId])
+    }, [dispatch, itemId])
 
     // TODO: loading and failed status set korte hobe
     if (singleProductStatus === 'loading') {

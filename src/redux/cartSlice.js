@@ -35,7 +35,7 @@ const cartSlice = createSlice({
     initialState: {
         cartItems: [],
         cartStatus: 'idle',
-        error: null,
+        cartError: null,
     },
     extraReducers: (builder) => {
         builder
@@ -48,18 +48,18 @@ const cartSlice = createSlice({
             })
             .addCase(getCart.rejected, (state, action) => {
                 state.cartStatus = 'failed';
-                state.error = action.payload || action.error.message;
+                state.cartError = action.payload || action.error.message;
             })
             .addCase(addToCart.pending, (state) => {
-                state.status = 'loading';
+                state.cartStatus = 'loading';
             })
             .addCase(addToCart.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.cartStatus = 'succeeded';
                 state.cartItems.push(action.payload);
             })
             .addCase(addToCart.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.payload || action.error.message;
+                state.cartStatus = 'failed';
+                state.cartError = action.payload || action.error.message;
             });
     },
 });

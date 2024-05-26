@@ -13,7 +13,7 @@ const ProductDetails = () => {
     const { itemId } = useParams();
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
-    const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
+    // const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
@@ -42,7 +42,7 @@ const ProductDetails = () => {
         }
 
         const cartItem = {
-            id: selectedItem._id,
+            itemId: selectedItem._id,
             name: selectedItem.name,
             image: selectedItem.images[selectedItem.color[colorIndex]][0],
             price: selectedItem.price,
@@ -51,25 +51,29 @@ const ProductDetails = () => {
             quantity: productQuantity,
             userEmail: user.email
         };
+        setErrorMessage('');
 
         dispatch(addToCart(cartItem));
     };
+
+    // useEffect(() => {
+    //     dispatch(getCart(user?.email));
+    // }, [dispatch, user]);
 
     useEffect(() => {
         setColorIndex(0);
         setProductQuantity(1);
         setSelectedSize('');
         dispatch(getItemById(itemId));
-        dispatch(getCart(user?.email));
-    }, [dispatch, itemId, user]);
+    }, [dispatch, itemId]);
 
     // TODO: loading failed thik moto dekhate hobe
-    if (singleProductStatus === 'loading' || cartStatus === 'loading') {
+    if (singleProductStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
-    if (singleProductStatus === 'failed' || cartStatus === 'failed') {
-        return <div>Error: {error || cartError}</div>;
+    if (singleProductStatus === 'failed') {
+        return <div>Error: {error}</div>;
     }
 
     return (

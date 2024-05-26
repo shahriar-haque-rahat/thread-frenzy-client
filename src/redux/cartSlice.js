@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getCart = createAsyncThunk('cart/getCart', async (userEmail, { rejectWithValue }) => {
     try {
-        const res = await axios.get(`${BASE_URL}/cart/${userEmail}`);console.log(`${BASE_URL}/cart/${userEmail}`);
+        const res = await axios.get(`${BASE_URL}/cart/${userEmail}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {

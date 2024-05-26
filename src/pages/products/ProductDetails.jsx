@@ -13,7 +13,7 @@ const ProductDetails = () => {
     const { itemId } = useParams();
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
-    const { cartItems, cartStatus, cartError } = useSelector(state => state.cart || {});
+    const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
@@ -50,23 +50,18 @@ const ProductDetails = () => {
             size: selectedSize,
             quantity: productQuantity,
             userEmail: user.email
-        };console.log(cartItem);
+        };
 
         dispatch(addToCart(cartItem));
     };
-
-    useEffect(() => {
-        if (user) {
-            dispatch(getCart(user.email));
-        }
-    }, [dispatch, user]);
 
     useEffect(() => {
         setColorIndex(0);
         setProductQuantity(1);
         setSelectedSize('');
         dispatch(getItemById(itemId));
-    }, [dispatch, itemId]);
+        dispatch(getCart(user?.email));
+    }, [dispatch, itemId, user]);
 
     // TODO: loading failed thik moto dekhate hobe
     if (singleProductStatus === 'loading' || cartStatus === 'loading') {

@@ -111,9 +111,9 @@ const Navbar = () => {
                             <BsMoonStars onClick={handleTheme} size={22} />
                         )}
                     </div>
-                    <div className=" hover:cursor-pointer">
+                    <Link to={'/cart'}><div className=" hover:cursor-pointer">
                         <IoBagOutline size={25} />
-                    </div>
+                    </div></Link>
                     {
                         user
                             ? <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">

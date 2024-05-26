@@ -9,6 +9,7 @@ import SignIn from "../pages/loginRegister/SignIn";
 import SignUp from "../pages/loginRegister/SignUp";
 import User from "../pages/profile/User";
 import Admin from "../pages/profile/Admin";
+import Cart from "../pages/cart/Cart";
 
 
 const Router = createBrowserRouter (
@@ -41,6 +42,10 @@ const Router = createBrowserRouter (
                 {
                     path:'/sign-up',
                     element:<SignUp></SignUp>
+                },
+                {
+                    path:'/cart',
+                    element:<Cart></Cart>
                 },
                 {
                     path:'/profile',

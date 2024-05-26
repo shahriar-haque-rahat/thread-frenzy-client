@@ -28,6 +28,32 @@ export const addToCart = createAsyncThunk('cart/addToCart', async (cartItem, { r
     }
 });
 
+export const updateCartItem = createAsyncThunk('cart/updateCartItem', async ({ id, quantity }, { rejectWithValue }) => {
+    try {
+        const res = await axios.put(`${BASE_URL}/cart/${id}`, { quantity });
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
+export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (id, { rejectWithValue }) => {
+    try {
+        const res = await axios.delete(`${BASE_URL}/cart/${id}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
@@ -58,7 +84,7 @@ const cartSlice = createSlice({
             .addCase(addToCart.rejected, (state, action) => {
                 state.cartStatus = 'failed';
                 state.cartError = action.payload || action.error.message;
-            });
+            })
     },
 });
 

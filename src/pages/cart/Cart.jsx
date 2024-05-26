@@ -97,12 +97,17 @@ const Cart = () => {
                     </div>
                     <div className="flex justify-between">
                         <p>Shipping Fees</p>
-                        <p>$70.00</p>
+                        {
+                            (cartItems.length > 0) ? <p>$14.99</p> : <p>$0.00</p>
+                        }
                     </div>
                 </div>
                 <div className="flex justify-between px-2 text-lg font-semibold">
                     <p>Subtotal</p>
-                    <p>${(parseFloat(totalPrice) + 70).toFixed(2)}</p>
+                    {
+                        (cartItems.length > 0) ? <p>${(parseFloat(totalPrice) + 14.99).toFixed(2)}</p> : <p>$0.00</p>
+                    }
+                    
                 </div>
                 <button className="bg-black text-white text-lg font-semibold w-full h-12 mx-2">Check Out</button>
             </div>

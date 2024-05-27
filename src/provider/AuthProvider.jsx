@@ -35,6 +35,8 @@ const AuthProvider = ({ children }) => {
             displayName: name,
             photoURL: photoUrl
         }).then(() => {
+            // user entry in database
+            
             setUser(currentUser => ({
                 ...currentUser,
                 displayName: name,

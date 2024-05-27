@@ -1,10 +1,12 @@
-import axios from "axios";
-import { BASE_URL } from "../constent/constent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+// import useAxiosPublic from "../hooks/useAxiosPublic";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
 
 export const getCart = createAsyncThunk('cart/getCart', async (userEmail, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axios.get(`${BASE_URL}/cart/${userEmail}`);
+        const res = await axiosPrivate.get(`/cart/${userEmail}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -16,8 +18,9 @@ export const getCart = createAsyncThunk('cart/getCart', async (userEmail, { reje
 });
 
 export const addToCart = createAsyncThunk('cart/addToCart', async (cartItem, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axios.post(`${BASE_URL}/cart`, cartItem);
+        const res = await axiosPrivate.post(`/cart`, cartItem);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -29,8 +32,9 @@ export const addToCart = createAsyncThunk('cart/addToCart', async (cartItem, { r
 });
 
 export const updateCartItem = createAsyncThunk('cart/updateCartItem', async ({ id, quantity }, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axios.put(`${BASE_URL}/cart/${id}`, { quantity });
+        const res = await axiosPrivate.put(`/cart/${id}`, { quantity });
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -42,8 +46,9 @@ export const updateCartItem = createAsyncThunk('cart/updateCartItem', async ({ i
 });
 
 export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (id, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axios.delete(`${BASE_URL}/cart/${id}`);
+        const res = await axiosPrivate.delete(`/cart/${id}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {

@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { BASE_URL } from '../constent/constent';
+import useAxiosPublic from "../hooks/useAxiosPublic";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
 export const allData = createAsyncThunk('data/allData', async (_, { rejectWithValue }) => {
+    const axiosPublic = useAxiosPublic();
     try {
-        const res = await axios.get(`${BASE_URL}/t-shirt`);
+        const res = await axiosPublic.get(`/t-shirt`);
         return res.data;
     }
     catch (error) {
@@ -18,8 +19,9 @@ export const allData = createAsyncThunk('data/allData', async (_, { rejectWithVa
 });
 
 export const getItemById = createAsyncThunk('data/getItemById', async (itemId, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axios.get(`${BASE_URL}/t-shirt/${itemId}`);
+        const res = await axiosPrivate.get(`/t-shirt/${itemId}`);
         return res.data;
     }
     catch (error) {

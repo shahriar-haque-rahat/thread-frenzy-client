@@ -99,7 +99,7 @@ const Cart = () => {
                 <div className="px-2">
                     {
                         isCheckingOut
-                            ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Go Back</button>
+                            ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
                             : <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
                     }
 

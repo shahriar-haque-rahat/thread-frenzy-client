@@ -5,6 +5,7 @@ const CartItem = ({ filteredCart, handleDeleteCartItem, quantities, handleQuanti
 
     return (
         <div className=" space-y-10">
+            <h1 className="text-3xl mb-10">Cart Items</h1>
             {
                 filteredCart.map(item => (
                     <div key={item._id} className="flex gap-4 h-40 border border-black">

@@ -31,7 +31,7 @@ const CheckOut = () => {
             {
                 !isPaying &&
                 <div>
-                    <h1 className="text-3xl mb-10">Checkout</h1>
+                    <h1 className="text-3xl mb-10">Shipping Information</h1>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         <div className="flex gap-6">
                             <div className="form-control relative w-full">
@@ -64,7 +64,7 @@ const CheckOut = () => {
                             </div>
                         </div>
                         <div className="form-control mt-6">
-                            <button type="submit" className="bg-black text-white text-lg font-semibold w-full h-12">Save & Continue</button>
+                            <button type="submit" className="bg-black text-white text-lg font-semibold w-full h-12">Continue to Payment</button>
                         </div>
                     </form>
                 </div>

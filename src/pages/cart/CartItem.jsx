@@ -1,62 +1,7 @@
-import { useContext, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AuthContext } from "../../provider/AuthProvider";
-import { getCart, updateCartItem, deleteCartItem } from "../../redux/cartSlice";
 import { RxCross2 } from "react-icons/rx";
 
 
-const CartItem = ({ filteredCart, setFilteredCart, quantities, setQuantities }) => {
-    const { user } = useContext(AuthContext);
-    const dispatch = useDispatch();
-    const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
-
-
-    const handleQuantity = (id, operation) => {
-        setQuantities(prevQuantities => {
-            const newQuantity = operation === "+" ? prevQuantities[id] + 1 : prevQuantities[id] - 1;
-            const updatedQuantity = newQuantity < 1 ? 1 : newQuantity;
-
-            dispatch(updateCartItem({ id, quantity: updatedQuantity }));
-
-            return {
-                ...prevQuantities,
-                [id]: updatedQuantity
-            };
-        });
-    };
-
-    const handleDeleteCartItem = (id) => {
-        dispatch(deleteCartItem(id))
-            .unwrap()
-            .then(() => {
-                setFilteredCart(prevFilteredCart => prevFilteredCart.filter(item => item._id !== id));
-            });
-    };
-
-    useEffect(() => {
-        if (user?.email) {
-            dispatch(getCart(user.email));
-        }
-    }, [dispatch, user]);
-
-    useEffect(() => {
-        if (cartItems) {
-            setFilteredCart(cartItems);
-            const initialQuantities = cartItems.reduce((acc, item) => {
-                acc[item._id] = item.quantity;
-                return acc;
-            }, {});
-            setQuantities(initialQuantities);
-        }
-    }, [cartItems, setFilteredCart, setQuantities]);
-
-    if (cartStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
-
-    if (cartStatus === 'failed') {
-        return <div>Error: {cartError}</div>;
-    }
+const CartItem = ({ filteredCart, handleDeleteCartItem, quantities, handleQuantity, }) => {
 
     return (
         <div className=" space-y-10">

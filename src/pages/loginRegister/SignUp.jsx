@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import signUp from '../../assets/images/signUp.jpg';
+import GoogleGithub from "./GoogleGithub";
 
 const MySwal = withReactContent(Swal)
 
@@ -15,6 +16,8 @@ const SignUp = () => {
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+
+    
 
     const onSubmit = (data) => {
         const { name, photoUrl, email, password } = data;
@@ -44,6 +47,12 @@ const SignUp = () => {
             })
             .catch(error => {
                 console.log(error);
+                MySwal.fire({
+                    title: <p className="text-3xl font-bold mb-4">Email Already Exists</p>,
+                    icon: "error",
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "Okay"
+                })
             })
     }
 
@@ -96,6 +105,7 @@ const SignUp = () => {
                         <button className=" border border-black py-2 hover:bg-white transition duration-300 ease-in-out">Sign Up</button>
                     </div>
                 </form>
+                <GoogleGithub></GoogleGithub>
                 <p className="mt-3 text-center">Already Have An Account? <Link className="text-red-500" to={'/sign-in'}>Sign In</Link></p>
             </div>
         </div>

@@ -3,14 +3,12 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import signIn from '../../assets/images/signIn.jpg';
-
+import GoogleGithub from "./GoogleGithub";
 
 
 const SignIn = () => {
-    const { userSignIn, googleSignIn, githubSignIn } = useContext(AuthContext);
+    const { userSignIn } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
@@ -20,28 +18,6 @@ const SignIn = () => {
         const { email, password } = data;
 
         userSignIn(email, password)
-            .then(result => {
-                console.log(result);
-                navigate(location?.state ? location.state : "/");
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
-
-    const handleGoogleSignIn = () => {
-        googleSignIn()
-            .then(result => {
-                console.log(result);
-                navigate(location?.state ? location.state : "/");
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
-
-    const handleGithubSignIn = () => {
-        githubSignIn()
             .then(result => {
                 console.log(result);
                 navigate(location?.state ? location.state : "/");
@@ -84,13 +60,7 @@ const SignIn = () => {
                         <button className=" border border-black py-2 hover:bg-white transition duration-300 ease-in-out">Sign In</button>
                     </div>
                 </form>
-                <div className=" m-6 space-y-4">
-                    <p className=" text-center">Or Sign In Using</p>
-                    <span className="flex justify-center items-center gap-2">
-                        <button onClick={handleGoogleSignIn}><FcGoogle size={45} /></button>
-                        <button onClick={handleGithubSignIn}><FaGithub size={40} /></button>
-                    </span>
-                </div>
+                <GoogleGithub></GoogleGithub>
                 <p className=" mt-3 text-center">Do Not Have An Account ? <Link className=" text-red-500" to={'/sign-up'}>Sign Up</Link></p>
             </div>
         </div>

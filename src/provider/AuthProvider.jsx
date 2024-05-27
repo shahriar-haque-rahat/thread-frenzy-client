@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/userSlice";
 
 
 export const AuthContext = createContext(null);
@@ -8,6 +10,7 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
+    const dispatch = useDispatch();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -35,20 +38,26 @@ const AuthProvider = ({ children }) => {
             displayName: name,
             photoURL: photoUrl
         }).then(() => {
-            // user entry in database
-            
+            userDatabaseEntry(name, auth.currentUser.email, photoUrl)
+
             setUser(currentUser => ({
                 ...currentUser,
                 displayName: name,
                 photoURL: photoUrl,
                 email: auth.currentUser.email,
             }))
-            .then(() => {
-                setLoading(false);
-            })
+                .then(() => {
+                    setLoading(false);
+                })
         }).catch(error => {
             console.log("Error updating profile: ", error);
         });
+    }
+
+    const userDatabaseEntry = (userName, email, photoUrl) => {
+        const userInfo = { userName, email, photoUrl };
+        console.log(userInfo);
+        dispatch(addUser(userInfo));
     }
 
     useEffect(() => {
@@ -62,7 +71,16 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const authInfo = {
-        user, loading, updateUserProfile, setLoading, googleSignIn, githubSignIn, userSignUp, userSignIn, userSignOut,
+        user, 
+        loading, 
+        updateUserProfile, 
+        setLoading, 
+        googleSignIn, 
+        githubSignIn, 
+        userSignUp, 
+        userSignIn, 
+        userSignOut, 
+        userDatabaseEntry,
     }
 
     return (

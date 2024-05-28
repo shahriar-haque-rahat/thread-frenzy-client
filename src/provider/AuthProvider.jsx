@@ -55,10 +55,19 @@ const AuthProvider = ({ children }) => {
     }
 
     const userDatabaseEntry = (firstName, userEmail, photoUrl) => {
-        const userInfo = { firstName, userEmail, photoUrl };
+        const userInfo = { 
+            firstName, 
+            lastName: null,
+            address: null,
+            userEmail, 
+            photoUrl };
         console.log(userInfo);
-        dispatch(addUser(userInfo));
-    }
+        dispatch(addUser(userInfo))
+            .catch((error) => {
+                console.error("Error saving user to database: ", error);
+            });
+    };
+
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -71,15 +80,15 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const authInfo = {
-        user, 
-        loading, 
-        updateUserProfile, 
-        setLoading, 
-        googleSignIn, 
-        githubSignIn, 
-        userSignUp, 
-        userSignIn, 
-        userSignOut, 
+        user,
+        loading,
+        updateUserProfile,
+        setLoading,
+        googleSignIn,
+        githubSignIn,
+        userSignUp,
+        userSignIn,
+        userSignOut,
         userDatabaseEntry,
     }
 

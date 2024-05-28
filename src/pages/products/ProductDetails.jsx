@@ -7,13 +7,15 @@ import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import ReactStars from "react-rating-stars-component";
 import SimilarProducts from "./SimilarProducts";
 import { AuthContext } from "../../provider/AuthProvider";
+import { IoBookmarks, IoBookmarksOutline } from "react-icons/io5";
+import { addToWishlist, getWishlist } from "../../redux/wishlistSlice";
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
     const { itemId } = useParams();
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
-    // const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
+    const { wishlistItems } = useSelector(state => state.wishlist);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
@@ -21,6 +23,7 @@ const ProductDetails = () => {
     const [productQuantity, setProductQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [bookmarked, setBookmarked] = useState(false);
 
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
@@ -57,9 +60,17 @@ const ProductDetails = () => {
         dispatch(addToCart(cartItem));
     };
 
-    // useEffect(() => {
-    //     dispatch(getCart(user?.email));
-    // }, [dispatch, user]);
+    const handleWishlist = () => {
+        const wishlistItem = {
+            item: selectedItem._id,
+            userEmail: user.email,
+        };
+        dispatch(addToWishlist(wishlistItem))
+            .catch((error) => {
+                console.error("Error adding item to wishlist: ", error);
+            });
+    };
+
 
     useEffect(() => {
         setColorIndex(0);
@@ -68,7 +79,18 @@ const ProductDetails = () => {
         dispatch(getItemById(itemId));
     }, [dispatch, itemId]);
 
-    // TODO: loading failed thik moto dekhate hobe
+    useEffect(() => {
+        if (user?.email) {
+            dispatch(getWishlist(user.email));
+        }
+    }, [dispatch, user]);
+
+    useEffect(() => {
+        if (wishlistItems.some(item => item.item === selectedItem?._id)) {
+            // setBookmarked(true);
+        }
+    }, [wishlistItems, selectedItem]);
+
     if (singleProductStatus === 'loading') {
         return <div>Loading...</div>;
     }
@@ -88,7 +110,14 @@ const ProductDetails = () => {
                             ))}
                         </div>
                         <div className="col-span-2 space-y-6">
-                            <h1 className="text-2xl font-semibold">{selectedItem.name}</h1>
+                            <div className=" flex gap-12 ">
+                                <h1 className="text-2xl font-semibold">{selectedItem.name}</h1>
+                                {
+                                    bookmarked
+                                        ? <button><IoBookmarks size={30} /></button>
+                                        : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
+                                }
+                            </div>
                             <div>
                                 <ReactStars value={selectedItem.rating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} />
                             </div>
@@ -159,3 +188,4 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+

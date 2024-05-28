@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-
 
 export const getWishlist = createAsyncThunk('wishlist/getWishlist', async (userEmail, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
@@ -16,6 +14,21 @@ export const getWishlist = createAsyncThunk('wishlist/getWishlist', async (userE
         }
     }
 });
+
+export const addToWishlist = createAsyncThunk('wishlist/addToWishlist', async (wishlistItem, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.post(`/wishlist`, wishlistItem);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 
 export const deleteWishlistItem = createAsyncThunk('wishlist/deleteWishlistItem', async (id, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
@@ -50,6 +63,12 @@ const wishlistSlice = createSlice({
             .addCase(getWishlist.rejected, (state, action) => {
                 state.wishlistStatus = 'failed';
                 state.wishlistError = action.payload || action.error.message;
+            })
+            .addCase(addToWishlist.fulfilled, (state, action) => {
+                state.wishlistItems.push(action.payload);
+            })
+            .addCase(deleteWishlistItem.fulfilled, (state, action) => {
+                state.wishlistItems = state.wishlistItems.filter(item => item._id !== action.meta.arg);
             })
     },
 });

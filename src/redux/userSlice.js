@@ -17,6 +17,20 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
     }
 });
 
+export const getUserByEmail = createAsyncThunk('user/getUserByEmail', async (userEmail, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/user/${userEmail}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const addUser = createAsyncThunk('user/addUser', async (userInfo, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -65,6 +79,9 @@ const userSlice = createSlice({
         user: [],
         userStatus: 'idle',
         userError: null,
+        userByEmail: {},
+        userByEmailStatus: 'idle',
+        userByEmailError: null,
     },
     extraReducers: (builder) => {
         builder
@@ -78,6 +95,17 @@ const userSlice = createSlice({
             .addCase(getUser.rejected, (state, action) => {
                 state.userStatus = 'failed';
                 state.userError = action.payload || action.error.message;
+            })
+            .addCase(getUserByEmail.pending, (state) => {
+                state.userByEmailStatus = 'loading';
+            })
+            .addCase(getUserByEmail.fulfilled, (state, action) => {
+                state.userByEmailStatus = 'succeeded';
+                state.userByEmail = action.payload;
+            })
+            .addCase(getUserByEmail.rejected, (state, action) => {
+                state.userByEmailStatus = 'failed';
+                state.userByEmailError = action.payload || action.error.message;
             })
             .addCase(addUser.pending, (state) => {
                 state.userStatus = 'loading';

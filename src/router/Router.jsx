@@ -7,8 +7,8 @@ import Women from "../pages/products/Women";
 import ProductDetails from "../pages/products/ProductDetails";
 import SignIn from "../pages/loginRegister/SignIn";
 import SignUp from "../pages/loginRegister/SignUp";
-import User from "../pages/profile/User";
-import Admin from "../pages/profile/Admin";
+import User from "../pages/profile/userComponents/User";
+import Admin from "../pages/profile/adminComponents/Admin";
 import Cart from "../pages/cart/Cart";
 
 

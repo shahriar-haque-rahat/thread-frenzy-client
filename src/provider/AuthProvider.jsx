@@ -54,8 +54,8 @@ const AuthProvider = ({ children }) => {
         });
     }
 
-    const userDatabaseEntry = (userName, email, photoUrl) => {
-        const userInfo = { userName, email, photoUrl };
+    const userDatabaseEntry = (firstName, userEmail, photoUrl) => {
+        const userInfo = { firstName, userEmail, photoUrl };
         console.log(userInfo);
         dispatch(addUser(userInfo));
     }

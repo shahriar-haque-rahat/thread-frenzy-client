@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../redux/userSlice";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../../provider/AuthProvider";
 
 const Account = ({ userByEmail }) => {
     const dispatch = useDispatch();
+    const { updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             firstName: '',
@@ -27,9 +29,10 @@ const Account = ({ userByEmail }) => {
         }
     }, [userByEmail, reset]);
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data);
         if (userByEmail?._id) {
+            await updateUserProfile(data.firstName, null);
             dispatch(updateUser({ id: userByEmail._id, userInfo: data }));
         }
     };
@@ -74,7 +77,8 @@ const Account = ({ userByEmail }) => {
                     <p className="text-xl">Contact Information</p>
                     <div className="flex gap-6">
                         <div className="form-control relative w-full">
-                            <input
+                            <input 
+                                disabled
                                 id="email"
                                 type="email"
                                 className="border border-gray-400 h-12 pl-3 outline-none"

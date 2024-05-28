@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-export const getWishlist = createAsyncThunk('wishlist/getWishlist', async (userEmail, { rejectWithValue }) => {
+export const getWishlist = createAsyncThunk('wishlist/getWishlist', async (userId, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.get(`/wishlist/${userEmail}`);
+        const res = await axiosPrivate.get(`/wishlist/${userId}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {

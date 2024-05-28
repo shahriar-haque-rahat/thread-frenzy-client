@@ -9,6 +9,7 @@ import SimilarProducts from "./SimilarProducts";
 import { AuthContext } from "../../provider/AuthProvider";
 import { IoBookmarks, IoBookmarksOutline } from "react-icons/io5";
 import { addToWishlist, getWishlist } from "../../redux/wishlistSlice";
+import { getUserByEmail } from "../../redux/userSlice";
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
@@ -16,7 +17,8 @@ const ProductDetails = () => {
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
     const { wishlistItems } = useSelector(state => state.wishlist);
-
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
     const [colorIndex, setColorIndex] = useState(0);
@@ -62,8 +64,8 @@ const ProductDetails = () => {
 
     const handleWishlist = () => {
         const wishlistItem = {
-            item: selectedItem._id,
-            userEmail: user.email,
+            itemId: selectedItem._id,
+            userId: userByEmail._id,
         };
         dispatch(addToWishlist(wishlistItem))
             .catch((error) => {
@@ -81,7 +83,7 @@ const ProductDetails = () => {
 
     useEffect(() => {
         if (user?.email) {
-            dispatch(getWishlist(user.email));
+            dispatch(getUserByEmail(user.email));
         }
     }, [dispatch, user]);
 
@@ -91,12 +93,12 @@ const ProductDetails = () => {
         }
     }, [wishlistItems, selectedItem]);
 
-    if (singleProductStatus === 'loading') {
+    if (singleProductStatus === 'loading' || userByEmailStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
-    if (singleProductStatus === 'failed') {
-        return <div>Error: {error}</div>;
+    if (singleProductStatus === 'failed' || userByEmailError === 'failed') {
+        return <div>Error: {error} || {userByEmailError}</div>;
     }
 
     return (

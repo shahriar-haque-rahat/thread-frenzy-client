@@ -39,7 +39,7 @@ const User = () => {
     }
 
     return (
-        <div className=" flex gap-6">
+        <div className=" max-w-[1440px] mx-auto flex gap-6">
             <Sidebar userByEmail={userByEmail} isActive={isActive} setIsActive={setIsActive}></Sidebar>
             <div className=" w-[75%]">
                 {

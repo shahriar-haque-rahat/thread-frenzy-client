@@ -7,12 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserByEmail } from "../../../redux/userSlice";
 import Wishlist from "./Wishlist";
 import OrderHistory from "./OrderHistory";
+import { getCart } from "../../../redux/cartSlice";
 
 
 const User = () => {
+    const { user } = useContext(AuthContext);
     const dispatch = useDispatch();
     const { userByEmail, userByEmailstatus, userByEmailError } = useSelector(state => state.user);
-    const { user } = useContext(AuthContext);
+    const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [isActive, setIsActive] = useState('account');
 
 
@@ -20,15 +22,20 @@ const User = () => {
         if (user) {
             dispatch(getUserByEmail(user?.email))
         }
-    }, [dispatch, userByEmailstatus, user])
+    }, [dispatch, user])
 
+    useEffect(()=>{
+        if (user) {
+            dispatch(getCart(user?.email))
+        }
+    },[dispatch, user])
 
-    if (userByEmailstatus === 'loading') {
+    if (userByEmailstatus === 'loading' || cartStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
-    if (userByEmailstatus === 'failed') {
-        return <div>Error: {userByEmailError}</div>;
+    if (userByEmailstatus === 'failed' || cartStatus === 'failed') {
+        return <div>Error: {userByEmailError} || {cartError}</div>;
     }
 
     return (
@@ -42,7 +49,7 @@ const User = () => {
                     (isActive === 'wishlist') && <Wishlist></Wishlist>
                 }
                 {
-                    (isActive === 'orders') && <OrderHistory></OrderHistory>
+                    (isActive === 'orders') && <OrderHistory cartItems={cartItems}></OrderHistory>
                 }
             </div>
         </div>

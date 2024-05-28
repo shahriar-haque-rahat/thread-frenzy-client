@@ -49,7 +49,8 @@ const ProductDetails = () => {
             color: selectedItem.color[colorIndex],
             size: selectedSize,
             quantity: productQuantity,
-            userEmail: user.email
+            userEmail: user.email,
+            status: 'pending',
         };
         setErrorMessage('');
 

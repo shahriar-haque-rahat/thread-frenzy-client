@@ -5,6 +5,8 @@ import { useContext } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserByEmail } from "../../../redux/userSlice";
+import Wishlist from "./Wishlist";
+import OrderHistory from "./OrderHistory";
 
 
 const User = () => {
@@ -33,7 +35,15 @@ const User = () => {
         <div className=" flex gap-6">
             <Sidebar userByEmail={userByEmail} isActive={isActive} setIsActive={setIsActive}></Sidebar>
             <div className=" w-[75%]">
-                <Account userByEmail={userByEmail}></Account>
+                {
+                    (isActive === 'account') && <Account userByEmail={userByEmail}></Account>
+                }
+                {
+                    (isActive === 'wishlist') && <Wishlist></Wishlist>
+                }
+                {
+                    (isActive === 'orders') && <OrderHistory></OrderHistory>
+                }
             </div>
         </div>
     );

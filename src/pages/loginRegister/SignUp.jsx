@@ -17,7 +17,7 @@ const SignUp = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    
+
 
     const onSubmit = (data) => {
         const { name, photoUrl, email, password } = data;

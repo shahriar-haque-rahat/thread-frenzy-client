@@ -12,51 +12,53 @@ import Admin from "../pages/profile/Admin";
 import Cart from "../pages/cart/Cart";
 
 
-const Router = createBrowserRouter (
+const Router = createBrowserRouter(
     [
         {
-            path:'/',
-            element:<Root></Root>,
-            errorElement:<Error></Error>,
-            children:[
+            path: '/',
+            element: <Root></Root>,
+            errorElement: <Error></Error>,
+            children: [
                 {
-                    path:'/',
-                    element:<Home></Home>
+                    path: '/',
+                    element: <Home></Home>
                 },
                 {
-                    path:'/men',
-                    element:<Men></Men>
+                    path: '/men',
+                    element: <Men></Men>
                 },
                 {
-                    path:'/women',
-                    element:<Women></Women>
+                    path: '/women',
+                    element: <Women></Women>
                 },
                 {
-                    path:'/product-details/:itemId',
-                    element:<ProductDetails></ProductDetails>
+                    path: '/product-details/:itemId',
+                    element: <ProductDetails></ProductDetails>
                 },
                 {
-                    path:'/sign-in',
-                    element:<SignIn></SignIn>
+                    path: '/sign-in',
+                    element: <SignIn></SignIn>
                 },
                 {
-                    path:'/sign-up',
-                    element:<SignUp></SignUp>
+                    path: '/sign-up',
+                    element: <SignUp></SignUp>
                 },
                 {
-                    path:'/cart',
-                    element:<Cart></Cart>
-                },
-                {
-                    path:'/profile',
-                    element:<User></User>
-                },
-                {
-                    path:'/admin-profile',
-                    element:<Admin></Admin>
+                    path: '/cart',
+                    element: <Cart></Cart>
                 },
             ],
-        }
+        },
+        {
+            path: '/profile',
+            element: <User></User>,
+            errorElement: <Error></Error>,
+        },
+        {
+            path: '/admin-profile',
+            element: <Admin></Admin>,
+            errorElement: <Error></Error>,
+        },
     ]
 )
 

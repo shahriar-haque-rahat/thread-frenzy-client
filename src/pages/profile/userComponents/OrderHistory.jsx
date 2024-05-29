@@ -11,7 +11,7 @@ const OrderHistory = ({ cartItems }) => {
                 <div className=" text-center">Color</div>
                 <div className=" text-center">Size</div>
                 <div className=" text-center">Quantity</div>
-                <div className=" text-center">Price</div>
+                <div className=" text-center">Total Price</div>
                 <div className=" text-center">Status</div>
             </div>
             {
@@ -22,7 +22,7 @@ const OrderHistory = ({ cartItems }) => {
                         <div className=" py-2 text-center">{item.color}</div>
                         <div className=" py-2 text-center">{item.size}</div>
                         <div className=" py-2 text-center">{item.quantity}</div>
-                        <div className=" py-2 text-center">{item.price}</div>
+                        <div className=" py-2 text-center">{item.price * item.quantity}</div>
                         <div className={item.status === 'pending' ? " py-2 text-center text-orange-500" : " py-2 text-center text-green-500"}>{item.status}</div>
                     </div>
                 ))

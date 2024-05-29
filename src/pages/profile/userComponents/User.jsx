@@ -46,7 +46,7 @@ const User = () => {
                     (isActive === 'account') && <Account userByEmail={userByEmail}></Account>
                 }
                 {
-                    (isActive === 'wishlist') && <Wishlist></Wishlist>
+                    (isActive === 'wishlist') && <Wishlist userId={userByEmail._id}></Wishlist>
                 }
                 {
                     (isActive === 'orders') && <OrderHistory cartItems={cartItems}></OrderHistory>

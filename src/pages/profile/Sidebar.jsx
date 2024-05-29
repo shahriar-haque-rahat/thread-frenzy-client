@@ -25,8 +25,8 @@ const Sidebar = ({ userByEmail, isActive, setIsActive, }) => {
             <div>
                 <Link to={'/'}><h1 className=" text-2xl font-bold">Thread Frenzy</h1></Link>
                 <div className=" space-y-2 py-6">
-                    <img className=" h-24 w-24 rounded-full" src={userByEmail?.photoUrl} alt="" />
-                    <p className=" pl-3 text-xl">{userByEmail?.firstName}</p>
+                    <img className=" h-36 w-36 object-cover object-top " src={userByEmail?.photoUrl} alt="" />
+                    <p className=" text-xl">{userByEmail?.firstName}</p>
                 </div>
                 <ul className=" flex flex-col gap-2 border-t pt-3">
                     <button onClick={() => setIsActive('account')} className={isActive === 'account' ? " flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : " flex gap-2 items-center text-lg py-2 pl-2"}><RiAccountCircleFill size={23} />Account</button>

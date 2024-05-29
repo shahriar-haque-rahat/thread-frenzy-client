@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { IoBagOutline } from "react-icons/io5";
 import { deleteWishlistItem } from "../../../redux/wishlistSlice";
+import { Link } from "react-router-dom";
 
 const Wishlist = ({ userId }) => {
     const dispatch = useDispatch();
@@ -34,17 +35,14 @@ const Wishlist = ({ userId }) => {
             <div className=" pt-10 grid grid-cols-3 gap-3">
                 {
                     wishlistItems?.map(item => (
-                        <div key={item.itemId._id}>
+                        <Link key={item.itemId._id} to={`/product-details/${item.itemId._id}`}>
                             <div className=" relative">
-                                <img className="h-72 xl:h-96 w-full object-cover object-top" src={item.itemId.images[Object.keys(item.itemId.images)[0]][0]} alt="loading..." />
-                                <button onClick={()=>handleDeleteWishlistItem(item._id)} className=" absolute top-2 right-2"><RxCross2 size={28} /></button>
-                            </div>
-                            <h1 className=" font-semibold px-2 h-14">{item.itemId.name}</h1>
-                            <div className=" flex justify-between px-2">
-                                <p>${item.itemId.price}</p>
-                                <button><IoBagOutline size={23} /></button>
-                            </div>
+                            <img className="h-72 xl:h-96 w-full object-cover object-top" src={item.itemId.images[Object.keys(item.itemId.images)[0]][0]} alt="loading..." />
+                            <button onClick={() => handleDeleteWishlistItem(item._id)} className=" absolute top-2 right-2"><RxCross2 size={28} /></button>
+                            <p className=" absolute top-2 left-2 font-bold">${item.itemId.price}</p>
+                            <h1 className=" absolute bottom-0 w-full h-16 font-semibold text-lg text-white bg-black bg-opacity-55 px-2">{item.itemId.name}</h1>
                         </div>
+                        </Link>
                     ))
                 }
             </div>

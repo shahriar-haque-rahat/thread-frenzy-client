@@ -3,6 +3,7 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { MdBookmarks } from "react-icons/md";
 import { FaCartShopping } from "react-icons/fa6";
 import { TbLogout } from "react-icons/tb";
+import { FaHome } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 
@@ -29,6 +30,7 @@ const Sidebar = ({ userByEmail, isActive, setIsActive, }) => {
                     <p className=" text-xl">{userByEmail?.firstName}</p>
                 </div>
                 <ul className=" flex flex-col gap-2 border-t pt-3">
+                    <Link to={'/'}><button onClick={() => setIsActive('home')} className={isActive === 'home' ? " flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : " flex gap-2 items-center text-lg py-2 pl-2"}><FaHome size={23} /> Home</button></Link>
                     <button onClick={() => setIsActive('account')} className={isActive === 'account' ? " flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : " flex gap-2 items-center text-lg py-2 pl-2"}><RiAccountCircleFill size={23} />Account</button>
                     <button onClick={() => setIsActive('wishlist')} className={isActive === 'wishlist' ? " flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : " flex gap-2 items-center text-lg py-2 pl-2"}><MdBookmarks />Wishlist</button>
                     <button onClick={() => setIsActive('orders')} className={isActive === 'orders' ? " flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : " flex gap-2 items-center text-lg py-2 pl-2"}><FaCartShopping />Order History</button>

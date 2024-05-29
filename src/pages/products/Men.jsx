@@ -8,7 +8,7 @@ const Men = () => {
     const dispatch = useDispatch();
     const { menCollections, allDataStatus } = useSelector(state => state.data);
     const [filteredData, setFilteredData] = useState([]);
-console.log(filteredData);
+
     useEffect(() => {
         if (allDataStatus === 'idle') {
             dispatch(allData());

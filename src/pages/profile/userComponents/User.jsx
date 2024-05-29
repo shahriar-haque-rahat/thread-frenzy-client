@@ -21,14 +21,9 @@ const User = () => {
     useEffect(() => {
         if (user) {
             dispatch(getUserByEmail(user?.email))
-        }
-    }, [dispatch, user])
-
-    useEffect(()=>{
-        if (user) {
             dispatch(getCart(user?.email))
         }
-    },[dispatch, user])
+    }, [dispatch, user])
 
     if (userByEmailstatus === 'loading' || cartStatus === 'loading') {
         return <div>Loading...</div>;

@@ -1,4 +1,5 @@
 import { RxCross2 } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 
 const CartItem = ({ filteredCart, handleDeleteCartItem, quantities, handleQuantity, }) => {
@@ -13,7 +14,7 @@ const CartItem = ({ filteredCart, handleDeleteCartItem, quantities, handleQuanti
                         <div className="w-full flex flex-col justify-between p-3">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <h1 className="text-xl">{item.name}</h1>
+                                    <Link to={`/product-details/${item.itemId}`}><h1 className="text-xl">{item.name}</h1></Link>
                                     <p>{item.color}</p>
                                     <p>Size: {item.size}</p>
                                 </div>

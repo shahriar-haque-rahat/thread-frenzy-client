@@ -5,6 +5,8 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import signIn from '../../assets/images/signIn.jpg';
 import GoogleGithub from "./GoogleGithub";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const SignIn = () => {
@@ -20,10 +22,12 @@ const SignIn = () => {
         userSignIn(email, password)
             .then(result => {
                 console.log(result);
+                toast.success('Successfully logged in');
                 navigate(location?.state ? location.state : "/");
             })
             .catch(error => {
                 console.log(error);
+                toast.error('Invalid user input');
             })
     }
 

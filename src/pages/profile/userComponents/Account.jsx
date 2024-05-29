@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "../../../redux/userSlice";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Account = ({ userByEmail }) => {
     const dispatch = useDispatch();
@@ -33,7 +35,16 @@ const Account = ({ userByEmail }) => {
         console.log(data);
         if (userByEmail?._id) {
             await updateUserProfile(data.firstName, null);
-            dispatch(updateUser({ id: userByEmail._id, userInfo: data }));
+            dispatch(updateUser({ id: userByEmail._id, userInfo: data }))
+                .unwrap()
+                .then(result => {
+                    console.log(result);
+                    toast.success('User information updated');
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error('Invalid user input');
+                })
         }
     };
 
@@ -77,7 +88,7 @@ const Account = ({ userByEmail }) => {
                     <p className="text-xl">Contact Information</p>
                     <div className="flex gap-6">
                         <div className="form-control relative w-full">
-                            <input 
+                            <input
                                 disabled
                                 id="email"
                                 type="email"

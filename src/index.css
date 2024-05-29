@@ -1,9 +1,15 @@
 @font-face {
-    font-family: 'ClashGrotesk';
-    src: url('../src/fonts/ClashGrotesk.ttf') format('truetype'),
-  }
+  font-family: 'ClashGrotesk';
+  src: url('../src/fonts/ClashGrotesk.ttf') format('truetype'),
+}
 
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* react swal css */
+.square {
+  border-radius: 0 !important;
+}

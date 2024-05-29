@@ -4,6 +4,11 @@ import { useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { deleteWishlistItem } from "../../../redux/wishlistSlice";
 import { Link } from "react-router-dom";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+
+const MySwal = withReactContent(Swal)
 
 const Wishlist = ({ userId }) => {
     const dispatch = useDispatch();
@@ -11,7 +16,24 @@ const Wishlist = ({ userId }) => {
 
 
     const handleDeleteWishlistItem = (id) => {
-        dispatch(deleteWishlistItem(id));
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                popup: 'square',
+                confirmButton: 'square',
+                cancelButton: 'square',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteWishlistItem(id));
+            }
+        })
     }
 
     useEffect(() => {

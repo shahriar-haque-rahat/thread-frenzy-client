@@ -10,6 +10,8 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { IoBookmarks, IoBookmarksOutline } from "react-icons/io5";
 import { addToWishlist, getWishlist } from "../../redux/wishlistSlice";
 import { getUserByEmail } from "../../redux/userSlice";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
@@ -18,7 +20,7 @@ const ProductDetails = () => {
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
     const { wishlistItems } = useSelector(state => state.wishlist);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
-    
+
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
     const [colorIndex, setColorIndex] = useState(0);
@@ -59,7 +61,10 @@ const ProductDetails = () => {
         };
         setErrorMessage('');
 
-        dispatch(addToCart(cartItem));
+        dispatch(addToCart(cartItem))
+            .then(() => {
+                toast.success('Product added to cart');
+            })
     };
 
     const handleWishlist = () => {
@@ -68,8 +73,13 @@ const ProductDetails = () => {
             userId: userByEmail._id,
         };
         dispatch(addToWishlist(wishlistItem))
+            .unwrap()
+            .then(() => {
+                toast.success('Product added to wishlist');
+            })
             .catch((error) => {
                 console.error("Error adding item to wishlist: ", error);
+                toast.error('Product is already in wishlist');
             });
     };
 
@@ -142,6 +152,7 @@ const ProductDetails = () => {
                                     </button>
                                 ))}
                             </ul>
+                            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                             <div className="flex items-center">
                                 <div className="flex items-center gap-4 w-1/2">
                                     <p onClick={() => handleQuantity("-")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> - </p>
@@ -150,7 +161,6 @@ const ProductDetails = () => {
                                 </div>
                                 <button onClick={handleAddCart} className="bg-black text-white w-1/2 h-10">Add to Cart</button>
                             </div>
-                            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                             <div>
                                 <div className="collapse border-t border-gray-400 rounded-none">
                                     <input type="checkbox" className="peer" checked={isDetailsOpen} onChange={() => setIsDetailsOpen(!isDetailsOpen)} />

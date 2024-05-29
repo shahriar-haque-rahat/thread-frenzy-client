@@ -4,6 +4,11 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { getCart, updateCartItem, deleteCartItem } from "../../redux/cartSlice";
 import CartItem from "./CartItem";
 import CheckOut from "./CheckOut";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+
+const MySwal = withReactContent(Swal)
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -29,11 +34,28 @@ const Cart = () => {
     };
 
     const handleDeleteCartItem = (id) => {
-        dispatch(deleteCartItem(id))
-            .unwrap()
-            .then(() => {
-                setFilteredCart(prevFilteredCart => prevFilteredCart.filter(item => item._id !== id));
-            });
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                popup: 'square',
+                confirmButton: 'square',
+                cancelButton: 'square',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteCartItem(id))
+                    .unwrap()
+                    .then(() => {
+                        setFilteredCart(prevFilteredCart => prevFilteredCart.filter(item => item._id !== id));
+                    });
+            }
+        })
     };
 
     useEffect(() => {

@@ -3,6 +3,8 @@ import { FaGithub } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const GoogleGithub = () => {
@@ -14,11 +16,13 @@ const GoogleGithub = () => {
         googleSignIn()
             .then(result => {
                 console.log(result);
+                toast.success('Successfully logged in');
                 userDatabaseEntry(result.user.displayName, result.user.email, result.user.photoURL);
                 navigate(location?.state ? location.state : "/");
             })
             .catch(error => {
                 console.log(error);
+                toast.error('Login failed');
             })
     }
 

@@ -3,10 +3,10 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { useForm } from "react-hook-form";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import signUp from '../../assets/images/signUp.jpg';
 import GoogleGithub from "./GoogleGithub";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 const MySwal = withReactContent(Swal)
 
@@ -16,8 +16,6 @@ const SignUp = () => {
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-
-
 
     const onSubmit = (data) => {
         const { name, photoUrl, email, password } = data;
@@ -29,16 +27,19 @@ const SignUp = () => {
                     .then(result => {
                         console.log(result);
                         MySwal.fire({
-                            title: <p className="text-3xl font-bold mb-4">Welcome Buddy!</p>,
+                            title: '<p className="text-3xl font-bold mb-4">Welcome to Thread Frenzy</p>',
                             html: (
-                                <div className="text-lg">
-                                    <p>You have successfully registered.</p>
-                                    <p>Thank you for registering. You are now a part of our study group now!</p>
-                                </div>
+                                '<div className="text-lg">' +
+                                '<p>Thank you for joining us! You\'re now part of the Thread Frenzy family. Enjoy shopping our exclusive collection of T-shirts!</p>' +
+                                '</div>'
                             ),
-                            icon: "success",
-                            confirmButtonColor: 'lime',
-                            confirmButtonText: "Let's get started!"
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            confirmButtonText: 'Start Shopping',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
                         })
                             .then(() => {
                                 navigate(location?.state ? location.state : "/");

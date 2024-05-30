@@ -118,6 +118,13 @@ const userSlice = createSlice({
                 state.userStatus = 'failed';
                 state.userError = action.payload || action.error.message;
             })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.userStatus = 'succeeded';
+                const updatedUserIndex = state.user.findIndex(user => user._id === action.payload._id);
+                if (updatedUserIndex !== -1) {
+                    state.user[updatedUserIndex] = action.payload;
+                }
+            })
     }
 })
 

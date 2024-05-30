@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../redux/userSlice";
+import { getUser, updateUser } from "../../../redux/userSlice";
 import { FaRegEdit } from "react-icons/fa";
 import { IoBan } from "react-icons/io5";
 
@@ -10,6 +10,12 @@ const ManageUsers = () => {
     const { user, userStatus, userError } = useSelector(state => state.user);
     const admins = user?.filter(admin => admin.role === 'admin');
     const users = user?.filter(user => user.role === 'user');
+
+    const handleRoleChange = (user) => {
+        const updatedRole = user.role === 'admin' ? 'user' : 'admin';
+
+        dispatch(updateUser({ id: user._id, userInfo: { role: updatedRole } }))
+    }
 
     useEffect(() => {
         dispatch(getUser())
@@ -42,7 +48,7 @@ const ManageUsers = () => {
                             <div className=" col-span-2">{user.userEmail}</div>
                             <div>{user.phoneNumber}</div>
                             <div className=" flex justify-between items-center gap-2">
-                                <p className=" text-blue-500 text-xs font-semibold text-center w-1/2">Remove Admin</p>
+                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold text-center w-1/2">Remove Admin</button>
                                 {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
                                 <IoBan className=" text-red-500 w-1/2" size={20} />
                             </div>
@@ -65,7 +71,7 @@ const ManageUsers = () => {
                             <div className=" col-span-2">{user.userEmail}</div>
                             <div>{user.phoneNumber}</div>
                             <div className=" flex justify-between items-center gap-2">
-                                <p className=" text-blue-500 text-xs font-semibold text-center w-1/2">Make Admin</p>
+                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold text-center w-1/2">Make Admin</button>
                                 {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
                                 <IoBan className=" text-red-500 w-1/2" size={20} />
                             </div>

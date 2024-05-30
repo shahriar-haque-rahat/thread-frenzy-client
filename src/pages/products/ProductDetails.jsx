@@ -56,7 +56,7 @@ const ProductDetails = () => {
             color: selectedItem.color[colorIndex],
             size: selectedSize,
             quantity: productQuantity,
-            userEmail: userByEmail.email,
+            userEmail: userByEmail.userEmail,
             status: 'pending',
             date: new Date().toISOString(),
             transactionId: 'pending',

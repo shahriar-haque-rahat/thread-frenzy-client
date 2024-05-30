@@ -53,9 +53,31 @@ const Cart = () => {
                     .unwrap()
                     .then(() => {
                         setFilteredCart(prevFilteredCart => prevFilteredCart.filter(item => item._id !== id));
+                        return MySwal.fire({
+                            title: 'Product Deleted',
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Delete operation failed:', error);
+                        MySwal.fire({
+                            title: 'Error!',
+                            text: 'Failed to delete the product. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
                     });
             }
-        })
+        });
     };
 
     useEffect(() => {

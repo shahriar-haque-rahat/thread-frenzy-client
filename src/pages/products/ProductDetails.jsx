@@ -8,10 +8,15 @@ import ReactStars from "react-rating-stars-component";
 import SimilarProducts from "./SimilarProducts";
 import { AuthContext } from "../../provider/AuthProvider";
 import { IoBookmarks, IoBookmarksOutline } from "react-icons/io5";
-import { addToWishlist, getWishlist } from "../../redux/wishlistSlice";
+import { addToWishlist, deleteWishlistItem, getWishlist } from "../../redux/wishlistSlice";
 import { getUserByEmail } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+
+const MySwal = withReactContent(Swal)
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
@@ -27,9 +32,9 @@ const ProductDetails = () => {
     const [productQuantity, setProductQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [wishlisted, setWishlisted] = useState(false);
+    const [wishlisted, setWishlisted] = useState();
 
-    console.log(selectedItem, wishlistItems, userByEmail._id, wishlistStatus);
+    console.log(wishlisted);
 
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
@@ -91,6 +96,18 @@ const ProductDetails = () => {
             });
     };
 
+    const handleDeleteWishlistItem = (id) => {
+        dispatch(deleteWishlistItem(id))
+            .unwrap()
+            .then(() => {
+                toast.success('Product removed from wishlist');
+            })
+            .catch((error) => {
+                console.error("Error removing item from wishlist: ", error);
+                toast.error('Error removing item from wishlist');
+            });
+    }
+
 
     useEffect(() => {
         setColorIndex(0);
@@ -112,12 +129,11 @@ const ProductDetails = () => {
     }, [dispatch, wishlistStatus, userByEmail, userByEmailStatus]);
 
     useEffect(() => {
-        if (wishlistItems.some(item => item.itemId._id === selectedItem?._id)) {
-            setWishlisted(true);
-        } else {
-            setWishlisted(false);
-        }
+        const wishList = wishlistItems.find(item => item.itemId._id === selectedItem?._id)
+        setWishlisted(wishList);
+
     }, [wishlistItems, selectedItem]);
+
 
     if (singleProductStatus === 'loading' || userByEmailStatus === 'loading') {
         return <div>Loading...</div>;
@@ -142,7 +158,7 @@ const ProductDetails = () => {
                                 <h1 className="text-2xl font-semibold">{selectedItem.name}</h1>
                                 {
                                     wishlisted
-                                        ? <button><IoBookmarks size={30} /></button>
+                                        ? <button onClick={() => handleDeleteWishlistItem(wishlisted._id)} ><IoBookmarks size={30} /></button>
                                         : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
                                 }
                             </div>

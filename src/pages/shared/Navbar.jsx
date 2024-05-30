@@ -5,6 +5,8 @@ import { AiOutlineUser } from "react-icons/ai";
 import { IoBagOutline } from "react-icons/io5";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { AuthContext } from "../../provider/AuthProvider";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
     const { user, userSignOut } = useContext(AuthContext);
@@ -16,7 +18,7 @@ const Navbar = () => {
     const handleUserSignOut = () => {
         userSignOut()
             .then(() => {
-                // toast.success("User Logged Out")
+                toast.success("Signed Out")
             })
 
     };

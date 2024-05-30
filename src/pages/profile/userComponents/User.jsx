@@ -1,36 +1,30 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../Sidebar";
+import Sidebar from "./Sidebar";
 import Account from "./Account";
-import { useContext } from "react";
-import { AuthContext } from "../../../provider/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserByEmail } from "../../../redux/userSlice";
 import Wishlist from "./Wishlist";
 import OrderHistory from "./OrderHistory";
 import { getCart } from "../../../redux/cartSlice";
 
 
-const User = () => {
-    const { user } = useContext(AuthContext);
+const User = ({ userByEmail }) => {
     const dispatch = useDispatch();
-    const { userByEmail, userByEmailstatus, userByEmailError } = useSelector(state => state.user);
     const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [isActive, setIsActive] = useState('account');
 
 
     useEffect(() => {
-        if (user) {
-            dispatch(getUserByEmail(user?.email))
-            dispatch(getCart(user?.email))
+        if (cartStatus === 'idle') {
+            dispatch(getCart(userByEmail?.email))
         }
-    }, [dispatch, user])
+    }, [dispatch, cartStatus, userByEmail])
 
-    if (userByEmailstatus === 'loading' || cartStatus === 'loading') {
+    if (cartStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
-    if (userByEmailstatus === 'failed' || cartStatus === 'failed') {
-        return <div>Error: {userByEmailError} || {cartError}</div>;
+    if (cartStatus === 'failed') {
+        return <div>Error: {cartError}</div>;
     }
 
     return (

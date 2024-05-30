@@ -60,7 +60,9 @@ const AuthProvider = ({ children }) => {
             lastName: null,
             address: null,
             userEmail, 
-            photoUrl };
+            photoUrl,
+            role: 'user',
+        };
         console.log(userInfo);
         dispatch(addUser(userInfo))
             .catch((error) => {

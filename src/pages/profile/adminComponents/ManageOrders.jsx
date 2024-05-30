@@ -37,7 +37,7 @@ const ManageOrders = () => {
                 {
                     allCartItems?.map(item => (
                         <div key={item._id} className=" grid grid-cols-6 gap-3 text-center py-2 border-b border-gray-400">
-                            <div>{item?.data}</div>
+                            <div>{item.date.split('T')[0]}</div>
                             <div className=" overflow-hidden">{item._id}</div>
                             <div>{item?.transactionId}</div>
                             <div>{item?.quantity}</div>
@@ -45,10 +45,9 @@ const ManageOrders = () => {
                             <div className=" flex justify-between items-center">
                                 <p className={item?.status === "pending" ? "text-orange-500" : "text-green-500"}>{item?.status}</p>
                                 {
-                                    item?.status === "pending" && <button><IoMdDoneAll className=" text-green-600" size={25}/></button>
+                                    item?.status === "pending" && <button><IoMdDoneAll className=" text-green-600" size={25} /></button>
                                 }
-                                
-                                </div>
+                            </div>
                         </div>
                     ))
                 }

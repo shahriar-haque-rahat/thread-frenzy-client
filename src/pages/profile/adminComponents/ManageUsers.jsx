@@ -1,10 +1,78 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../../redux/userSlice";
+import { FaRegEdit } from "react-icons/fa";
+import { IoBan } from "react-icons/io5";
 
 
 const ManageUsers = () => {
+    const dispatch = useDispatch();
+    const { user, userStatus, userError } = useSelector(state => state.user);
+    const admins = user?.filter(admin => admin.role === 'admin');
+    const users = user?.filter(user => user.role === 'user');
+
+    useEffect(() => {
+        dispatch(getUser())
+    }, [dispatch])
+
+
+    if (userStatus === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (userStatus === 'failed') {
+        return <div>Error: {userError}</div>;
+    }
+
     return (
-        <div className="mt-6 mr-6 space-y-6">
+        <div className="mt-6 mr-6 space-y-10">
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
-            
+            <div>
+                <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">Admin</h1>
+                <div className="grid grid-cols-6 gap-4 font-bold border-b border-gray-600 py-2">
+                    <div className=" col-span-2">Name</div>
+                    <div className=" col-span-2">Email</div>
+                    <div>Phone</div>
+                    <div></div>
+                </div>
+                {
+                    admins?.map(user => (
+                        <div key={user._id} className="grid grid-cols-6 gap-4 border-b border-gray-600 py-2">
+                            <div className=" col-span-2">{user.firstName}</div>
+                            <div className=" col-span-2">{user.userEmail}</div>
+                            <div>{user.phoneNumber}</div>
+                            <div className=" flex justify-between items-center gap-2">
+                                <p className=" text-blue-500 text-xs font-semibold text-center w-1/2">Remove Admin</p>
+                                {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
+                                <IoBan className=" text-red-500 w-1/2" size={20} />
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+            <div>
+                <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">User</h1>
+                <div className="grid grid-cols-6 gap-4 font-bold border-b border-gray-600 py-2">
+                    <div className=" col-span-2">Name</div>
+                    <div className=" col-span-2">Email</div>
+                    <div>Phone</div>
+                    <div></div>
+                </div>
+                {
+                    users?.map(user => (
+                        <div key={user._id} className="grid grid-cols-6 gap-4 border-b border-gray-600 py-2">
+                            <div className=" col-span-2">{user.firstName}</div>
+                            <div className=" col-span-2">{user.userEmail}</div>
+                            <div>{user.phoneNumber}</div>
+                            <div className=" flex justify-between items-center gap-2">
+                                <p className=" text-blue-500 text-xs font-semibold text-center w-1/2">Make Admin</p>
+                                {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
+                                <IoBan className=" text-red-500 w-1/2" size={20} />
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     );
 };

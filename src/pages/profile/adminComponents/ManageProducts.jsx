@@ -29,10 +29,10 @@ const ManageProducts = () => {
                 <button className=" border border-black font-semibold p-2">Add Product</button>
                 <p>Filter</p>
             </div>
-            <p className=" text-3xl text-center bg-black text-white py-3">Products</p>
+            <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
 
             <div>
-                <div className="grid grid-cols-7 gap-3 border-b-2 border-gray-800 py-2">
+                <div className="grid grid-cols-7 gap-3 font-bold border-b-2 border-gray-800 py-2">
                     <div></div>
                     <div className=" col-span-2">Name</div>
                     <div>Brand</div>

@@ -27,7 +27,7 @@ const Men = () => {
             </div>
             <div className="grid grid-cols-5 gap-6">
                 <Filters collections={menCollections} setFilteredData={setFilteredData} onFilterChange={handleFilterChange} />
-                <div className="col-span-4">
+                <div className="col-span-4 overflow-y-scroll h-screen">
                     <SliderCards data={filteredData} />
                 </div>
             </div>

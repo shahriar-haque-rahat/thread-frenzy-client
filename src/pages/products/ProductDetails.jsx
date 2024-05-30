@@ -18,7 +18,7 @@ const ProductDetails = () => {
     const { itemId } = useParams();
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
-    const { wishlistItems } = useSelector(state => state.wishlist);
+    const { wishlistItems, wishlistStatus, wishlistError } = useSelector(state => state.wishlist);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -27,7 +27,9 @@ const ProductDetails = () => {
     const [productQuantity, setProductQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [bookmarked, setBookmarked] = useState(false);
+    const [wishlisted, setWishlisted] = useState(false);
+
+    console.log(selectedItem, wishlistItems, userByEmail._id, wishlistStatus);
 
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
@@ -64,7 +66,7 @@ const ProductDetails = () => {
         setErrorMessage('');
 
         dispatch(addToCart(cartItem))
-        .unwrap()
+            .unwrap()
             .then(() => {
                 toast.success('Product added to cart');
             })
@@ -99,13 +101,21 @@ const ProductDetails = () => {
 
     useEffect(() => {
         if (user?.email) {
-            dispatch(getUserByEmail(user.email));
+            dispatch(getUserByEmail(user.email))
         }
     }, [dispatch, user]);
 
     useEffect(() => {
-        if (wishlistItems.some(item => item.item === selectedItem?._id)) {
-            // TODO: setBookmarked(true);
+        if (userByEmailStatus === 'succeeded' && wishlistStatus === 'idle') {
+            dispatch(getWishlist(userByEmail._id));
+        }
+    }, [dispatch, wishlistStatus, userByEmail, userByEmailStatus]);
+
+    useEffect(() => {
+        if (wishlistItems.some(item => item.itemId._id === selectedItem?._id)) {
+            setWishlisted(true);
+        } else {
+            setWishlisted(false);
         }
     }, [wishlistItems, selectedItem]);
 
@@ -131,7 +141,7 @@ const ProductDetails = () => {
                             <div className=" flex gap-12 ">
                                 <h1 className="text-2xl font-semibold">{selectedItem.name}</h1>
                                 {
-                                    bookmarked
+                                    wishlisted
                                         ? <button><IoBookmarks size={30} /></button>
                                         : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
                                 }

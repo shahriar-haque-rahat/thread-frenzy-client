@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../../../redux/userSlice";
 import { FaRegEdit } from "react-icons/fa";
 import { IoBan } from "react-icons/io5";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+
+const MySwal = withReactContent(Swal)
 
 
 const ManageUsers = () => {
@@ -12,9 +17,50 @@ const ManageUsers = () => {
     const users = user?.filter(user => user.role === 'user');
 
     const handleRoleChange = (user) => {
-        const updatedRole = user.role === 'admin' ? 'user' : 'admin';
-
-        dispatch(updateUser({ id: user._id, userInfo: { role: updatedRole } }))
+        MySwal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sure',
+            customClass: {
+                popup: 'square',
+                confirmButton: 'square',
+                cancelButton: 'square',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const updatedRole = user.role === 'admin' ? 'user' : 'admin';
+                dispatch(updateUser({ id: user._id, userInfo: { role: updatedRole } }))
+                    .unwrap()
+                    .then(() => {
+                        return MySwal.fire({
+                            title: 'Successfully updated',
+                            text: `This person's role is now ${updatedRole}`,
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Updating failed:', error);
+                        MySwal.fire({
+                            title: 'Error!',
+                            text: 'Failed to update user role. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    });
+            }
+        })
     }
 
     useEffect(() => {

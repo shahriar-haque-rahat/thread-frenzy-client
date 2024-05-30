@@ -6,8 +6,9 @@ const OrderHistory = ({ cartItems }) => {
     return (
         <div className="mt-6 mr-6">
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Order History</h1>
-            <div className=" pt-10 grid grid-cols-8 gap-2 border-y border-gray-400 font-bold pb-2">
+            <div className=" pt-10 grid grid-cols-9 gap-2 border-y border-gray-400 font-bold pb-2">
                 <div></div>
+                <div>Date</div>
                 <div className=" col-span-2">Product</div>
                 <div className=" text-center">Color</div>
                 <div className=" text-center">Size</div>
@@ -17,8 +18,9 @@ const OrderHistory = ({ cartItems }) => {
             </div>
             {
                 cartItems?.map(item => (
-                    <div key={item._id} className=" grid grid-cols-8 gap-2 border-b border-gray-400">
+                    <div key={item._id} className=" grid grid-cols-9 gap-2 border-b border-gray-400">
                         <img className=" h-24 w-20 object-cover object-top" src={item.image} alt="" />
+                        <div>{item.date.split('T')[0]}</div>
                         <div className=" py-2 col-span-2" ><Link to={`/product-details/${item.itemId}`}>{item.name}</Link></div>
                         <div className=" py-2 text-center">{item.color}</div>
                         <div className=" py-2 text-center">{item.size}</div>

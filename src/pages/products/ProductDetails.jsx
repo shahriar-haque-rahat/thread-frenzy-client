@@ -56,14 +56,20 @@ const ProductDetails = () => {
             color: selectedItem.color[colorIndex],
             size: selectedSize,
             quantity: productQuantity,
-            userEmail: user.email,
+            userEmail: userByEmail.email,
             status: 'pending',
+            date: new Date().toISOString(),
+            transactionId: 'pending',
         };
         setErrorMessage('');
 
         dispatch(addToCart(cartItem))
+        .unwrap()
             .then(() => {
                 toast.success('Product added to cart');
+            })
+            .catch(() => {
+                toast.error('Failed to add product');
             })
     };
 
@@ -99,7 +105,7 @@ const ProductDetails = () => {
 
     useEffect(() => {
         if (wishlistItems.some(item => item.item === selectedItem?._id)) {
-            // setBookmarked(true);
+            // TODO: setBookmarked(true);
         }
     }, [wishlistItems, selectedItem]);
 

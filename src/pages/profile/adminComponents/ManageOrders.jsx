@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCart } from "../../../redux/cartSlice";
-import { TbTruckDelivery } from "react-icons/tb";
+import { IoMdDoneAll } from "react-icons/io";
 
 
 const ManageOrders = () => {
@@ -42,7 +42,13 @@ const ManageOrders = () => {
                             <div>{item?.transactionId}</div>
                             <div>{item?.quantity}</div>
                             <div>{item?.price * item?.quantity}</div>
-                            <div className={item?.status === "pending" ? "text-orange-500" : "text-green-500"}>{item?.status}</div>
+                            <div className=" flex justify-between items-center">
+                                <p className={item?.status === "pending" ? "text-orange-500" : "text-green-500"}>{item?.status}</p>
+                                {
+                                    item?.status === "pending" && <button><IoMdDoneAll className=" text-green-600" size={25}/></button>
+                                }
+                                
+                                </div>
                         </div>
                     ))
                 }

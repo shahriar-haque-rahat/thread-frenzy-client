@@ -20,7 +20,7 @@ const OrderHistory = ({ cartItems }) => {
                 cartItems?.map(item => (
                     <div key={item._id} className=" grid grid-cols-9 gap-2 border-b border-gray-400">
                         <img className=" h-24 w-20 object-cover object-top" src={item.image} alt="" />
-                        <div>{item.date.split('T')[0]}</div>
+                        <div className=" py-3 text-sm">{item.date.split('T')[0]}</div>
                         <div className=" py-2 col-span-2" ><Link to={`/product-details/${item.itemId}`}>{item.name}</Link></div>
                         <div className=" py-2 text-center">{item.color}</div>
                         <div className=" py-2 text-center">{item.size}</div>

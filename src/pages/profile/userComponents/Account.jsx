@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../redux/userSlice";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,27 +9,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const Account = ({ userByEmail }) => {
     const dispatch = useDispatch();
     const { updateUserProfile } = useContext(AuthContext);
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            firstName: '',
-            lastName: '',
-            address: '',
-            email: '',
-            phoneNumber: '',
+            firstName: userByEmail?.firstName,
+            lastName: userByEmail?.lastName,
+            address: userByEmail?.address,
+            email: userByEmail?.userEmail,
+            phoneNumber: userByEmail?.phoneNumber,
         }
     });
-
-    useEffect(() => {
-        if (userByEmail) {
-            reset({
-                firstName: userByEmail.firstName || '',
-                lastName: userByEmail.lastName || '',
-                address: userByEmail.address || '',
-                email: userByEmail.userEmail || '',
-                phoneNumber: userByEmail.phoneNumber || '',
-            });
-        }
-    }, [userByEmail, reset]);
 
     const onSubmit = async (data) => {
         console.log(data);
@@ -56,6 +44,7 @@ const Account = ({ userByEmail }) => {
                     <div className="flex gap-6">
                         <div className="form-control relative w-full">
                             <input
+                                defaultValue={userByEmail?.firstName}
                                 id="firstName"
                                 type="text"
                                 className="border border-gray-400 h-12 pl-3 outline-none"
@@ -66,6 +55,7 @@ const Account = ({ userByEmail }) => {
                         </div>
                         <div className="form-control relative w-full">
                             <input
+                                defaultValue={userByEmail?.lastName}
                                 id="lastName"
                                 type="text"
                                 className="border border-gray-400 h-12 pl-3 outline-none"
@@ -77,6 +67,7 @@ const Account = ({ userByEmail }) => {
                     </div>
                     <div className="form-control relative">
                         <input
+                                defaultValue={userByEmail?.address}
                             id="address"
                             type="text"
                             className="border border-gray-400 h-12 pl-3 outline-none"
@@ -89,6 +80,7 @@ const Account = ({ userByEmail }) => {
                     <div className="flex gap-6">
                         <div className="form-control relative w-full">
                             <input
+                                defaultValue={userByEmail?.userEmail}
                                 disabled
                                 id="email"
                                 type="email"
@@ -100,6 +92,7 @@ const Account = ({ userByEmail }) => {
                         </div>
                         <div className="form-control relative w-full">
                             <input
+                                defaultValue={userByEmail?.phoneNumber}
                                 id="phoneNumber"
                                 type="number"
                                 className="border border-gray-400 h-12 pl-3 outline-none"

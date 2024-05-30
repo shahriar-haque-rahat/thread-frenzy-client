@@ -7,8 +7,6 @@ import ManageUsers from "./ManageUsers";
 import AdminAccount from "./AdminAccount";
 
 
-
-
 const Admin = ({ userByEmail }) => {
     const [isActive, setIsActive] = useState('salesOverview');
 

@@ -14,10 +14,10 @@ const User = ({ userByEmail }) => {
 
 
     useEffect(() => {
-        if (cartStatus === 'idle') {
-            dispatch(getCart(userByEmail?.email))
+        if (cartStatus === 'idle' && userByEmail.userEmail) {
+            dispatch(getCart(userByEmail.userEmail));
         }
-    }, [dispatch, cartStatus, userByEmail])
+    }, [dispatch, cartStatus, userByEmail]);
 
     if (cartStatus === 'loading') {
         return <div>Loading...</div>;

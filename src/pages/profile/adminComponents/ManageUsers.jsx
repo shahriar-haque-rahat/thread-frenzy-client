@@ -30,7 +30,7 @@ const ManageUsers = () => {
             <div>
                 <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">Admin</h1>
                 <div className="grid grid-cols-6 gap-4 font-bold border-b border-gray-600 py-2">
-                    <div className=" col-span-2">Name</div>
+                    <div className=" col-span-2 pl-2">Name</div>
                     <div className=" col-span-2">Email</div>
                     <div>Phone</div>
                     <div></div>
@@ -38,7 +38,7 @@ const ManageUsers = () => {
                 {
                     admins?.map(user => (
                         <div key={user._id} className="grid grid-cols-6 gap-4 border-b border-gray-600 py-2">
-                            <div className=" col-span-2">{user.firstName}</div>
+                            <div className=" col-span-2 pl-2">{user.firstName}</div>
                             <div className=" col-span-2">{user.userEmail}</div>
                             <div>{user.phoneNumber}</div>
                             <div className=" flex justify-between items-center gap-2">
@@ -53,7 +53,7 @@ const ManageUsers = () => {
             <div>
                 <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">User</h1>
                 <div className="grid grid-cols-6 gap-4 font-bold border-b border-gray-600 py-2">
-                    <div className=" col-span-2">Name</div>
+                    <div className=" col-span-2 pl-2">Name</div>
                     <div className=" col-span-2">Email</div>
                     <div>Phone</div>
                     <div></div>
@@ -61,7 +61,7 @@ const ManageUsers = () => {
                 {
                     users?.map(user => (
                         <div key={user._id} className="grid grid-cols-6 gap-4 border-b border-gray-600 py-2">
-                            <div className=" col-span-2">{user.firstName}</div>
+                            <div className=" col-span-2 pl-2">{user.firstName}</div>
                             <div className=" col-span-2">{user.userEmail}</div>
                             <div>{user.phoneNumber}</div>
                             <div className=" flex justify-between items-center gap-2">

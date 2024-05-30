@@ -3,6 +3,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
+export const getAllCart = createAsyncThunk('cart/getAllCart', async (_, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/cart`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const getCart = createAsyncThunk('cart/getCart', async (userEmail, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -62,12 +76,26 @@ export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (id,
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
+        allCartItems: [],
+        allCartStatus: 'idle',
+        allCartError: null,
         cartItems: [],
         cartStatus: 'idle',
         cartError: null,
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getAllCart.pending, (state) => {
+                state.allCartStatus = 'loading';
+            })
+            .addCase(getAllCart.fulfilled, (state, action) => {
+                state.allCartStatus = 'succeeded';
+                state.allCartItems = action.payload;
+            })
+            .addCase(getAllCart.rejected, (state, action) => {
+                state.allCartStatus = 'failed';
+                state.allCartError = action.payload || action.error.message;
+            })
             .addCase(getCart.pending, (state) => {
                 state.cartStatus = 'loading';
             })

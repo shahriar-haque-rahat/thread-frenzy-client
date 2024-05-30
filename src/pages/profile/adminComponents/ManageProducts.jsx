@@ -24,6 +24,7 @@ const ManageProducts = () => {
     return (
         <div className="mt-6 mr-6 space-y-6">
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
+            {/* TODO: product add and filtering  */}
             <div className=" flex justify-between items-center">
                 <button className=" border border-black font-semibold p-2">Add Product</button>
                 <p>Filter</p>

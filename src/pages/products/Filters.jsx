@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const Filters = ({ collections, setFilteredData }) => {
+const Filters = ({ collections, setFilteredData, onFilterChange }) => {
     const [isBrandOpen, setIsBrandOpen] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
     const [isSizeOpen, setIsSizeOpen] = useState(false);
@@ -59,6 +59,12 @@ const Filters = ({ collections, setFilteredData }) => {
 
     useEffect(() => {
         filterCollections();
+        onFilterChange({
+            brand: selectedBrands.join(','),
+            price: selectedPrices.map(priceRange => priceRange.replace(/\$/g, '').replace(' - ', ',')).join(','),
+            size: selectedSizes.join(','),
+            rating: selectedRatings.map(ratingRange => ratingRange.replace(' - ', ',')).join(',')
+        });
     }, [selectedBrands, selectedPrices, selectedSizes, selectedRatings, collections]);
 
     return (

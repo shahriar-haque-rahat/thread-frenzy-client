@@ -8,12 +8,17 @@ const Men = () => {
     const dispatch = useDispatch();
     const { menCollections, allDataStatus } = useSelector(state => state.data);
     const [filteredData, setFilteredData] = useState([]);
+    const [filters, setFilters] = useState({});
 
     useEffect(() => {
         if (allDataStatus === 'idle') {
-            dispatch(allData());
+            dispatch(allData(filters));
         }
-    }, [allDataStatus, dispatch]);
+    }, [allDataStatus, dispatch, filters]);
+
+    const handleFilterChange = (newFilters) => {
+        setFilters(newFilters);
+    };
 
     return (
         <div className="px-[3%]">
@@ -21,7 +26,7 @@ const Men = () => {
                 <h1 className="text-4xl">Men Collections</h1>
             </div>
             <div className="grid grid-cols-5 gap-6">
-                <Filters collections={menCollections} setFilteredData={setFilteredData} />
+                <Filters collections={menCollections} setFilteredData={setFilteredData} onFilterChange={handleFilterChange} />
                 <div className="col-span-4">
                     <SliderCards data={filteredData} />
                 </div>
@@ -31,3 +36,4 @@ const Men = () => {
 };
 
 export default Men;
+

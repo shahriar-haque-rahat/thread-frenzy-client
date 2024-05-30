@@ -3,13 +3,13 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
-export const allData = createAsyncThunk('data/allData', async (_, { rejectWithValue }) => {
+export const allData = createAsyncThunk('data/allData', async (filters, { rejectWithValue }) => {
     const axiosPublic = useAxiosPublic();
     try {
-        const res = await axiosPublic.get(`/t-shirt`);
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPublic.get(`/t-shirt?${query}`);
         return res.data;
-    }
-    catch (error) {
+    } catch (error) {
         if (error.response && error.response.data) {
             return rejectWithValue(error.response.data.message);
         } else {

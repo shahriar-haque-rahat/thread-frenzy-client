@@ -1,17 +1,72 @@
 import { useDispatch, useSelector } from "react-redux";
-import { allData } from "../../../redux/dataSlice";
-import { useEffect } from "react";
+import { allData, deleteItem } from "../../../redux/dataSlice";
+import { useEffect, useState } from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+
+const MySwal = withReactContent(Swal)
 
 const ManageProducts = () => {
     const dispatch = useDispatch();
     const { data, allDataStatus, error } = useSelector(state => state.data);
+    const [tshirtData, setTshirtData] = useState(data);
+
+    const handleDeleteItem = (id) => {
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                popup: 'square',
+                confirmButton: 'square',
+                cancelButton: 'square',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteItem(id))
+                    .unwrap()
+                    .then(() => {
+                        const newData = tshirtData?.filter(data => data._id !== id);
+                        setTshirtData(newData);
+                        return MySwal.fire({
+                            title: 'Product Deleted',
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Delete operation failed:', error);
+                        MySwal.fire({
+                            title: 'Error!',
+                            text: 'Failed to delete the product. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    });
+            }
+        })
+    }
 
     useEffect(() => {
         if (allDataStatus === 'idle') {
-            dispatch(allData());
+            dispatch(allData())
         }
-    }, [dispatch, allDataStatus])
+        setTshirtData(data)
+    }, [dispatch, allDataStatus, data])
 
     if (allDataStatus === 'loading') {
         return <div>Loading...</div>;
@@ -41,7 +96,7 @@ const ManageProducts = () => {
                     <div>Gender</div>
                 </div>
                 {
-                    data?.map(item => (
+                    tshirtData?.map(item => (
                         <div key={item._id} className="grid grid-cols-7 gap-3 border-b border-gray-400">
                             <img className=" w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
                             <div className=" py-2 col-span-2">{item.name}</div>
@@ -56,7 +111,7 @@ const ManageProducts = () => {
                             </div>
                             <div className=" py-2 flex justify-between">
                                 <p>{item.gender}</p>
-                                <MdOutlineDeleteForever className=" text-red-500" size={25} />
+                                <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className=" text-red-500" size={25} />
                             </div>
                         </div>
                     ))

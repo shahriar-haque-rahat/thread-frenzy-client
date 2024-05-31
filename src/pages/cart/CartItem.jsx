@@ -2,13 +2,13 @@ import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
 
-const CartItem = ({ filteredCart, handleDeleteCartItem, quantities, handleQuantity, }) => {
+const CartItem = ({ cartItems, handleDeleteCartItem, quantities, handleQuantity, }) => {
 
     return (
         <div className=" space-y-10">
             <h1 className="text-3xl mb-10">Cart Items</h1>
             {
-                filteredCart.map(item => (
+                cartItems.map(item => (
                     <div key={item._id} className="flex gap-4 h-40 border border-black">
                         <img className="h-full w-32 object-cover object-top" src={item.image} alt="loading..." />
                         <div className="w-full flex flex-col justify-between p-3">

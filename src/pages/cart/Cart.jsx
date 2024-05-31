@@ -15,7 +15,6 @@ const Cart = () => {
     const { user } = useContext(AuthContext);
     const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [quantities, setQuantities] = useState({});
-    const [filteredCart, setFilteredCart] = useState([]);
     const [isCheckingOut, setIsCheckingOut] = useState(() => JSON.parse(localStorage.getItem('isCheckingOut')) || false);
 
 
@@ -52,7 +51,7 @@ const Cart = () => {
                 dispatch(deleteCartItem(id))
                     .unwrap()
                     .then(() => {
-                        setFilteredCart(prevFilteredCart => prevFilteredCart.filter(item => item._id !== id));
+                        dispatch(getCart(user.email));
                         return MySwal.fire({
                             title: 'Product Deleted',
                             icon: 'success',
@@ -88,25 +87,20 @@ const Cart = () => {
 
     useEffect(() => {
         if (cartItems) {
-            setFilteredCart(cartItems);
             const initialQuantities = cartItems.reduce((acc, item) => {
                 acc[item._id] = item.quantity;
                 return acc;
             }, {});
             setQuantities(initialQuantities);
         }
-    }, [cartItems, setFilteredCart, setQuantities]);
+    }, [cartItems, setQuantities]);
 
 
-    const totalPrice = filteredCart.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
+    const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
 
     useEffect(() => {
         localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
     }, [isCheckingOut]);
-
-    if (cartStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
 
     if (cartStatus === 'failed') {
         return <div>Error: {cartError}</div>;
@@ -119,7 +113,7 @@ const Cart = () => {
             <div className="lg:col-span-3">
                 {
                     !isCheckingOut
-                        ? <CartItem filteredCart={filteredCart} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
+                        ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
                         : <CheckOut setIsCheckingOut={setIsCheckingOut} />
 
                 }
@@ -133,12 +127,12 @@ const Cart = () => {
                     </div>
                     <div className="flex justify-between">
                         <p>Shipping Fees</p>
-                        {filteredCart.length > 0 ? <p>$14.99</p> : <p>$0.00</p>}
+                        {cartItems.length > 0 ? <p>$14.99</p> : <p>$0.00</p>}
                     </div>
                 </div>
                 <div className="flex justify-between px-2 text-lg font-semibold">
                     <p>Subtotal</p>
-                    {filteredCart.length > 0 ? <p>${(parseFloat(totalPrice) + 14.99).toFixed(2)}</p> : <p>$0.00</p>}
+                    {cartItems.length > 0 ? <p>${(parseFloat(totalPrice) + 14.99).toFixed(2)}</p> : <p>$0.00</p>}
                 </div>
                 <div className="px-2">
                     {

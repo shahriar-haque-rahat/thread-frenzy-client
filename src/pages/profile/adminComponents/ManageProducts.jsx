@@ -79,9 +79,6 @@ const ManageProducts = () => {
         setTshirtData(data)
     }, [dispatch, allDataStatus, data])
 
-    if (allDataStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
 
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
@@ -97,7 +94,7 @@ const ManageProducts = () => {
             </div>
             <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
-                <AddProductForm closeModal={closeModal} />
+                <AddProductForm closeModal={closeModal} allData={allData} tshirtData={tshirtData} setTshirtData={setTshirtData}/>
             </Modal>
             <div>
                 <div className="grid grid-cols-7 gap-3 font-bold border-b-2 border-gray-800 py-2">
@@ -110,8 +107,8 @@ const ManageProducts = () => {
                 </div>
                 <div className=" overflow-y-scroll h-svh">
                     {
-                        tshirtData?.map(item => (
-                            <div key={item._id} className="grid grid-cols-7 gap-3 border-b border-gray-400">
+                        tshirtData?.map((item, idx) => (
+                            <div key={idx} className="grid grid-cols-7 gap-3 border-b border-gray-400">
                                 <img className=" w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
                                 <div className=" py-2 col-span-2">{item.name}</div>
                                 <div className=" py-2">{item.brand}</div>

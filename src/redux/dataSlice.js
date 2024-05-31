@@ -33,6 +33,21 @@ export const getItemById = createAsyncThunk('data/getItemById', async (itemId, {
     }
 });
 
+export const addItem = createAsyncThunk('data/addItem', async (item, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.post('/t-shirt', item);
+        return res.data;
+    }
+    catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const deleteItem = createAsyncThunk('data/deleteItem', async (itemId, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {

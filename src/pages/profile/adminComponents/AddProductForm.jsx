@@ -2,11 +2,16 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { RxCross2 } from "react-icons/rx";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../../redux/dataSlice";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const AddProductForm = ({ closeModal }) => {
+const AddProductForm = ({ closeModal, allData, tshirtData, setTshirtData }) => {
+    const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
     const [productDetails, setProductDetails] = useState(null);
     const [uploadedImages, setUploadedImages] = useState({});
@@ -53,13 +58,24 @@ const AddProductForm = ({ closeModal }) => {
     };
 
     const onSubmit = () => {
-        const finalData = { ...productDetails, images: uploadedImages };
+        const finalData = { ...productDetails, images: uploadedImages, rating: 0 };
         console.log(finalData);
+        dispatch(addItem(finalData))
+            .unwrap()
+            .then(() => {
+                // setTshirtData(prevData => [...prevData, finalData]);
+                dispatch(allData());
+                toast.success('Product successfully added');
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error('Failed to add product');
+            })
     };
 
     return (
         <div className="relative pt-12">
-            <button onClick={closeModal} className="absolute top-1 right-1 text-red-500"><RxCross2 size={30}/></button>
+            <button onClick={closeModal} className="absolute top-1 right-1 text-red-500"><RxCross2 size={30} /></button>
             <form onSubmit={handleSubmit(onFirstSubmit)} className="space-y-6">
                 <div className="flex gap-6">
                     <div className="form-control relative w-full">
@@ -125,28 +141,30 @@ const AddProductForm = ({ closeModal }) => {
                 </div>
             </form>
 
-            {productDetails && (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6">
-                    {
-                        productDetails.color.map((color, index) => (
-                            <div key={index} className="form-control relative w-full">
-                                <label className="text-gray-600 text-sm pl-5">{`Upload images for "${color}" color`}</label>
-                                <input name={`images-${color}`} className="file-input w-full max-w-xs rounded-none h-8 border border-gray-400" type="file" multiple onChange={(e) => onImageUpload(e, color)} />
-                                {uploadedImages[color] && (
-                                    <div className="flex flex-wrap mt-2">
-                                        {uploadedImages[color].map((url, idx) => (
-                                            <img key={idx} src={url} alt={`Product Image for ${color} ${idx + 1}`} className="h-16 w-16 object-cover mr-2" />
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))
-                    }
-                    <div className="form-control mt-6">
-                        <button type="submit" className="border border-black bg-black text-white font-bold py-2 hover:bg-white hover:text-black transition duration-300 ease-in-out">Submit Product</button>
-                    </div>
-                </form>
-            )}
+            {
+                productDetails && (
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6">
+                        {
+                            productDetails.color.map((color, index) => (
+                                <div key={index} className="form-control relative w-full">
+                                    <label className="text-gray-600 text-sm pl-5">{`Upload images for "${color}" color`}</label>
+                                    <input name={`images-${color}`} className="file-input w-full max-w-xs rounded-none h-8 border border-gray-400" type="file" multiple onChange={(e) => onImageUpload(e, color)} />
+                                    {uploadedImages[color] && (
+                                        <div className="flex flex-wrap mt-2">
+                                            {uploadedImages[color].map((url, idx) => (
+                                                <img key={idx} src={url} alt={`Product Image for ${color} ${idx + 1}`} className="h-16 w-16 object-cover mr-2" />
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        }
+                        <div className="form-control mt-6">
+                            <button type="submit" className="border border-black bg-black text-white font-bold py-2 hover:bg-white hover:text-black transition duration-300 ease-in-out">Submit Product</button>
+                        </div>
+                    </form>
+                )
+            }
         </div>
     );
 };

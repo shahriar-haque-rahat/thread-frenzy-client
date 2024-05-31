@@ -18,7 +18,7 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        const { name, photoUrl, email, password } = data;
+        const { name, photoUrl = '', email, password } = data;
 
         userSignUp(email, password)
             .then(result => {
@@ -69,13 +69,13 @@ const SignUp = () => {
                         <input name="name" type="text" placeholder="Enter your name" className="bg-transparent input rounded-none border-b border-b-black focus:outline-none focus:border-0 focus:border-b focus:border-black" {...register("name", { required: true })} />
                         {errors.name && <span className="text-red-500">This field is required</span>}
                     </div>
-                    <div className="form-control">
+                    {/* <div className="form-control">
                         <label className="label">
                             <span className="label-text font-bold">Photo URL</span>
                         </label>
                         <input name="photoUrl" type="text" placeholder="Enter your photo url" className="bg-transparent input rounded-none border-b border-b-black focus:outline-none focus:border-0 focus:border-b focus:border-black" {...register("photoUrl", { required: true })} />
                         {errors.photoUrl && <span className="text-red-500">This field is required</span>}
-                    </div>
+                    </div> */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-bold">Email address</span>

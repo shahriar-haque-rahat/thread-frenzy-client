@@ -141,7 +141,7 @@ const PaymentForm = ({ totalPrice, shippingInfo, cartItems, setIsCheckingOut }) 
                         }} />
                 </div>
                 <p className=' text-red-500'>{error}</p>
-                <button disabled={!stripe || !clientSecret} type="submit" className=' disabled:bg-gray-400 bg-black w-full py-1 text-lg font-semibold text-white mt-1'>Pay</button>
+                <button disabled={!stripe || !clientSecret} type="submit" className=' disabled:bg-gray-400 bg-black w-full py-1 text-lg font-semibold text-white mt-1'>Confirm Payment</button>
             </div>
         </form>
     );

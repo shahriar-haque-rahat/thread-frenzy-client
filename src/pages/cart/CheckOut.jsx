@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "../../provider/AuthProvider";
 import { getUserByEmail } from "../../redux/userSlice";
 
-const CheckOut = ({ totalPrice }) => {
+const CheckOut = ({ totalPrice, cartItems }) => {
     const dispatch = useDispatch();
     const { user } = useContext(AuthContext);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
@@ -76,6 +76,7 @@ const CheckOut = ({ totalPrice }) => {
             {
                 isPaying &&
                 <Payment
+                    cartItems={cartItems}
                     totalPrice={totalPrice}
                     shippingInfo={shippingInfo}
                     setIsPaying={setIsPaying}

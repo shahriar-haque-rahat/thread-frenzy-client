@@ -1,8 +1,11 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useDispatch } from 'react-redux';
+import { addPayment } from '../../redux/paymentSlice';
 
-const PaymentForm = ({ totalPrice, shippingInfo }) => {
+const PaymentForm = ({ totalPrice, shippingInfo, cartItems }) => {
+    const dispatch = useDispatch();
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState('');
@@ -62,6 +65,16 @@ const PaymentForm = ({ totalPrice, shippingInfo }) => {
             console.log('payment intent',paymentIntent);
             if (paymentIntent.status === 'succeeded') {
                 console.log('transaction id', paymentIntent.id);
+
+                const paymentInfo = {
+                    email: shippingInfo?.email,
+                    price: totalPrice,
+                    date: new Date(),
+                    cardId: cartItems?.map(item => item._id),
+                    status: 'pending',
+                }
+                console.log(paymentInfo);
+                dispatch(addPayment(paymentInfo));
             }
         }
     };

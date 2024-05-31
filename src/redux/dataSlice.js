@@ -111,7 +111,7 @@ const dataSlice = createSlice({
             .addCase(getItemById.rejected, (state, action) => {
                 state.singleProductStatus = 'failed';
                 state.error = action.payload || action.error.message;
-            });
+            })
     },
 });
 

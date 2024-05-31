@@ -3,6 +3,7 @@ import dataReducer from "./dataSlice";
 import cartReducer from "./cartSlice";
 import userReducer from "./userSlice";
 import wishlistReducer from "./wishlistSlice";
+import paymentReducer from "./paymentSlice"
 
 
 const store =  configureStore({
@@ -11,6 +12,7 @@ const store =  configureStore({
         cart: cartReducer,
         user: userReducer,
         wishlist: wishlistReducer,
+        payment: paymentReducer,
     },
 });
 

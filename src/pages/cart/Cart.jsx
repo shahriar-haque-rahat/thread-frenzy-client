@@ -97,7 +97,7 @@ const Cart = () => {
 
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
-    const amountToPay = parseInt(totalPrice)  + 14.99;
+    const amountToPay = parseFloat(totalPrice)  + 14.99;
 
     useEffect(() => {
         localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
@@ -115,7 +115,7 @@ const Cart = () => {
                 {
                     !isCheckingOut
                         ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
-                        : <CheckOut totalPrice={amountToPay} setIsCheckingOut={setIsCheckingOut} />
+                        : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
 
                 }
             </div>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../../../redux/userSlice";
-import { FaRegEdit } from "react-icons/fa";
+// import { FaRegEdit } from "react-icons/fa";
 import { IoBan } from "react-icons/io5";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';

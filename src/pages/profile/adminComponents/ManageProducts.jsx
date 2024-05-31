@@ -190,7 +190,7 @@ const ManageProducts = () => {
                             </div>
                             <div className="py-2 flex justify-between">
                                 <p>{item.gender}</p>
-                                <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500" size={25} />
+                                <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} />
                             </div>
                         </div>
                     ))}

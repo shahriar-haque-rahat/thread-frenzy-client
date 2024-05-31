@@ -7,16 +7,16 @@ import Swal from 'sweetalert2';
 import Modal from 'react-modal';
 import AddProductForm from "./AddProductForm";
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
 
 const MySwal = withReactContent(Swal);
 
 const ManageProducts = () => {
     const dispatch = useDispatch();
     const { data, allDataStatus, error } = useSelector(state => state.data);
-    const [tshirtData, setTshirtData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [priceOrder, setPriceOrder] = useState(null); // 'asc' or 'desc'
+    const [priceOrder, setPriceOrder] = useState(null);
     const [selectedGender, setSelectedGender] = useState(null);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -47,8 +47,7 @@ const ManageProducts = () => {
                 dispatch(deleteItem(id))
                     .unwrap()
                     .then(() => {
-                        const newData = tshirtData?.filter(data => data._id !== id);
-                        setTshirtData(newData);
+                        dispatch(allData())
                         return MySwal.fire({
                             title: 'Product Deleted',
                             icon: 'success',
@@ -83,11 +82,7 @@ const ManageProducts = () => {
             ...(selectedBrands.length > 0 && { brand: selectedBrands.map(b => b.value).join(',') })
         };
 
-        dispatch(allData(filters)).then((action) => {
-            if (action.payload) {
-                setTshirtData(action.payload);
-            }
-        });
+        dispatch(allData(filters))
     }, [dispatch, priceOrder, selectedGender, selectedBrands]);
 
     if (allDataStatus === 'failed') {
@@ -170,7 +165,7 @@ const ManageProducts = () => {
             </div>
             <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
-                <AddProductForm closeModal={closeModal} allData={allData} tshirtData={tshirtData} setTshirtData={setTshirtData} />
+                <AddProductForm closeModal={closeModal} allData={allData} />
             </Modal>
             <div>
                 <div className="grid grid-cols-7 gap-3 font-bold border-b-2 border-gray-800 py-2">
@@ -185,7 +180,7 @@ const ManageProducts = () => {
                     {data?.map((item, idx) => (
                         <div key={idx} className="grid grid-cols-7 gap-3 border-b border-gray-400">
                             <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
-                            <div className="py-2 col-span-2">{item.name}</div>
+                            <Link to={`/product-details/${item._id}`} className="py-2 col-span-2">{item.name}</Link>
                             <div className="py-2">{item.brand}</div>
                             <div className="py-2">${item.price}</div>
                             <div className="py-2">

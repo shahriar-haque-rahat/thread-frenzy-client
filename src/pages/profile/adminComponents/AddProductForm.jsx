@@ -63,7 +63,6 @@ const AddProductForm = ({ closeModal, allData }) => {
         dispatch(addItem(finalData))
             .unwrap()
             .then(() => {
-                // setTshirtData(prevData => [...prevData, finalData]);
                 dispatch(allData());
                 toast.success('Product successfully added');
             })

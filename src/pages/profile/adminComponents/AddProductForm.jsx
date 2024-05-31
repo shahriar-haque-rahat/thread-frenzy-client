@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const AddProductForm = ({ closeModal, allData, tshirtData, setTshirtData }) => {
+const AddProductForm = ({ closeModal, allData }) => {
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
     const [productDetails, setProductDetails] = useState(null);

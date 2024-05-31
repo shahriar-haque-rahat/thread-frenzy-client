@@ -5,8 +5,15 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Account = ({ userByEmail }) => {
+    const axiosPublic = useAxiosPublic();
+
     const dispatch = useDispatch();
     const { updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -16,6 +23,7 @@ const Account = ({ userByEmail }) => {
             address: '',
             email: '',
             phoneNumber: '',
+            photoUrl: '',
         }
     });
 
@@ -27,25 +35,42 @@ const Account = ({ userByEmail }) => {
                 address: userByEmail.address || '',
                 email: userByEmail.userEmail || '',
                 phoneNumber: userByEmail.phoneNumber || '',
+                photoUrl: userByEmail.photoUrl || '',
             });
         }
     }, [userByEmail, reset]);
 
     const onSubmit = async (data) => {
-        console.log(data);
+        const formData = new FormData();
+        formData.append("image", data.photoUrl[0]);
+
+        try {
+            const res = await axiosPublic.post(image_hosting_api, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (res.data && res.data.data && res.data.data.url) {
+                data.photoUrl = res.data.data.url;
+            }
+        } catch (error) {
+            console.error('Failed to upload image:', error.response ? error.response.data : error.message);
+            toast.error('Failed to upload image');
+            return;
+        }
+
         if (userByEmail?._id) {
-            await updateUserProfile(data.firstName, null);
-            dispatch(updateUser({ id: userByEmail._id, userInfo: data }))
-                .unwrap()
-                .then(result => {
-                    console.log(result);
-                    dispatch(getUserByEmail(userByEmail.userEmail));
-                    toast.success('User information updated');
-                })
-                .catch(error => {
-                    console.log(error);
-                    toast.error('Invalid user input');
-                })
+            try {
+                await updateUserProfile(data.firstName, null);
+                const result = await dispatch(updateUser({ id: userByEmail._id, userInfo: data })).unwrap();
+                console.log(result);
+                dispatch(getUserByEmail(userByEmail.userEmail));
+                toast.success('User information updated');
+            } catch (error) {
+                console.error('Failed to update user information:', error);
+                toast.error('Invalid user input');
+            }
         }
     };
 
@@ -89,6 +114,10 @@ const Account = ({ userByEmail }) => {
                         <label htmlFor="address" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Address*</label>
                         {errors.address && <span className="text-red-500">This field is required</span>}
                     </div>
+                    <div className="form-control relative w-full">
+                        <input name="photoUrl" type="file" className=" file-input h-10 border border-gray-400 focus:outline-none rounded-none w-full max-w-xs" {...register("photoUrl", { required: true })} />
+                    </div>
+
                     <p className="text-xl">Contact Information</p>
                     <div className="flex gap-6">
                         <div className="form-control relative w-full">

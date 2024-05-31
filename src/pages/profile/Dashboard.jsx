@@ -5,11 +5,11 @@ import { useContext, useEffect } from "react";
 import { getUserByEmail } from "../../redux/userSlice";
 import { AuthContext } from "../../provider/AuthProvider";
 
-const Profile = () => {
+const Dashboard = () => {
     const dispatch = useDispatch();
     const { user } = useContext(AuthContext);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
-console.log(userByEmail);
+
     useEffect(() => {
         if (user) {
             dispatch(getUserByEmail(user?.email))
@@ -21,7 +21,7 @@ console.log(userByEmail);
     }
 
     return (
-        <div>
+        <div className=" font-clashGrotesk font-medium">
             {
                 (userByEmail.role === 'admin')
                 ? <Admin userByEmail={userByEmail} getUserByEmail={getUserByEmail} userEmail={user?.email} dispatchFunc={getUserByEmail(user?.email)}></Admin>
@@ -31,4 +31,4 @@ console.log(userByEmail);
     );
 };
 
-export default Profile;
+export default Dashboard;

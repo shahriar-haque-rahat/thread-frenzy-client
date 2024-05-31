@@ -8,7 +8,7 @@ import ProductDetails from "../pages/products/ProductDetails";
 import SignIn from "../pages/loginRegister/SignIn";
 import SignUp from "../pages/loginRegister/SignUp";
 import Cart from "../pages/cart/Cart";
-import Profile from "../pages/profile/Profile";
+import Dashboard from "../pages/profile/Dashboard";
 
 
 const Router = createBrowserRouter(
@@ -50,7 +50,7 @@ const Router = createBrowserRouter(
         },
         {
             path: '/profile',
-            element: <Profile></Profile>,
+            element: <Dashboard></Dashboard>,
             errorElement: <Error></Error>,
         },
     ]

@@ -1,20 +1,24 @@
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { allData, deleteItem } from "../../../redux/dataSlice";
-import { useEffect, useState } from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import Modal from 'react-modal';
 import AddProductForm from "./AddProductForm";
+import Select from 'react-select';
 
-
-const MySwal = withReactContent(Swal)
+const MySwal = withReactContent(Swal);
 
 const ManageProducts = () => {
     const dispatch = useDispatch();
     const { data, allDataStatus, error } = useSelector(state => state.data);
-    const [tshirtData, setTshirtData] = useState(data);
+    const [tshirtData, setTshirtData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [priceOrder, setPriceOrder] = useState(null); // 'asc' or 'desc'
+    const [selectedGender, setSelectedGender] = useState(null);
+    const [selectedBrands, setSelectedBrands] = useState([]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -73,60 +77,128 @@ const ManageProducts = () => {
     }
 
     useEffect(() => {
-        if (allDataStatus === 'idle') {
-            dispatch(allData())
-        }
-        setTshirtData(data)
-    }, [dispatch, allDataStatus, data])
+        const filters = {
+            ...(priceOrder && { sort: priceOrder.value }),
+            ...(selectedGender && { gender: selectedGender.value }),
+            ...(selectedBrands.length > 0 && { brand: selectedBrands.map(b => b.value).join(',') })
+        };
 
+        dispatch(allData(filters)).then((action) => {
+            if (action.payload) {
+                setTshirtData(action.payload);
+            }
+        });
+    }, [dispatch, priceOrder, selectedGender, selectedBrands]);
 
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
 
+    const priceOptions = [
+        { value: 'asc', label: 'Low to High' },
+        { value: 'desc', label: 'High to Low' }
+    ];
+
+    const genderOptions = [
+        { value: 'Male', label: 'Male' },
+        { value: 'Female', label: 'Female' }
+    ];
+
+    const brandOptions = [
+        { value: 'Calvin Klein', label: 'Calvin Klein' },
+        { value: 'Everlane', label: 'Everlane' },
+        { value: 'Adidas', label: 'Adidas' },
+        { value: 'Levis', label: 'Levis' },
+        { value: 'Nike', label: 'Nike' },
+        { value: 'Buck Mason', label: 'Buck Mason' },
+        { value: 'Allen Solly', label: 'Allen Solly' },
+        { value: 'Lacoste', label: 'Lacoste' },
+    ];
+
     return (
         <div className="mt-6 mr-6 space-y-6">
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
-            {/* TODO: product add and filtering  */}
-            <div className=" flex justify-between items-center">
-                <button onClick={openModal} className="border border-black font-semibold p-2">Add Product</button>
-                <p>Filter</p>
+
+            <button onClick={openModal} className="border border-black font-semibold p-2 w-full">Add Product</button>
+            <div className=' grid grid-cols-2 gap-6'>
+                <div>
+                    <label className="mr-2">Sort by Price:</label>
+                    <Select
+                        value={priceOrder}
+                        onChange={setPriceOrder}
+                        options={priceOptions}
+                        isClearable
+                        styles={{
+                            control: (baseStyles) => ({
+                                ...baseStyles,
+                                borderRadius: '0px',
+                            }),
+                        }}
+                    />
+                </div>
+                <div>
+                    <label className="mr-2">Filter by Gender:</label>
+                    <Select
+                        value={selectedGender}
+                        onChange={setSelectedGender}
+                        options={genderOptions}
+                        isClearable
+                        styles={{
+                            control: (baseStyles) => ({
+                                ...baseStyles,
+                                borderRadius: '0px',
+                            }),
+                        }}
+                    />
+                </div>
+            </div>
+            <div>
+                <label className="mr-2">Filter by Brands:</label>
+                <Select
+                    isMulti
+                    value={selectedBrands}
+                    onChange={setSelectedBrands}
+                    options={brandOptions}
+                    isClearable
+                    styles={{
+                        control: (baseStyles) => ({
+                            ...baseStyles,
+                            borderRadius: '0px',
+                        }),
+                    }}
+                />
             </div>
             <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
-                <AddProductForm closeModal={closeModal} allData={allData} tshirtData={tshirtData} setTshirtData={setTshirtData}/>
+                <AddProductForm closeModal={closeModal} allData={allData} tshirtData={tshirtData} setTshirtData={setTshirtData} />
             </Modal>
             <div>
                 <div className="grid grid-cols-7 gap-3 font-bold border-b-2 border-gray-800 py-2">
                     <div></div>
-                    <div className=" col-span-2">Name</div>
+                    <div className="col-span-2">Name</div>
                     <div>Brand</div>
                     <div>Price</div>
                     <div>Color</div>
                     <div>Gender</div>
                 </div>
-                <div className=" overflow-y-scroll h-svh">
-                    {
-                        tshirtData?.map((item, idx) => (
-                            <div key={idx} className="grid grid-cols-7 gap-3 border-b border-gray-400">
-                                <img className=" w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
-                                <div className=" py-2 col-span-2">{item.name}</div>
-                                <div className=" py-2">{item.brand}</div>
-                                <div className=" py-2">${item.price}</div>
-                                <div className=" py-2">
-                                    {
-                                        item.color.map((item, idx) => (
-                                            <div key={idx}>{item}, </div>
-                                        ))
-                                    }
-                                </div>
-                                <div className=" py-2 flex justify-between">
-                                    <p>{item.gender}</p>
-                                    <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className=" text-red-500" size={25} />
-                                </div>
+                <div className="overflow-y-scroll h-svh">
+                    {data?.map((item, idx) => (
+                        <div key={idx} className="grid grid-cols-7 gap-3 border-b border-gray-400">
+                            <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
+                            <div className="py-2 col-span-2">{item.name}</div>
+                            <div className="py-2">{item.brand}</div>
+                            <div className="py-2">${item.price}</div>
+                            <div className="py-2">
+                                {item.color.map((color, idx) => (
+                                    <div key={idx}>{color}, </div>
+                                ))}
                             </div>
-                        ))
-                    }
+                            <div className="py-2 flex justify-between">
+                                <p>{item.gender}</p>
+                                <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500" size={25} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

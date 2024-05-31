@@ -17,7 +17,6 @@ const PaymentForm = ({ totalPrice, shippingInfo, cartItems, setIsCheckingOut }) 
     const axiosPrivate = useAxiosPrivate();
     const [clientSecret, setClientSecret] = useState('');
     const paidItemsId = cartItems?.map(item => item._id);
-    const paidProductsId = cartItems?.map(item => item.itemId);
 
 
     useEffect(() => {
@@ -78,8 +77,7 @@ const PaymentForm = ({ totalPrice, shippingInfo, cartItems, setIsCheckingOut }) 
                     price: totalPrice,
                     transactionId: paymentIntent.id,
                     date: new Date(),
-                    cartId: paidItemsId,
-                    productId: paidProductsId,
+                    orderedItems: cartItems,
                     status: 'pending',
                 }
                 console.log(paymentInfo);

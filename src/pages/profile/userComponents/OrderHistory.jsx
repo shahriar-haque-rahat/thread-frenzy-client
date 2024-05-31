@@ -1,8 +1,24 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getPayment } from "../../../redux/paymentSlice";
 
+const OrderHistory = () => {
+    
+    const dispatch = useDispatch();
+    const { payment, paymentStatus, paymentError } = useSelector(state => state.payment)
 
+    
+    useEffect(() => {
+        if (paymentStatus === 'idle') {
+            dispatch(getPayment())
+        }
+    }, [dispatch, paymentStatus])
 
-const OrderHistory = ({ cartItems }) => {
+    if (paymentStatus === 'failed') {
+        return <div>Error: {paymentError}</div>;
+    }
+
     return (
         <div className="mt-6 mr-6">
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Order History</h1>
@@ -17,7 +33,7 @@ const OrderHistory = ({ cartItems }) => {
                 <div className=" text-center">Status</div>
             </div>
             {
-                cartItems?.map(item => (
+                payment?.map(item => (
                     <div key={item._id} className=" grid grid-cols-9 gap-2 border-b border-gray-400">
                         <img className=" h-24 w-20 object-cover object-top" src={item.image} alt="" />
                         <div className=" py-3 text-sm">{item.date.split('T')[0]}</div>

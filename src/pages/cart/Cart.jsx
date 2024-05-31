@@ -97,6 +97,7 @@ const Cart = () => {
 
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
+    const amountToPay = parseInt(totalPrice)  + 14.99;
 
     useEffect(() => {
         localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
@@ -114,7 +115,7 @@ const Cart = () => {
                 {
                     !isCheckingOut
                         ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
-                        : <CheckOut setIsCheckingOut={setIsCheckingOut} />
+                        : <CheckOut totalPrice={amountToPay} setIsCheckingOut={setIsCheckingOut} />
 
                 }
             </div>
@@ -138,7 +139,7 @@ const Cart = () => {
                     {
                         isCheckingOut
                             ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
-                            : <button disabled={cartItems < 1} className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
+                            : <button disabled={cartItems < 1} className="disabled:bg-gray-400 bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
                     }
 
                 </div>

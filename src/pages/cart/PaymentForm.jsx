@@ -116,31 +116,33 @@ const PaymentForm = ({ totalPrice, shippingInfo, cartItems, setIsCheckingOut }) 
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <CardElement
-                    options={{
-                        iconStyle: 'solid',
-                        style: {
-                            base: {
-                                iconColor: '#c4f0ff',
-                                color: '#32325d',
-                                fontSize: '16px',
-                                '::placeholder': {
-                                    color: '#aab7c4',
+            <div className='pt-10'>
+                <div className=' py-4 px-2 border border-gray-400'>
+                    <CardElement
+                        options={{
+                            iconStyle: 'solid',
+                            style: {
+                                base: {
+                                    iconColor: '#c4f0ff',
+                                    color: '#32325d',
+                                    fontSize: '16px',
+                                    '::placeholder': {
+                                        color: '#aab7c4',
+                                    },
+                                },
+                                invalid: {
+                                    iconColor: '#FFC7EE',
+                                    color: '#FFC7EE',
                                 },
                             },
-                            invalid: {
-                                iconColor: '#FFC7EE',
-                                color: '#FFC7EE',
-                            },
-                        },
-                    }}
-                    onReady={() => {
-                        console.log('CardElement [ready]');
-                    }} />
+                        }}
+                        onReady={() => {
+                            console.log('CardElement [ready]');
+                        }} />
+                </div>
+                <p className=' text-red-500'>{error}</p>
+                <button disabled={!stripe || !clientSecret} type="submit" className=' disabled:bg-gray-400 bg-black w-full py-1 text-lg font-semibold text-white mt-1'>Pay</button>
             </div>
-            <p className=' text-red-500'>{error}</p>
-            <button disabled={!stripe || !clientSecret} type="submit" className=' disabled:bg-gray-400 bg-black px-2 text-white mt-4'>Pay</button>
         </form>
     );
 };

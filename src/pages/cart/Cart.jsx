@@ -17,7 +17,7 @@ const Cart = () => {
     const [quantities, setQuantities] = useState({});
     const [isCheckingOut, setIsCheckingOut] = useState(() => JSON.parse(localStorage.getItem('isCheckingOut')) || false);
 
-
+    
     const handleQuantity = (id, operation) => {
         setQuantities(prevQuantities => {
             const newQuantity = operation === "+" ? prevQuantities[id] + 1 : prevQuantities[id] - 1;
@@ -138,7 +138,7 @@ const Cart = () => {
                     {
                         isCheckingOut
                             ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
-                            : <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
+                            : <button disabled={cartItems < 1} className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
                     }
 
                 </div>

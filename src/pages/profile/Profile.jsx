@@ -8,8 +8,8 @@ import { AuthContext } from "../../provider/AuthProvider";
 const Profile = () => {
     const dispatch = useDispatch();
     const { user } = useContext(AuthContext);
-    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user)
-
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+console.log(userByEmail);
     useEffect(() => {
         if (user) {
             dispatch(getUserByEmail(user?.email))

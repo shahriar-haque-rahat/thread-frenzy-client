@@ -1,17 +1,41 @@
 import { useForm } from "react-hook-form";
 import Payment from "./Payment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import ShippingInfo from "./ShippingInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { AuthContext } from "../../provider/AuthProvider";
+import { getUserByEmail } from "../../redux/userSlice";
 
 const CheckOut = () => {
-    const { register, handleSubmit, formState: { errors }, watch } = useForm();
-    const [isPaying, setIsPaying] = useState(() => JSON.parse(localStorage.getItem('isPaying')) || false);
-    const [shippingInfo, setShippingInfo] = useState(() => JSON.parse(localStorage.getItem('shippingInfo')) || null);
+    const dispatch = useDispatch();
+    const { user } = useContext(AuthContext);
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            address: '',
+            email: '',
+            phoneNumber: '',
+            photoUrl: '',
+        }
+    });
 
-    const onSubmit = (data) => {
-        console.log(data);
-        setShippingInfo(data)
-        handlePayment();
-    };
+    useEffect(() => {
+        if (userByEmail) {
+            reset({
+                firstName: userByEmail.firstName || '',
+                lastName: userByEmail.lastName || '',
+                address: userByEmail.address || '',
+                email: userByEmail.userEmail || '',
+                phoneNumber: userByEmail.phoneNumber || '',
+                photoUrl: userByEmail.photoUrl || '',
+            });
+        }
+    }, [userByEmail, reset]);
+
+    const [isPaying, setIsPaying] = useState(() => JSON.parse(localStorage.getItem('isPaying')) || false);
+    const [shippingInfo, setShippingInfo] = useState(null);
 
     const handlePayment = () => {
         const watchedFields = watch();
@@ -20,57 +44,41 @@ const CheckOut = () => {
     };
 
     useEffect(() => {
-        localStorage.setItem('isPaying', JSON.stringify(isPaying));
-        if (shippingInfo) {
-            localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
+        if (user) {
+            dispatch(getUserByEmail(user?.email));
         }
-    }, [isPaying, shippingInfo]);
+    }, [dispatch, user]);
+
+    useEffect(() => {
+        if (userByEmailStatus === 'succeeded') {
+            setShippingInfo(userByEmail);
+        }
+    }, [userByEmail, userByEmailStatus]);
+
+
+    if (userByEmailStatus === 'failed') {
+        return <div>Error: {userByEmailError}</div>;
+    }
 
     return (
         <div className="space-y-10">
             {
                 !isPaying &&
-                <div>
-                    <h1 className="text-3xl mb-10">Shipping Information</h1>
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        <div className="flex gap-6">
-                            <div className="form-control relative w-full">
-                                <input name="firstName" defaultValue={shippingInfo?.firstName} type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("firstName", { required: true })} />
-                                <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">First Name*</label>
-                                {errors.firstName && <span className="text-red-500">This field is required</span>}
-                            </div>
-                            <div className="form-control relative w-full">
-                                <input name="lastName" defaultValue={shippingInfo?.lastName} type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("lastName", { required: true })} />
-                                <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Last Name*</label>
-                                {errors.lastName && <span className="text-red-500">This field is required</span>}
-                            </div>
-                        </div>
-                        <div className="form-control relative">
-                            <input name="address" defaultValue={shippingInfo?.address} type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("address", { required: true })} />
-                            <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Address*</label>
-                            {errors.address && <span className="text-red-500">This field is required</span>}
-                        </div>
-                        <p className="text-xl">Contact Information</p>
-                        <div className="flex gap-6">
-                            <div className="form-control relative w-full">
-                                <input name="email" defaultValue={shippingInfo?.email} type="email" className="border border-gray-400 h-12 pl-3 outline-none" {...register("email", { required: true })} />
-                                <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Email*</label>
-                                {errors.email && <span className="text-red-500">This field is required</span>}
-                            </div>
-                            <div className="form-control relative w-full">
-                                <input name="phoneNumber" defaultValue={shippingInfo?.phoneNumber} type="number" className="border border-gray-400 h-12 pl-3 outline-none" {...register("phoneNumber", { required: true })} />
-                                <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Phone Number*</label>
-                                {errors.phoneNumber && <span className="text-red-500">This field is required</span>}
-                            </div>
-                        </div>
-                        <div className="form-control mt-6">
-                            <button type="submit" className="bg-black text-white text-lg font-semibold w-full h-12">Continue to Payment</button>
-                        </div>
-                    </form>
-                </div>
+                <ShippingInfo
+                    shippingInfo={shippingInfo}
+                    setShippingInfo={setShippingInfo}
+                    handlePayment={handlePayment}
+                    register={register}
+                    handleSubmit={handleSubmit}
+                    errors={errors}
+                />
             }
             {
-                isPaying && <Payment shippingInfo={shippingInfo} setIsPaying={setIsPaying}/>
+                isPaying &&
+                <Payment
+                    shippingInfo={shippingInfo}
+                    setIsPaying={setIsPaying}
+                />
             }
         </div>
     );

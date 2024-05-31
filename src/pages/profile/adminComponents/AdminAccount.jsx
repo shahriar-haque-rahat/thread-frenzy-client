@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../../../redux/userSlice";
-import { useContext } from "react";
+import { getUserByEmail, updateUser } from "../../../redux/userSlice";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,15 +9,27 @@ import 'react-toastify/dist/ReactToastify.css';
 const AdminAccount = ({ userByEmail }) => {
     const dispatch = useDispatch();
     const { updateUserProfile } = useContext(AuthContext);
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
-            firstName: userByEmail?.firstName,
-            lastName: userByEmail?.lastName,
-            address: userByEmail?.address,
-            email: userByEmail?.userEmail,
-            phoneNumber: userByEmail?.phoneNumber,
+            firstName: '',
+            lastName: '',
+            address: '',
+            email: '',
+            phoneNumber: '',
         }
     });
+
+    useEffect(() => {
+        if (userByEmail) {
+            reset({
+                firstName: userByEmail.firstName || '',
+                lastName: userByEmail.lastName || '',
+                address: userByEmail.address || '',
+                email: userByEmail.userEmail || '',
+                phoneNumber: userByEmail.phoneNumber || '',
+            });
+        }
+    }, [userByEmail, reset]);
 
     const onSubmit = async (data) => {
         console.log(data);
@@ -27,6 +39,7 @@ const AdminAccount = ({ userByEmail }) => {
                 .unwrap()
                 .then(result => {
                     console.log(result);
+                    dispatch(getUserByEmail(userByEmail.userEmail));
                     toast.success('User information updated');
                 })
                 .catch(error => {

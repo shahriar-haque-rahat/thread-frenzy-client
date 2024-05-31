@@ -42,10 +42,6 @@ const Wishlist = ({ userId }) => {
         }
     }, [dispatch, wishlistStatus, userId]);
 
-    if (wishlistStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
-
     if (wishlistStatus === 'failed') {
         return <div>Error: {wishlistError}</div>;
     }

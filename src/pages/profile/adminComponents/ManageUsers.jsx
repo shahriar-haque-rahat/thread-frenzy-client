@@ -67,11 +67,6 @@ const ManageUsers = () => {
         dispatch(getUser())
     }, [dispatch])
 
-
-    if (userStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
-
     if (userStatus === 'failed') {
         return <div>Error: {userError}</div>;
     }

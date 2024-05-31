@@ -16,10 +16,6 @@ const Profile = () => {
         }
     }, [dispatch, user])
 
-    if (userByEmailStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
-
     if (userByEmailStatus === 'failed') {
         return <div>Error: {userByEmailError}</div>;
     }
@@ -28,8 +24,8 @@ const Profile = () => {
         <div>
             {
                 (userByEmail.role === 'admin')
-                ? <Admin userByEmail={userByEmail}></Admin>
-                : <User userByEmail={userByEmail}></User>
+                ? <Admin userByEmail={userByEmail} getUserByEmail={getUserByEmail} userEmail={user?.email} dispatchFunc={getUserByEmail(user?.email)}></Admin>
+                : <User userByEmail={userByEmail} getUserByEmail={getUserByEmail} userEmail={user?.email}></User>
             }
         </div>
     );

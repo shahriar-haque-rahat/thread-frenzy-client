@@ -19,10 +19,6 @@ const User = ({ userByEmail }) => {
         }
     }, [dispatch, cartStatus, userByEmail]);
 
-    if (cartStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
-
     if (cartStatus === 'failed') {
         return <div>Error: {cartError}</div>;
     }

@@ -12,11 +12,6 @@ import { addToWishlist, deleteWishlistItem, getWishlist } from "../../redux/wish
 import { getUserByEmail } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
-
-
-const MySwal = withReactContent(Swal)
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
@@ -134,10 +129,6 @@ const ProductDetails = () => {
 
     }, [wishlistItems, selectedItem]);
 
-
-    if (singleProductStatus === 'loading' || userByEmailStatus === 'loading') {
-        return <div>Loading...</div>;
-    }
 
     if (singleProductStatus === 'failed' || userByEmailError === 'failed') {
         return <div>Error: {error} || {userByEmailError}</div>;

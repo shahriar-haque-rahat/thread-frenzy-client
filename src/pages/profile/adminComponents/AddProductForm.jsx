@@ -7,16 +7,24 @@ const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddProductForm = ({ closeModal }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
     const [productDetails, setProductDetails] = useState(null);
     const [uploadedImages, setUploadedImages] = useState({});
     const axiosPublic = useAxiosPublic();
 
+    const colorRegex = /^(\w+\s?\w*)(,\s*\w+\s?\w*)*$/;
+
     const onFirstSubmit = (data) => {
+        if (!colorRegex.test(data.color)) {
+            setError("color", { type: "manual", message: "Invalid color format. Each color should be maximum 2 words." });
+            return;
+        }
+
         data.details = data.details.split(',').map(detail => detail.trim());
         data.color = data.color.split(',').map(color => color.trim());
 
-        setProductDetails(data);  // Save product details in state
+        clearErrors("color");
+        setProductDetails(data);
     };
 
     const onImageUpload = async (e, color) => {
@@ -47,14 +55,13 @@ const AddProductForm = ({ closeModal }) => {
     const onSubmit = () => {
         const finalData = { ...productDetails, images: uploadedImages };
         console.log(finalData);
-        // Proceed with final form submission logic
     };
 
     return (
-        <div className=" relative pt-12">
-            <button onClick={closeModal} className=" absolute top-1 right-1 text-red-500 "><RxCross2 size={30}/></button>
+        <div className="relative pt-12">
+            <button onClick={closeModal} className="absolute top-1 right-1 text-red-500"><RxCross2 size={30}/></button>
             <form onSubmit={handleSubmit(onFirstSubmit)} className="space-y-6">
-                <div className=" flex gap-6">
+                <div className="flex gap-6">
                     <div className="form-control relative w-full">
                         <input name="name" type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("name", { required: true })} />
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Product Name</label>
@@ -66,7 +73,7 @@ const AddProductForm = ({ closeModal }) => {
                         {errors.brand && <span className="text-red-500">This field is required</span>}
                     </div>
                 </div>
-                <div className=" flex gap-6">
+                <div className="flex gap-6">
                     <div className="form-control relative w-full">
                         <select name="gender" className="border border-gray-400 h-12 pl-3 outline-none" {...register("gender", { required: true })}>
                             <option value="">Select Gender</option>
@@ -84,10 +91,10 @@ const AddProductForm = ({ closeModal }) => {
                     <div className="form-control relative w-full">
                         <input name="color" type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("color", { required: true })} />
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Colors (comma separated)</label>
-                        {errors.color && <span className="text-red-500">This field is required</span>}
+                        {errors.color && <span className="text-red-500">{errors.color.message || "This field is required"}</span>}
                     </div>
                 </div>
-                <div className=" flex gap-6">
+                <div className="flex gap-6">
                     <div className="form-control relative w-full">
                         <textarea name="about_product" className="border border-gray-400 h-24 pl-3 pt-3 outline-none" {...register("about_product", { required: true })}></textarea>
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">About Product</label>
@@ -99,7 +106,7 @@ const AddProductForm = ({ closeModal }) => {
                         {errors.details && <span className="text-red-500">This field is required</span>}
                     </div>
                 </div>
-                <div className=" flex gap-6">
+                <div className="flex gap-6">
                     <div className="form-control w-full">
                         <label className="text-gray-600 text-sm">Sizes</label>
                         <div className="flex space-x-4">

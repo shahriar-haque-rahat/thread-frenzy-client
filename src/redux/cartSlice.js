@@ -73,6 +73,21 @@ export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (id,
     }
 });
 
+export const deleteManyCartItem = createAsyncThunk('cart/deleteManyCartItem', async (ids, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.delete('/cart', { data: { ids } });
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {

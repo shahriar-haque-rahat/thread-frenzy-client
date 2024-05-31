@@ -17,7 +17,7 @@ const Cart = () => {
     const [quantities, setQuantities] = useState({});
     const [isCheckingOut, setIsCheckingOut] = useState(() => JSON.parse(localStorage.getItem('isCheckingOut')) || false);
 
-    
+
     const handleQuantity = (id, operation) => {
         setQuantities(prevQuantities => {
             const newQuantity = operation === "+" ? prevQuantities[id] + 1 : prevQuantities[id] - 1;
@@ -97,7 +97,7 @@ const Cart = () => {
 
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
-    const amountToPay = parseFloat(totalPrice)  + 14.99;
+    const amountToPay = parseFloat(totalPrice) + 14.99;
 
     useEffect(() => {
         localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
@@ -113,11 +113,18 @@ const Cart = () => {
         <div className="px-[3%] grid lg:grid-cols-5 gap-10">
             <div className="lg:col-span-3">
                 {
-                    !isCheckingOut
-                        ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
-                        : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
+                    (cartItems.length === 0)
+                        ? <p className=" text-lg">Cart is empty</p>
+                        : <div>
+                            {
+                                !isCheckingOut
+                                    ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
+                                    : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
 
+                            }
+                        </div>
                 }
+
             </div>
             <div className="lg:col-span-2 space-y-6">
                 <h1 className="text-xl">Order Summary</h1>

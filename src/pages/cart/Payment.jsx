@@ -4,7 +4,7 @@ import PaymentForm from "./PaymentForm";
 
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
 
-const Payment = ({ shippingInfo, setIsPaying, totalPrice, cartItems }) => {
+const Payment = ({ shippingInfo, setIsPaying, totalPrice, cartItems, setIsCheckingOut }) => {
     return (
         <div>
             <h1 className="text-3xl mb-10">Payment</h1>
@@ -22,7 +22,7 @@ const Payment = ({ shippingInfo, setIsPaying, totalPrice, cartItems }) => {
                 <p>{shippingInfo?.email}</p>
             </div>
             <Elements stripe={stripePromise}>
-                <PaymentForm totalPrice={totalPrice} shippingInfo={shippingInfo} cartItems={cartItems}/>
+                <PaymentForm totalPrice={totalPrice} shippingInfo={shippingInfo} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut}/>
             </Elements>
         </div>
     );

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../../../redux/userSlice";
 // import { FaRegEdit } from "react-icons/fa";
-import { IoBan } from "react-icons/io5";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
@@ -88,11 +87,8 @@ const ManageUsers = () => {
                             <div className=" col-span-2 pl-2">{user.firstName}</div>
                             <div className=" col-span-2">{user.userEmail}</div>
                             <div>{user.phoneNumber}</div>
-                            <div className=" flex justify-between items-center gap-2">
-                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold text-center w-1/2">Remove Admin</button>
-                                {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
-                                <IoBan className=" text-red-500 w-1/2" size={20} />
-                            </div>
+                            <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button>
+                            {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
                         </div>
                     ))
                 }
@@ -111,11 +107,8 @@ const ManageUsers = () => {
                             <div className=" col-span-2 pl-2">{user.firstName}</div>
                             <div className=" col-span-2">{user.userEmail}</div>
                             <div>{user.phoneNumber}</div>
-                            <div className=" flex justify-between items-center gap-2">
-                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold text-center w-1/2">Make Admin</button>
-                                {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
-                                <IoBan className=" text-red-500 w-1/2" size={20} />
-                            </div>
+                            <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Make Admin</button>
+                            {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
                         </div>
                     ))
                 }

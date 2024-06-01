@@ -45,10 +45,24 @@ export const addUser = createAsyncThunk('user/addUser', async (userInfo, { rejec
     }
 });
 
+// export const updateUser = createAsyncThunk('user/updateUser', async ({ id, userInfo }, { rejectWithValue }) => {
+//     const axiosPrivate = useAxiosPrivate();
+//     try {
+//         const res = await axiosPrivate.put(`/user/${id}`, userInfo);
+//         return res.data;
+//     } catch (error) {
+//         if (error.response && error.response.data) {
+//             return rejectWithValue(error.response.data.message);
+//         } else {
+//             return rejectWithValue(error.message);
+//         }
+//     }
+// });
+
 export const updateUser = createAsyncThunk('user/updateUser', async ({ id, userInfo }, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.put(`/user/${id}`, userInfo);
+        const res = await axiosPrivate.patch(`/user/${id}`, userInfo);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -124,6 +138,10 @@ const userSlice = createSlice({
                 if (updatedUserIndex !== -1) {
                     state.user[updatedUserIndex] = action.payload;
                 }
+            })
+            .addCase(updateUser.rejected, (state, action) => {
+                state.userStatus = 'failed';
+                state.userError = action.payload || action.error.message;
             })
     }
 })

@@ -136,7 +136,7 @@ const ProductDetails = () => {
 
     return (
         <div>
-            <div className="px-[3%] mt-16">
+            <div className="px-[3%] mt-16 pb-32">
                 {selectedItem && (
                     <div className="grid grid-cols-5 gap-5">
                         <div className="col-span-3 grid grid-cols-2 grid-rows-2 gap-2 h-fit">

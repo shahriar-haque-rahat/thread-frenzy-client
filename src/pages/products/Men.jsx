@@ -21,7 +21,7 @@ const Men = () => {
     };
 
     return (
-        <div className="px-[3%]">
+        <div className="px-[3%] pb-32">
             <div className="flex justify-center items-center h-40 mb-10 border-b shadow-lg">
                 <h1 className="text-4xl">Men Collections</h1>
             </div>

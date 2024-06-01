@@ -14,7 +14,7 @@ const Root = () => {
             <div className=" max-w-[1440px] mx-auto">
                 <Outlet></Outlet>
             </div>
-            <div className=" bg-black text-white pb-10">
+            <div className=" bg-black text-white">
                 <Footer></Footer>
             </div>
         </div>

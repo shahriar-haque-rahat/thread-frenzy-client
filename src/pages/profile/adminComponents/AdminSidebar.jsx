@@ -26,7 +26,7 @@ const AdminSidebar = ({ userByEmail, isActive, setIsActive, }) => {
     };
 
     return (
-        <div className="bg-black h-screen w-[25%] text-white pl-6 pt-6 flex flex-col justify-between">
+        <div className="bg-black w-[25%] text-white pl-6 pt-6 flex flex-col justify-between">
             <div>
                 <Link to={'/'}><h1 className=" text-2xl font-bold">Thread Frenzy</h1></Link>
                 <div className=" space-y-2 py-6">
@@ -42,7 +42,7 @@ const AdminSidebar = ({ userByEmail, isActive, setIsActive, }) => {
                     <button onClick={() => setIsActive('account')} className={isActive === 'account' ? " flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : " flex gap-2 items-center text-lg py-2 pl-2"}><RiAccountCircleLine size={23} />Account</button>
                 </ul>
             </div>
-            <button onClick={handleUserSignOut} className=" mb-10 py-2 pl-5 border-y-2 border-l-2 text-xl font-semibold flex items-center gap-3">Sign Out <TbLogout size={26} /></button>
+            <button onClick={handleUserSignOut} className=" mb-10 mt-10 py-2 pl-5 border-y-2 border-l-2 font-semibold flex items-center gap-3">Sign Out <TbLogout size={20} /></button>
         </div>
     );
 };

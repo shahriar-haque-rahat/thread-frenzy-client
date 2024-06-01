@@ -15,7 +15,7 @@ const Cart = () => {
     const { user } = useContext(AuthContext);
     const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [quantities, setQuantities] = useState({});
-    const [isCheckingOut, setIsCheckingOut] = useState(() => JSON.parse(localStorage.getItem('isCheckingOut')) || false);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
 
 
     const handleQuantity = (id, operation) => {
@@ -99,9 +99,9 @@ const Cart = () => {
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
     const amountToPay = parseFloat(totalPrice) + 14.99;
 
-    useEffect(() => {
-        localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
-    }, [isCheckingOut]);
+    // useEffect(() => {
+    //     localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
+    // }, [isCheckingOut]);
 
     if (cartStatus === 'failed') {
         return <div>Error: {cartError}</div>;
@@ -110,7 +110,7 @@ const Cart = () => {
 
 
     return (
-        <div className="px-[3%] grid lg:grid-cols-5 gap-10">
+        <div className="px-[3%] grid lg:grid-cols-5 gap-10 pb-32">
             <div className="lg:col-span-3">
                 {
                     (cartItems.length === 0)

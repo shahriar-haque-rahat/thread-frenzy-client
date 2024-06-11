@@ -23,9 +23,9 @@ const Dashboard = () => {
     }
 
     return (
-        <div className=" font-clashGrotesk font-medium max-w-[1440px] mx-auto flex">
+        <div className=" font-clashGrotesk font-medium mx-auto flex">
             <Sidebar userByEmail={userByEmail}></Sidebar>
-            <div className=" mt-12 lg:mt-6 m-6 w-full lg:w-[75%]">
+            <div className=" mt-12 lg:mt-6 m-6 w-full lg:ml-[27%] lg:w-[75%]">
                 <Outlet></Outlet>
             </div>
         </div>

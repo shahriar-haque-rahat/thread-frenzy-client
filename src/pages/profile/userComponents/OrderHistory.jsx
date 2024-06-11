@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPayment } from "../../../redux/paymentSlice";
+import { getUserPayment } from "../../../redux/paymentSlice";
+import { AuthContext } from "../../../provider/AuthProvider";
 
 const OrderHistory = () => {
-
+    const { user } = useContext(AuthContext)
     const dispatch = useDispatch();
-    const { payment, paymentStatus, paymentError } = useSelector(state => state.payment)
+    const { userPayment, paymentStatus, paymentError } = useSelector(state => state.payment)
 
 
     useEffect(() => {
-        if (paymentStatus === 'idle') {
-            dispatch(getPayment())
+        if (user?.email) {
+            dispatch(getUserPayment(user?.email))
         }
-    }, [dispatch, paymentStatus])
+    }, [dispatch, paymentStatus, user])
 
     if (paymentStatus === 'failed') {
         return <div>Error: {paymentError}</div>;
@@ -32,7 +33,7 @@ const OrderHistory = () => {
                 <div className=" text-center">Status</div>
             </div>
             {
-                payment?.map(item => (
+                userPayment?.map(item => (
                     <div key={item._id} className=" grid grid-cols-8 gap-2 border-b border-gray-600">
                         <div className=" py-3 text-sm">{item.date.split('T')[0]}</div>
                         <div className=" col-span-5">

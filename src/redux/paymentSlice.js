@@ -16,6 +16,20 @@ export const getPayment = createAsyncThunk('payment/getPayment', async (_, { rej
     }
 });
 
+export const getUserPayment = createAsyncThunk('payment/getUserPayment', async (email, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/payment/${email}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const updatePaymentItem = createAsyncThunk('payment/updatePaymentItem', async ({ id, status }, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -52,6 +66,7 @@ const paymentSlice = createSlice({
         payment: [],
         paymentStatus: 'idle',
         paymentError: null,
+        userPayment: [],
     },
     extraReducers: (builder) => {
         builder
@@ -63,6 +78,17 @@ const paymentSlice = createSlice({
                 state.payment = action.payload;
             })
             .addCase(getPayment.rejected, (state, action) => {
+                state.paymentStatus = 'failed';
+                state.paymentError = action.payload || action.error.message;
+            })
+            .addCase(getUserPayment.pending, (state) => {
+                state.paymentStatus = 'loading';
+            })
+            .addCase(getUserPayment.fulfilled, (state, action) => {
+                state.paymentStatus = 'succeeded';
+                state.userPayment = action.payload;
+            })
+            .addCase(getUserPayment.rejected, (state, action) => {
                 state.paymentStatus = 'failed';
                 state.paymentError = action.payload || action.error.message;
             })

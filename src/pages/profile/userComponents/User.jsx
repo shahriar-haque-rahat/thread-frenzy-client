@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
-import Account from "./Account";
+import Sidebar from "../Sidebar";
+import Account from "../Account";
 import { useDispatch, useSelector } from "react-redux";
 import Wishlist from "./Wishlist";
 import OrderHistory from "./OrderHistory";
@@ -24,9 +24,9 @@ const User = ({ userByEmail }) => {
     }
 
     return (
-        <div className=" max-w-[1440px] mx-auto flex gap-6">
+        <div className=" max-w-[1440px] mx-auto flex">
             <Sidebar userByEmail={userByEmail} isActive={isActive} setIsActive={setIsActive}></Sidebar>
-            <div className=" w-[75%]">
+            <div className=" mt-12 lg:mt-6 m-6 w-full lg:w-[75%]">
                 {
                     (isActive === 'account') && <Account userByEmail={userByEmail}></Account>
                 }

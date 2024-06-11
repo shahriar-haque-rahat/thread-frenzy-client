@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { getUserByEmail, updateUser } from "../../../redux/userSlice";
+import { getUserByEmail, updateUser } from "../../redux/userSlice";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../provider/AuthProvider";
+import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -98,7 +98,7 @@ const Account = ({ userByEmail }) => {
     };
 
     return (
-        <div className="mt-6 mr-6">
+        <div>
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Account</h1>
             <div className="pt-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

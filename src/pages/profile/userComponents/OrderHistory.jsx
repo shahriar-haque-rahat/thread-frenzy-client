@@ -20,7 +20,7 @@ const OrderHistory = () => {
     }
 
     return (
-        <div className="mt-6 mr-6">
+        <div>
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Order History</h1>
             <div className=" pt-10 grid grid-cols-8 gap-2 border-y border-gray-600 font-bold pb-2">
                 <div>Date</div>

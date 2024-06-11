@@ -71,7 +71,7 @@ const ManageUsers = () => {
     }
 
     return (
-        <div className="mt-6 mr-6 space-y-10">
+        <div className="space-y-10">
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
             <div>
                 <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">Admin</h1>

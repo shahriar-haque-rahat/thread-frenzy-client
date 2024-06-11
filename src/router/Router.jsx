@@ -49,7 +49,7 @@ const Router = createBrowserRouter(
             ],
         },
         {
-            path: '/profile',
+            path: '/dashboard',
             element: <Dashboard></Dashboard>,
             errorElement: <Error></Error>,
         },

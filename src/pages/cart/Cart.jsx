@@ -7,8 +7,7 @@ import CheckOut from "./CheckOut";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
-
-const MySwal = withReactContent(Swal)
+const MySwal = withReactContent(Swal);
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -17,13 +16,19 @@ const Cart = () => {
     const [quantities, setQuantities] = useState({});
     const [isCheckingOut, setIsCheckingOut] = useState(false);
 
-
     const handleQuantity = (id, operation) => {
         setQuantities(prevQuantities => {
             const newQuantity = operation === "+" ? prevQuantities[id] + 1 : prevQuantities[id] - 1;
             const updatedQuantity = newQuantity < 1 ? 1 : newQuantity;
 
-            dispatch(updateCartItem({ id, quantity: updatedQuantity }));
+            dispatch(updateCartItem({ id, quantity: updatedQuantity }))
+                .unwrap()
+                .then(() => {
+                    dispatch(getCart(user.email));
+                })
+                .catch(error => {
+                    console.error('Update operation failed:', error);
+                });
 
             return {
                 ...prevQuantities,
@@ -95,19 +100,12 @@ const Cart = () => {
         }
     }, [cartItems, setQuantities]);
 
-
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
     const amountToPay = parseFloat(totalPrice) + 14.99;
-
-    // useEffect(() => {
-    //     localStorage.setItem('isCheckingOut', JSON.stringify(isCheckingOut));
-    // }, [isCheckingOut]);
 
     if (cartStatus === 'failed') {
         return <div>Error: {cartError}</div>;
     }
-
-
 
     return (
         <div className="px-[3%] grid lg:grid-cols-5 gap-10 pb-32">
@@ -120,11 +118,9 @@ const Cart = () => {
                                 !isCheckingOut
                                     ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
                                     : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
-
                             }
                         </div>
                 }
-
             </div>
             <div className="lg:col-span-2 space-y-6">
                 <h1 className="text-xl">Order Summary</h1>
@@ -148,7 +144,6 @@ const Cart = () => {
                             ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
                             : <button disabled={cartItems < 1} className="disabled:bg-gray-400 bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
                     }
-
                 </div>
             </div>
         </div>

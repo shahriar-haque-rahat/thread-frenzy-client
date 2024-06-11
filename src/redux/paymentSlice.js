@@ -16,7 +16,7 @@ export const getPayment = createAsyncThunk('payment/getPayment', async (_, { rej
     }
 });
 
-export const getUserPayment = createAsyncThunk('payment/getUserPayment', async (email, { rejectWithValue }) => {
+export const getUserSpecificPayment = createAsyncThunk('payment/getUserSpecificPayment', async (email, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
         const res = await axiosPrivate.get(`/payment/${email}`);
@@ -64,9 +64,9 @@ const paymentSlice = createSlice({
     name: 'payment',
     initialState: {
         payment: [],
+        userSpecificPayment: [],
         paymentStatus: 'idle',
         paymentError: null,
-        userPayment: [],
     },
     extraReducers: (builder) => {
         builder
@@ -81,14 +81,14 @@ const paymentSlice = createSlice({
                 state.paymentStatus = 'failed';
                 state.paymentError = action.payload || action.error.message;
             })
-            .addCase(getUserPayment.pending, (state) => {
+            .addCase(getUserSpecificPayment.pending, (state) => {
                 state.paymentStatus = 'loading';
             })
-            .addCase(getUserPayment.fulfilled, (state, action) => {
+            .addCase(getUserSpecificPayment.fulfilled, (state, action) => {
                 state.paymentStatus = 'succeeded';
-                state.userPayment = action.payload;
+                state.userSpecificPayment = action.payload;
             })
-            .addCase(getUserPayment.rejected, (state, action) => {
+            .addCase(getUserSpecificPayment.rejected, (state, action) => {
                 state.paymentStatus = 'failed';
                 state.paymentError = action.payload || action.error.message;
             })

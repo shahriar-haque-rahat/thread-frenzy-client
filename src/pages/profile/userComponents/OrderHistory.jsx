@@ -1,23 +1,30 @@
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserPayment } from "../../../redux/paymentSlice";
+import { getUserSpecificPayment } from "../../../redux/paymentSlice";
 import { AuthContext } from "../../../provider/AuthProvider";
+import { getUserByEmail } from "../../../redux/userSlice";
 
 const OrderHistory = () => {
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { userPayment, paymentStatus, paymentError } = useSelector(state => state.payment)
-
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { userSpecificPayment, paymentStatus, paymentError } = useSelector(state => state.payment);
 
     useEffect(() => {
-        if (user?.email) {
-            dispatch(getUserPayment(user?.email))
+        if (user) {
+            dispatch(getUserByEmail(user?.email))
         }
-    }, [dispatch, paymentStatus, user])
+    }, [dispatch, user])
 
-    if (paymentStatus === 'failed') {
-        return <div>Error: {paymentError}</div>;
+    useEffect(() => {
+        if (userByEmailStatus ==='succeeded') {
+            dispatch(getUserSpecificPayment(userByEmail.userEmail));
+        }
+    }, [dispatch, userByEmailStatus, paymentStatus, userByEmail]);
+
+    if (paymentStatus === 'failed' || userByEmailStatus === 'failed') {
+        return <div>Error: {paymentError || userByEmailError}</div>;
     }
 
     return (
@@ -33,17 +40,17 @@ const OrderHistory = () => {
                 <div className=" text-center">Status</div>
             </div>
             {
-                userPayment?.map(item => (
+                userSpecificPayment?.map(item => (
                     <div key={item._id} className=" grid grid-cols-8 gap-2 border-b border-gray-600">
                         <div className=" py-3 text-sm">{item.date.split('T')[0]}</div>
                         <div className=" col-span-5">
                             {
-                                item.orderedItems.map((item, idx) => (
+                                item.orderedItems.map((orderedItem, idx) => (
                                     <div key={idx} className="grid grid-cols-5 gap-2 py-2">
-                                        <Link className=" col-span-2" to={`/product-details/${item.itemId}`}>{item.name}</Link>
-                                        <div className=" text-center">{item.color}</div>
-                                        <div className=" text-center">{item.size}</div>
-                                        <div className=" text-center">{item.quantity}</div>
+                                        <Link className=" col-span-2" to={`/product-details/${orderedItem.itemId}`}>{orderedItem.name}</Link>
+                                        <div className=" text-center">{orderedItem.color}</div>
+                                        <div className=" text-center">{orderedItem.size}</div>
+                                        <div className=" text-center">{orderedItem.quantity}</div>
                                     </div>
                                 ))
                             }

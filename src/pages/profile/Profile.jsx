@@ -10,7 +10,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const Account = () => {
+const Profile = () => {
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
     const { user } = useContext(AuthContext);
@@ -111,7 +111,7 @@ const Account = () => {
 
     return (
         <div>
-            <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Account</h1>
+            <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Profile</h1>
             <div className="pt-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div className="flex gap-6">
@@ -195,4 +195,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default Profile;

@@ -124,7 +124,7 @@ const Navbar = () => {
                                 </div>
                                 <ul tabIndex={0} className="dropdown-content menu z-[50] p-3 shadow bg-white w-44 space-y-3 border border-black">
                                     <h1 className=" font-semibold text-lg">{user.displayName}</h1>
-                                    <Link to={'/dashboard'} className=" border-y border-gray-300 hover:border-y hover:border-black py-1 text-start"><button>Profile</button></Link>
+                                    <Link to={'/dashboard/profile'} className=" border-y border-gray-300 hover:border-y hover:border-black py-1 text-start"><button>Profile</button></Link>
                                     <button onClick={handleUserSignOut} className=" bg-black text-white py-1 w-full">Sign Out</button>
                                 </ul>
                             </div>

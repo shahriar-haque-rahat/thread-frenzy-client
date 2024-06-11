@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
@@ -15,7 +15,7 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const Sidebar = ({ userByEmail, isActive, setIsActive }) => {
+const Sidebar = ({ userByEmail }) => {
     const { userSignOut } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -36,6 +36,84 @@ const Sidebar = ({ userByEmail, isActive, setIsActive }) => {
             {
                 userByEmail.role === 'admin'
                     ? <ul className="flex flex-col gap-2 border-t pt-3">
+                        <NavLink to={"/"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <IoHomeOutline size={21} /> Home
+                        </NavLink>
+                        <NavLink to={"/dashboard/sales-overview"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <BsGraphUpArrow />Sales Overview
+                        </NavLink>
+                        <NavLink to={"/dashboard/manage-products"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <MdOutlineProductionQuantityLimits size={21} />Manage Products
+                        </NavLink>
+                        <NavLink to={"/dashboard/manage-orders"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <AiOutlineProduct size={21} />Manage Orders
+                        </NavLink>
+                        <NavLink to={"/dashboard/manage-users"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <HiOutlineUsers size={21} />Manage Users
+                        </NavLink>
+                        <NavLink to={"/dashboard"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <RiAccountCircleLine size={23} />Account
+                        </NavLink>
+                    </ul>
+
+                    : <ul className="flex flex-col gap-2 border-t pt-3">
+                        <NavLink to={"/"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <IoHome size={23} /> Home
+                        </NavLink>
+                        <NavLink to={"/dashboard"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <RiAccountCircleFill size={23} />Account
+                        </NavLink>
+                        <NavLink to={"/dashboard/wishlist"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <MdBookmarks />Wishlist
+                        </NavLink>
+                        <NavLink to={"/dashboard/order-history"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <FaCartShopping />Order History
+                        </NavLink>
+                    </ul>
+            }
+            {/* {
+                userByEmail.role === 'admin'
+                    ? <ul className="flex flex-col gap-2 border-t pt-3">
                         <Link to={'/'}><button onClick={() => setIsActive('home')} className={isActive === 'home' ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : "flex gap-2 items-center text-lg py-2 pl-2"}><IoHomeOutline size={21} /> Home</button></Link>
                         <button onClick={() => setIsActive('salesOverview')} className={isActive === 'salesOverview' ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : "flex gap-2 items-center text-lg py-2 pl-2"}><BsGraphUpArrow />Sales Overview</button>
                         <button onClick={() => setIsActive('manageProducts')} className={isActive === 'manageProducts' ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : "flex gap-2 items-center text-lg py-2 pl-2"}><MdOutlineProductionQuantityLimits size={21} />Manage Products</button>
@@ -49,7 +127,7 @@ const Sidebar = ({ userByEmail, isActive, setIsActive }) => {
                         <button onClick={() => setIsActive('wishlist')} className={isActive === 'wishlist' ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : "flex gap-2 items-center text-lg py-2 pl-2"}><MdBookmarks />Wishlist</button>
                         <button onClick={() => setIsActive('orders')} className={isActive === 'orders' ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white" : "flex gap-2 items-center text-lg py-2 pl-2"}><FaCartShopping />Order History</button>
                     </ul>
-            }
+            } */}
         </>
     );
 

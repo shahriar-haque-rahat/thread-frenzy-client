@@ -1,9 +1,9 @@
-import User from "./userComponents/User"
-import Admin from "./adminComponents/Admin"
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect } from "react";
 import { getUserByEmail } from "../../redux/userSlice";
 import { AuthContext } from "../../provider/AuthProvider";
+import Sidebar from "./Sidebar";
+import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
     const dispatch = useDispatch();
@@ -16,17 +16,18 @@ const Dashboard = () => {
         }
     }, [dispatch, user])
 
+
+
     if (userByEmailStatus === 'failed') {
         return <div>Error: {userByEmailError}</div>;
     }
 
     return (
-        <div className=" font-clashGrotesk font-medium">
-            {
-                (userByEmail.role === 'admin')
-                ? <Admin userByEmail={userByEmail} getUserByEmail={getUserByEmail} userEmail={user?.email} dispatchFunc={getUserByEmail(user?.email)}></Admin>
-                : <User userByEmail={userByEmail} getUserByEmail={getUserByEmail} userEmail={user?.email}></User>
-            }
+        <div className=" font-clashGrotesk font-medium max-w-[1440px] mx-auto flex">
+            <Sidebar userByEmail={userByEmail}></Sidebar>
+            <div className=" mt-12 lg:mt-6 m-6 w-full lg:w-[75%]">
+                <Outlet></Outlet>
+            </div>
         </div>
     );
 };

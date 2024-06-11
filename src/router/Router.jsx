@@ -9,6 +9,13 @@ import SignIn from "../pages/loginRegister/SignIn";
 import SignUp from "../pages/loginRegister/SignUp";
 import Cart from "../pages/cart/Cart";
 import Dashboard from "../pages/profile/Dashboard";
+import Profile from "../pages/profile/Profile";
+import OrderHistory from "../pages/profile/userComponents/OrderHistory";
+import Wishlist from "../pages/profile/userComponents/Wishlist";
+import SalesOverview from "../pages/profile/adminComponents/SalesOverview";
+import ManageProducts from "../pages/profile/adminComponents/ManageProducts";
+import ManageOrders from "../pages/profile/adminComponents/ManageOrders";
+import ManageUsers from "../pages/profile/adminComponents/ManageUsers";
 
 
 const Router = createBrowserRouter(
@@ -52,6 +59,36 @@ const Router = createBrowserRouter(
             path: '/dashboard',
             element: <Dashboard></Dashboard>,
             errorElement: <Error></Error>,
+            children: [
+                {
+                    path: '/dashboard',
+                    element: <Profile></Profile>
+                },
+                {
+                    path: '/dashboard/wishlist',
+                    element: <Wishlist></Wishlist>
+                },
+                {
+                    path: '/dashboard/order-history',
+                    element: <OrderHistory></OrderHistory>
+                },
+                {
+                    path: '/dashboard/sales-overview',
+                    element: <SalesOverview></SalesOverview>
+                },
+                {
+                    path: '/dashboard/manage-products',
+                    element: <ManageProducts></ManageProducts>
+                },
+                {
+                    path: '/dashboard/manage-orders',
+                    element: <ManageOrders></ManageOrders>
+                },
+                {
+                    path: '/dashboard/manage-users',
+                    element: <ManageUsers></ManageUsers>
+                },
+            ]
         },
     ]
 )

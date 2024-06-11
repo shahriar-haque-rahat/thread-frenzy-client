@@ -1,17 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getWishlist } from "../../../redux/wishlistSlice";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { deleteWishlistItem } from "../../../redux/wishlistSlice";
 import { Link } from "react-router-dom";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { AuthContext } from "../../../provider/AuthProvider";
+import { getUserByEmail } from "../../../redux/userSlice";
 
 
 const MySwal = withReactContent(Swal)
 
-const Wishlist = ({ userId }) => {
+const Wishlist = () => {
     const dispatch = useDispatch();
+    const { user } = useContext(AuthContext);
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { wishlistItems, wishlistStatus, wishlistError } = useSelector(state => state.wishlist);
 
 
@@ -36,14 +40,22 @@ const Wishlist = ({ userId }) => {
         })
     }
 
-    useEffect(() => {
-        if (wishlistStatus === "idle") {
-            dispatch(getWishlist(userId));
-        }
-    }, [dispatch, wishlistStatus, userId]);
 
-    if (wishlistStatus === 'failed') {
-        return <div>Error: {wishlistError}</div>;
+    useEffect(() => {
+        if (user) {
+            dispatch(getUserByEmail(user?.email))
+        }
+    }, [dispatch, user])
+
+    useEffect(() => {
+        if (userByEmailStatus === "succeeded" && wishlistStatus === "idle") {
+            dispatch(getWishlist(userByEmail._id));
+        }
+    }, [dispatch, wishlistStatus, userByEmail, userByEmailStatus]);
+
+
+    if (userByEmailStatus === 'failed' || wishlistStatus === 'failed') {
+        return <div>Error: {userByEmailError || wishlistError}</div>;
     }
 
     return (

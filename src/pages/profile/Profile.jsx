@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserByEmail, updateUser } from "../../redux/userSlice";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
@@ -10,9 +10,11 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const Account = ({ userByEmail }) => {
+const Account = () => {
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
+    const { user } = useContext(AuthContext);
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
         defaultValues: {
@@ -54,7 +56,7 @@ const Account = ({ userByEmail }) => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+
             if (res.data && res.data.data && res.data.data.url) {
                 const imageUrl = res.data.data.url;
                 setPreviewUrl(imageUrl);
@@ -67,13 +69,13 @@ const Account = ({ userByEmail }) => {
         } finally {
             setUploading(false);
         }
-    };    
+    };
 
     const onSubmit = async (data) => {
         if (uploadedImageUrl) {
             data.photoUrl = uploadedImageUrl;
         }
-        
+
         console.log(data);
 
         if (userByEmail?._id) {
@@ -96,6 +98,16 @@ const Account = ({ userByEmail }) => {
             uploadImage(file);
         }
     };
+
+    useEffect(() => {
+        if (user) {
+            dispatch(getUserByEmail(user?.email))
+        }
+    }, [dispatch, user])
+
+    if (userByEmailStatus === 'failed') {
+        return <div>Error: {userByEmailError}</div>;
+    }
 
     return (
         <div>

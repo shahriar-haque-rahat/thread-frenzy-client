@@ -13,6 +13,7 @@ import { getUserByEmail } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
+import { getReview } from "../../redux/reviewSlice";
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
@@ -21,6 +22,7 @@ const ProductDetails = () => {
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
     const { wishlistItems, wishlistStatus, wishlistError } = useSelector(state => state.wishlist);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
@@ -29,6 +31,22 @@ const ProductDetails = () => {
     const [selectedSize, setSelectedSize] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [wishlisted, setWishlisted] = useState();
+
+    // Rating calculation
+    const validRatings = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+    const roundToNearestValidRating = (value) => {
+        return validRatings.reduce((prev, curr) => Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev);
+    };
+    const calculateAverageRating = (items) => {
+        const totalRatings = items.reduce((sum, item) => sum + roundToNearestValidRating(item.rating), 0);
+        const average = items.length ? totalRatings / items.length : 0;
+        return roundToNearestValidRating(average);
+    };
+    const [overallRating, setOverallRating] = useState(calculateAverageRating(reviewItems) || 0);
+
+    useEffect(() => {
+        setOverallRating(calculateAverageRating(reviewItems));
+    }, [reviewItems]);
 
 
     const handleQuantity = (e) => {
@@ -129,9 +147,15 @@ const ProductDetails = () => {
 
     }, [wishlistItems, selectedItem]);
 
+    useEffect(() => {
+        if (reviewStatus === 'idle') {
+            dispatch(getReview(itemId));
+        }
+    }, [itemId, reviewStatus, dispatch]);
 
-    if (singleProductStatus === 'failed' || userByEmailError === 'failed') {
-        return <div>Error: {error} || {userByEmailError}</div>;
+
+    if (singleProductStatus === 'failed' || userByEmailError === 'failed' || reviewStatus === 'failed') {
+        return <div>Error: {error} || {userByEmailError || reviewError}</div>;
     }
 
     return (
@@ -153,9 +177,14 @@ const ProductDetails = () => {
                                         : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
                                 }
                             </div>
-                            <div>
-                                <ReactStars value={selectedItem.rating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} />
-                            </div>
+                            {
+                                overallRating === 0
+                                    ? <p>No reviews yet</p>
+                                    : <div>
+                                        <ReactStars value={overallRating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} key={overallRating} />
+                                    </div>
+                            }
+
                             <p className="text-xl text-green-500 font-semibold">${selectedItem.price}</p>
                             <ul className="flex gap-3">Colors:
                                 {selectedItem.color?.map((item, index) => (
@@ -216,7 +245,7 @@ const ProductDetails = () => {
                     </div>
                 )}
                 <SimilarProducts itemBrand={selectedItem?.brand} itemId={itemId}></SimilarProducts>
-                <Review productId={itemId} user={userByEmail}></Review>
+                <Review reviewItems={reviewItems} productId={itemId} user={userByEmail}></Review>
             </div>
         </div>
     );

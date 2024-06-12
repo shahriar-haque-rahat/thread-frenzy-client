@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addReview, deleteReview, getReview } from "../../redux/reviewSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -8,16 +8,11 @@ import ReactStars from "react-rating-stars-component";
 
 const MySwal = withReactContent(Swal);
 
-const Review = ({ productId, user }) => {
+const Review = ({ reviewItems, productId, user }) => {
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
     const [rating, setRating] = useState(0);
 
-
-    useEffect(() => {
-        dispatch(getReview(productId));
-    }, [productId, dispatch]);
 
     const onSubmit = (data) => {
         const review = {
@@ -83,10 +78,6 @@ const Review = ({ productId, user }) => {
             }
         });
     };
-
-    if (reviewStatus === 'failed') {
-        return <div>Error: {reviewError}</div>;
-    }
 
     return (
         <div className="border shadow-lg p-6 mt-10">

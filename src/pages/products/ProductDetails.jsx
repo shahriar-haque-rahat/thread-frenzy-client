@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getItemById } from "../../redux/dataSlice";
-import { getCart, addToCart } from "../../redux/cartSlice";
+import { addToCart } from "../../redux/cartSlice";
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import ReactStars from "react-rating-stars-component";
 import SimilarProducts from "./SimilarProducts";
@@ -12,6 +12,7 @@ import { addToWishlist, deleteWishlistItem, getWishlist } from "../../redux/wish
 import { getUserByEmail } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Review from "./Review";
 
 const ProductDetails = () => {
     const { user } = useContext(AuthContext);
@@ -29,7 +30,6 @@ const ProductDetails = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [wishlisted, setWishlisted] = useState();
 
-    console.log(wishlisted);
 
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
@@ -215,8 +215,8 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 )}
-                <h1 className="text-3xl font-semibold mt-20 mb-10">You may also like</h1>
                 <SimilarProducts itemBrand={selectedItem?.brand} itemId={itemId}></SimilarProducts>
+                <Review productId={itemId} user={userByEmail}></Review>
             </div>
         </div>
     );

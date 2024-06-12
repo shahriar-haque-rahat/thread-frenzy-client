@@ -30,6 +30,7 @@ const SimilarProducts = ({ itemBrand, itemId }) => {
 
     return (
         <>
+            <h1 className="text-3xl font-semibold mt-20 mb-10">You may also like</h1>
             <Swiper
                 modules={[Scrollbar, Navigation, Autoplay]}
                 spaceBetween={20}

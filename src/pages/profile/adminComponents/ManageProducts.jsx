@@ -167,7 +167,7 @@ const ManageProducts = () => {
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                 <AddProductForm closeModal={closeModal} allData={allData} />
             </Modal>
-            <div className=' overflow-x-scroll'>
+            <div>
                 <div className="grid grid-cols-8 gap-3 font-bold border-b-2 border-gray-800 py-2">
                     <div></div>
                     <div className="col-span-2">Name</div>

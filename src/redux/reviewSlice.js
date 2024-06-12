@@ -102,17 +102,6 @@ const reviewSlice = createSlice({
                 state.reviewStatus = 'failed';
                 state.reviewError = action.payload || action.error.message;
             })
-            .addCase(deleteReview.pending, (state) => {
-                state.reviewStatus = 'loading';
-            })
-            .addCase(deleteReview.fulfilled, (state, action) => {
-                state.reviewStatus = 'succeeded';
-                state.reviewItems = state.reviewItems.filter(review => review.id !== action.payload.id);
-            })
-            .addCase(deleteReview.rejected, (state, action) => {
-                state.reviewStatus = 'failed';
-                state.reviewError = action.payload || action.error.message;
-            });
     },
 });
 

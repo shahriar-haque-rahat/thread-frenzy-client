@@ -1,16 +1,21 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addReview, getReview } from "../../redux/reviewSlice";
+import { addReview, deleteReview, getReview } from "../../redux/reviewSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useEffect } from "react";
+
 
 const MySwal = withReactContent(Swal);
 
 const Review = ({ productId, user }) => {
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
+
+    useEffect(() => {
+        dispatch(getReview(productId));
+    }, [productId, dispatch]);
 
     const onSubmit = (data) => {
         const review = {
@@ -34,6 +39,7 @@ const Review = ({ productId, user }) => {
                         confirmButton: 'square'
                     }
                 });
+                reset();
             })
             .catch((error) => {
                 MySwal.fire({
@@ -50,9 +56,29 @@ const Review = ({ productId, user }) => {
             });
     };
 
-    useEffect(() => {
-        dispatch(getReview(productId));
-    }, [productId, dispatch]);
+    const handleDelete = (id) => {
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                popup: 'square',
+                confirmButton: 'square',
+                cancelButton: 'square',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteReview(id))
+                    .then(() => {
+                        dispatch(getReview(productId))
+                    })
+            }
+        })
+    }
 
     if (reviewStatus === 'failed') {
         return <div>Error: {reviewError}</div>;
@@ -76,9 +102,12 @@ const Review = ({ productId, user }) => {
                 {
                     reviewItems.length > 0
                         ? reviewItems.map((item) => (
-                            <div key={item.id} className="py-4">
+                            <div key={item.id} className="py-4 space-y-2">
                                 <p className="font-bold">{item.userName}</p>
                                 <p>{item.review}</p>
+                                {
+                                    (item.userEmail === user.userEmail) && <button onClick={() => handleDelete(item._id)} className="text-xs text-red-500">Delete</button>
+                                }
                             </div>
                         ))
                         :

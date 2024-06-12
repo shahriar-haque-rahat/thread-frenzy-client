@@ -111,10 +111,10 @@ const Profile = () => {
 
     return (
         <div>
-            <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Profile</h1>
+            <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Profile</h1>
             <div className="pt-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="flex gap-6">
+                    <div className="flex flex-wrap gap-6">
                         <div className="form-control relative w-full">
                             <input
                                 id="firstName"
@@ -148,7 +148,7 @@ const Profile = () => {
                     </div>
 
                     <p className="text-xl">Contact Information</p>
-                    <div className="flex gap-6">
+                    <div className="flex flex-wrap gap-6">
                         <div className="form-control relative w-full">
                             <input
                                 defaultValue={userByEmail?.userEmail}

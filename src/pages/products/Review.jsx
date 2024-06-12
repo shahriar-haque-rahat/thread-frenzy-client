@@ -116,7 +116,7 @@ const Review = ({ reviewItems, productId, user }) => {
                         <div key={item._id} className="py-5 space-y-2">
                             <span className=" flex gap-2 items-center">
                                 <p className="font-bold">{item.userName}</p>
-                                <p className=" text-xs">{item.date.slice(0, item.date.indexOf('T'))}</p>
+                                <p className=" text-xs">[{item.date.slice(0, item.date.indexOf('T'))}]</p>
                             </span>
                             <ReactStars
                                 count={5}

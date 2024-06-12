@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { addUser } from "../redux/userSlice";
+import { addUser, resetUserState } from "../redux/userSlice";
 
 
 export const AuthContext = createContext(null);
@@ -30,7 +30,10 @@ const AuthProvider = ({ children }) => {
     }
 
     const userSignOut = () => {
-        return signOut(auth)
+        return signOut(auth).then(() => {
+            dispatch(resetUserState());
+            setUser(null);
+        });
     }
 
     const updateUserProfile = (name, photoUrl) => {
@@ -55,11 +58,11 @@ const AuthProvider = ({ children }) => {
     }
 
     const userDatabaseEntry = (firstName, userEmail, photoUrl) => {
-        const userInfo = { 
-            firstName, 
+        const userInfo = {
+            firstName,
             lastName: null,
             address: null,
-            userEmail, 
+            userEmail,
             photoUrl,
             role: 'user',
         };

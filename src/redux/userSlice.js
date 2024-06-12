@@ -87,6 +87,10 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (id, { rejec
     }
 });
 
+export const resetUserState = createAsyncThunk('user/resetUserState', async (_, { rejectWithValue }) => {
+    return null;
+});
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -143,6 +147,10 @@ const userSlice = createSlice({
                 state.userStatus = 'failed';
                 state.userError = action.payload || action.error.message;
             })
+            .addCase(resetUserState.fulfilled, (state) => {
+                state.user = [];
+                state.userByEmail = {};
+            });
     }
 })
 

@@ -114,7 +114,10 @@ const Review = ({ reviewItems, productId, user }) => {
                 {reviewItems.length > 0 ? (
                     reviewItems.slice().reverse().map((item) => (
                         <div key={item._id} className="py-5 space-y-2">
-                            <p className="font-bold">{item.userName}</p>
+                            <span className=" flex gap-2 items-center">
+                                <p className="font-bold">{item.userName}</p>
+                                <p className=" text-xs">{item.date.slice(0, item.date.indexOf('T'))}</p>
+                            </span>
                             <ReactStars
                                 count={5}
                                 size={24}
@@ -123,7 +126,6 @@ const Review = ({ reviewItems, productId, user }) => {
                                 edit={false}
                                 activeColor="#ffd700"
                             />
-                            <p>Rating: {item.rating}</p>
                             <p>{item.review}</p>
                             {item.userEmail === user.userEmail && (
                                 <button onClick={() => handleDelete(item._id)} className="text-xs text-red-500">

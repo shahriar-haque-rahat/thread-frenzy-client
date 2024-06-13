@@ -25,9 +25,9 @@ const Men = () => {
             <div className="flex justify-center items-center h-40 mb-10 border-b shadow-lg">
                 <h1 className="text-4xl">Men Collections</h1>
             </div>
-            <div className="grid grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <Filters collections={menCollections} setFilteredData={setFilteredData} onFilterChange={handleFilterChange} />
-                <div className="col-span-4 overflow-y-scroll h-screen">
+                <div className="lg:col-span-4 overflow-y-scroll h-screen">
                     <SliderCards data={filteredData} />
                 </div>
             </div>

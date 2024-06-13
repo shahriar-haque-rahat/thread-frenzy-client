@@ -68,7 +68,7 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
     }, [selectedBrands, selectedPrices, selectedSizes, selectedRatings, collections]);
 
     return (
-        <div>
+        <div className=" md:flex lg:flex-col border-b border-gray-400 h-fit">
             <div className="collapse border-t border-gray-400 rounded-none">
                 <input type="checkbox" className="peer" checked={isBrandOpen} onChange={() => setIsBrandOpen(!isBrandOpen)} />
                 <div className="collapse-title flex items-center justify-between">
@@ -126,7 +126,7 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
                 </div>
             </div>
 
-            <div className="collapse border-y border-gray-400 rounded-none">
+            <div className="collapse border-t border-gray-400 rounded-none">
                 <input type="checkbox" className="peer" checked={isRatingOpen} onChange={() => setIsRatingOpen(!isRatingOpen)} />
                 <div className="collapse-title flex items-center justify-between">
                     Rating {isRatingOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}

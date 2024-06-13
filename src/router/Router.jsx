@@ -16,6 +16,8 @@ import SalesOverview from "../pages/profile/adminComponents/SalesOverview";
 import ManageProducts from "../pages/profile/adminComponents/ManageProducts";
 import ManageOrders from "../pages/profile/adminComponents/ManageOrders";
 import ManageUsers from "../pages/profile/adminComponents/ManageUsers";
+import PrivateRouter from "./PrivateRouter";
+import AdminRouter from "./AdminRouter";
 
 
 const Router = createBrowserRouter(
@@ -39,7 +41,7 @@ const Router = createBrowserRouter(
                 },
                 {
                     path: '/product-details/:itemId',
-                    element: <ProductDetails></ProductDetails>
+                    element: <PrivateRouter><ProductDetails></ProductDetails></PrivateRouter>
                 },
                 {
                     path: '/sign-in',
@@ -51,7 +53,7 @@ const Router = createBrowserRouter(
                 },
                 {
                     path: '/cart',
-                    element: <Cart></Cart>
+                    element: <PrivateRouter><Cart></Cart></PrivateRouter>
                 },
             ],
         },
@@ -62,31 +64,31 @@ const Router = createBrowserRouter(
             children: [
                 {
                     path: '/dashboard/profile',
-                    element: <Profile></Profile>
+                    element: <PrivateRouter><Profile></Profile></PrivateRouter>
                 },
                 {
                     path: '/dashboard/wishlist',
-                    element: <Wishlist></Wishlist>
+                    element: <PrivateRouter><Wishlist></Wishlist></PrivateRouter>
                 },
                 {
                     path: '/dashboard/order-history',
-                    element: <OrderHistory></OrderHistory>
+                    element: <PrivateRouter><OrderHistory></OrderHistory></PrivateRouter>
                 },
                 {
                     path: '/dashboard/sales-overview',
-                    element: <SalesOverview></SalesOverview>
+                    element: <AdminRouter><SalesOverview></SalesOverview></AdminRouter>
                 },
                 {
                     path: '/dashboard/manage-products',
-                    element: <ManageProducts></ManageProducts>
+                    element: <AdminRouter><ManageProducts></ManageProducts></AdminRouter>
                 },
                 {
                     path: '/dashboard/manage-orders',
-                    element: <ManageOrders></ManageOrders>
+                    element: <AdminRouter><ManageOrders></ManageOrders></AdminRouter>
                 },
                 {
                     path: '/dashboard/manage-users',
-                    element: <ManageUsers></ManageUsers>
+                    element: <AdminRouter><ManageUsers></ManageUsers></AdminRouter>
                 },
             ]
         },

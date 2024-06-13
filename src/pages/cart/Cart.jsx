@@ -6,6 +6,7 @@ import CartItem from "./CartItem";
 import CheckOut from "./CheckOut";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import CartSkeleton from "../skeletons/CartSkeleton";
 
 const MySwal = withReactContent(Swal);
 
@@ -102,6 +103,10 @@ const Cart = () => {
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
     const amountToPay = parseFloat(totalPrice) + 14.99;
+
+    if (cartStatus === 'loading') {
+        return <CartSkeleton/>
+    }
 
     if (cartStatus === 'failed') {
         return <div>Error: {cartError}</div>;

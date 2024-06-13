@@ -6,6 +6,7 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -97,6 +98,10 @@ const Profile = () => {
             uploadImage(file);
         }
     };
+
+    if (userByEmailStatus === 'succeeded') {
+        return <ProfileSkeleton/>;
+    }
 
     if (userByEmailStatus === 'failed') {
         return <div>Error: {userByEmailError}</div>;

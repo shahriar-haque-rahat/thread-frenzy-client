@@ -3,6 +3,7 @@ import { allData } from "../../redux/dataSlice";
 import { useEffect, useState } from "react";
 import SliderCards from "./SliderCards";
 import Filters from "./Filters";
+import CollectionsSkeleton from "../skeletons/CollectionsSkeleton";
 
 const Men = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,12 @@ const Men = () => {
         setFilters(newFilters);
     };
 
+
+    if (allDataStatus === 'loading') {
+        return <CollectionsSkeleton/>
+    }
+
+    
     return (
         <div className="px-[3%] pb-32">
             <div className="flex justify-center items-center h-40 mb-10 border-b shadow-lg">

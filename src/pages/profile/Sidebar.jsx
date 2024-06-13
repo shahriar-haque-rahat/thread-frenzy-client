@@ -29,9 +29,9 @@ const Sidebar = ({ userByEmail }) => {
 
     const Menu = () => (
         <>
-            <div className="space-y-2 py-6">
-                <img className="h-36 w-36 object-cover object-top" src={userByEmail?.photoUrl} alt="" />
-                <p className="text-xl">{userByEmail?.firstName}</p>
+            <div className="py-6 flex gap-2 items-end">
+                <img className="h-24 w-24 object-cover object-top" src={userByEmail?.photoUrl} alt="" />
+                <p>{userByEmail?.firstName}</p>
             </div>
             {
                 userByEmail.role === 'admin'

@@ -9,9 +9,9 @@ const CollectionsSkeleton = () => {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="space-y-4">
                     <div className="h-10 bg-gray-300 animate-pulse"></div>
-                    <div className="h-10 bg-gray-300 animate-pulse"></div>
-                    <div className="h-10 bg-gray-300 animate-pulse"></div>
-                    <div className="h-10 bg-gray-300 animate-pulse"></div>
+                    <div className="h-10 bg-gray-300 animate-pulse block md:hidden lg:block"></div>
+                    <div className="h-10 bg-gray-300 animate-pulse block md:hidden lg:block"></div>
+                    <div className="h-10 bg-gray-300 animate-pulse block md:hidden lg:block"></div>
                 </div>
                 <div className="flex gap-4">
                     {[...Array(3)].map((_, index) => (

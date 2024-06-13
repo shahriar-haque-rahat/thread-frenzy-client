@@ -6,6 +6,7 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { Helmet } from "react-helmet-async";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -103,7 +104,10 @@ const Profile = () => {
     }
 
     return (
-        <div>
+        <>
+            <Helmet>
+                <title>Profile | Thread Frenzy</title>
+            </Helmet>
             <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Profile</h1>
             <div className="pt-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -184,7 +188,7 @@ const Profile = () => {
                     </div>
                 </form>
             </div>
-        </div>
+        </>
     );
 };
 

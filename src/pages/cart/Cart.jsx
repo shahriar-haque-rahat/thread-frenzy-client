@@ -6,6 +6,7 @@ import CartItem from "./CartItem";
 import CheckOut from "./CheckOut";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { Helmet } from "react-helmet-async";
 
 const MySwal = withReactContent(Swal);
 
@@ -108,45 +109,50 @@ const Cart = () => {
     }
 
     return (
-        <div className="px-[3%] grid lg:grid-cols-5 gap-10 pb-32">
-            <div className="lg:col-span-3">
-                {
-                    (cartItems.length === 0)
-                        ? <p className=" text-lg">Cart is empty</p>
-                        : <div>
-                            {
-                                !isCheckingOut
-                                    ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
-                                    : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
-                            }
-                        </div>
-                }
-            </div>
-            <div className="lg:col-span-2 space-y-6">
-                <h1 className="text-xl">Order Summary</h1>
-                <div className="border-y border-gray-300 w-full space-y-3 py-6 px-2">
-                    <div className="flex justify-between">
-                        <p>Total</p>
-                        <p>${totalPrice}</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>Shipping Fees</p>
-                        {cartItems.length > 0 ? <p>$14.99</p> : <p>$0.00</p>}
-                    </div>
-                </div>
-                <div className="flex justify-between px-2 text-lg font-semibold">
-                    <p>Subtotal</p>
-                    {cartItems.length > 0 ? <p>${(parseFloat(totalPrice) + 14.99).toFixed(2)}</p> : <p>$0.00</p>}
-                </div>
-                <div className="px-2">
+        <>
+            <Helmet>
+                <title>Cart | Thread Frenzy</title>
+            </Helmet>
+            <div className="px-[3%] grid lg:grid-cols-5 gap-10 pb-32">
+                <div className="lg:col-span-3">
                     {
-                        isCheckingOut
-                            ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
-                            : <button disabled={cartItems < 1} className="disabled:bg-gray-400 bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
+                        (cartItems.length === 0)
+                            ? <p className=" text-lg">Cart is empty</p>
+                            : <div>
+                                {
+                                    !isCheckingOut
+                                        ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
+                                        : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
+                                }
+                            </div>
                     }
                 </div>
+                <div className="lg:col-span-2 space-y-6">
+                    <h1 className="text-xl">Order Summary</h1>
+                    <div className="border-y border-gray-300 w-full space-y-3 py-6 px-2">
+                        <div className="flex justify-between">
+                            <p>Total</p>
+                            <p>${totalPrice}</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p>Shipping Fees</p>
+                            {cartItems.length > 0 ? <p>$14.99</p> : <p>$0.00</p>}
+                        </div>
+                    </div>
+                    <div className="flex justify-between px-2 text-lg font-semibold">
+                        <p>Subtotal</p>
+                        {cartItems.length > 0 ? <p>${(parseFloat(totalPrice) + 14.99).toFixed(2)}</p> : <p>$0.00</p>}
+                    </div>
+                    <div className="px-2">
+                        {
+                            isCheckingOut
+                                ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
+                                : <button disabled={cartItems < 1} className="disabled:bg-gray-400 bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
+                        }
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

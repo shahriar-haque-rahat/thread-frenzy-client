@@ -4,6 +4,7 @@ import { getUser, updateUser } from "../../../redux/userSlice";
 // import { FaRegEdit } from "react-icons/fa";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { Helmet } from "react-helmet-async";
 
 
 const MySwal = withReactContent(Swal)
@@ -71,72 +72,77 @@ const ManageUsers = () => {
     }
 
     return (
-        <div className="space-y-10 mr-2 md:mr-0">
-            <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
-            <div>
-                <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">Admin</h1>
+        <>
+            <Helmet>
+                <title>Manage Users | Thread Frenzy</title>
+            </Helmet>
+            <div className="space-y-10 mr-2 md:mr-0">
+                <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
+                <div>
+                    <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">Admin</h1>
 
-                <div className=" overflow-x-auto">
-                    <table className="table">
-                        <thead className="text-black font-bold pb-2">
-                            <tr className="border-b border-black">
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                admins?.map(user => (
-                                    <tr key={user._id} className="border-b border-gray-600 py-2">
-                                        <td>{user.firstName}</td>
-                                        <td>{user.userEmail}</td>
-                                        <td>{user.phoneNumber}</td>
-                                        <td>
-                                            <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button>
-                                        </td>
-                                        {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
+                    <div className=" overflow-x-auto">
+                        <table className="table">
+                            <thead className="text-black font-bold pb-2">
+                                <tr className="border-b border-black">
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    admins?.map(user => (
+                                        <tr key={user._id} className="border-b border-gray-600 py-2">
+                                            <td>{user.firstName}</td>
+                                            <td>{user.userEmail}</td>
+                                            <td>{user.phoneNumber}</td>
+                                            <td>
+                                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button>
+                                            </td>
+                                            {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div >
+
+                <div>
+                    <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">User</h1>
+
+                    <div className=" overflow-x-auto">
+                        <table className="table">
+                            <thead className="text-black font-bold pb-2">
+                                <tr className="border-b border-black">
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    users?.map(user => (
+                                        <tr key={user._id} className="border-b border-gray-600 py-2">
+                                            <td>{user.firstName}</td>
+                                            <td>{user.userEmail}</td>
+                                            <td>{user.phoneNumber}</td>
+                                            <td>
+                                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Make Admin</button>
+                                            </td>
+                                            {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div >
-
-            <div>
-                <h1 className=" text-white text-2xl font-bold bg-black py-2 text-center">User</h1>
-
-                <div className=" overflow-x-auto">
-                    <table className="table">
-                        <thead className="text-black font-bold pb-2">
-                            <tr className="border-b border-black">
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                users?.map(user => (
-                                    <tr key={user._id} className="border-b border-gray-600 py-2">
-                                        <td>{user.firstName}</td>
-                                        <td>{user.userEmail}</td>
-                                        <td>{user.phoneNumber}</td>
-                                        <td>
-                                            <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Make Admin</button>
-                                        </td>
-                                        {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div >
+        </>
     );
 };
 

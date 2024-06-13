@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import AddProductForm from "./AddProductForm";
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
 
 const MySwal = withReactContent(Swal);
 
@@ -111,17 +112,53 @@ const ManageProducts = () => {
     ];
 
     return (
-        <div className="space-y-6 mr-2 md:mr-0">
-            <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
+        <>
+            <Helmet>
+                <title>Manage Products | Thread Frenzy</title>
+            </Helmet>
+            <div className="space-y-6 mr-2 md:mr-0">
+                <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
 
-            <button onClick={openModal} className="border border-black font-semibold p-2 w-full">Add Product</button>
-            <div className=' grid grid-cols-2 gap-6'>
+                <button onClick={openModal} className="border border-black font-semibold p-2 w-full">Add Product</button>
+                <div className=' grid grid-cols-2 gap-6'>
+                    <div>
+                        <label className="mr-2">Sort by Price:</label>
+                        <Select
+                            value={priceOrder}
+                            onChange={setPriceOrder}
+                            options={priceOptions}
+                            isClearable
+                            styles={{
+                                control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderRadius: '0px',
+                                }),
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <label className="mr-2">Filter by Gender:</label>
+                        <Select
+                            value={selectedGender}
+                            onChange={setSelectedGender}
+                            options={genderOptions}
+                            isClearable
+                            styles={{
+                                control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderRadius: '0px',
+                                }),
+                            }}
+                        />
+                    </div>
+                </div>
                 <div>
-                    <label className="mr-2">Sort by Price:</label>
+                    <label className="mr-2">Filter by Brands:</label>
                     <Select
-                        value={priceOrder}
-                        onChange={setPriceOrder}
-                        options={priceOptions}
+                        isMulti
+                        value={selectedBrands}
+                        onChange={setSelectedBrands}
+                        options={brandOptions}
                         isClearable
                         styles={{
                             control: (baseStyles) => ({
@@ -131,85 +168,54 @@ const ManageProducts = () => {
                         }}
                     />
                 </div>
-                <div>
-                    <label className="mr-2">Filter by Gender:</label>
-                    <Select
-                        value={selectedGender}
-                        onChange={setSelectedGender}
-                        options={genderOptions}
-                        isClearable
-                        styles={{
-                            control: (baseStyles) => ({
-                                ...baseStyles,
-                                borderRadius: '0px',
-                            }),
-                        }}
-                    />
-                </div>
-            </div>
-            <div>
-                <label className="mr-2">Filter by Brands:</label>
-                <Select
-                    isMulti
-                    value={selectedBrands}
-                    onChange={setSelectedBrands}
-                    options={brandOptions}
-                    isClearable
-                    styles={{
-                        control: (baseStyles) => ({
-                            ...baseStyles,
-                            borderRadius: '0px',
-                        }),
-                    }}
-                />
-            </div>
 
-            <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
-            <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
-                <AddProductForm closeModal={closeModal} allData={allData} />
-            </Modal>
+                <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
+                <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
+                    <AddProductForm closeModal={closeModal} allData={allData} />
+                </Modal>
 
-            <div className=" overflow-x-auto">
-                <table className="table">
-                    <thead className="text-black font-bold pb-2">
-                        <tr className="border-b border-black">
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Brand</th>
-                            <th>Price</th>
-                            <th>Color</th>
-                            <th>Gender</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data?.map((item, idx) => (
-                            <tr key={idx} className="border-b border-gray-400">
-                                <td className="w-24">
-                                    <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
-                                </td>
-                                <td>
-                                    <Link to={`/product-details/${item._id}`}>{item.name}</Link>
-                                </td>
-                                <td>{item.brand}</td>
-                                <td>${item.price}</td>
-                                <td>
-                                    {
-                                        item.color.map((color) => (
-                                            <>{color}, </>
-                                        ))
-                                    }
-                                </td>
-                                <td>{item.gender}</td>
-                                <td>
-                                    <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} />
-                                </td>
+                <div className=" overflow-x-auto">
+                    <table className="table">
+                        <thead className="text-black font-bold pb-2">
+                            <tr className="border-b border-black">
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Price</th>
+                                <th>Color</th>
+                                <th>Gender</th>
+                                <th></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {data?.map((item, idx) => (
+                                <tr key={idx} className="border-b border-gray-400">
+                                    <td className="w-24">
+                                        <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
+                                    </td>
+                                    <td>
+                                        <Link to={`/product-details/${item._id}`}>{item.name}</Link>
+                                    </td>
+                                    <td>{item.brand}</td>
+                                    <td>${item.price}</td>
+                                    <td>
+                                        {
+                                            item.color.map((color) => (
+                                                <>{color}, </>
+                                            ))
+                                        }
+                                    </td>
+                                    <td>{item.gender}</td>
+                                    <td>
+                                        <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

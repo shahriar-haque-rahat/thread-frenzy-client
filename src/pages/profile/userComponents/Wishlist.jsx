@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { AuthContext } from "../../../provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const MySwal = withReactContent(Swal)
 
@@ -51,7 +52,10 @@ const Wishlist = () => {
     }
 
     return (
-        <div>
+        <>
+        <Helmet>
+            <title>Wishlist | Thread Frenzy</title>
+        </Helmet>
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Wishlist</h1>
             <div className=" pt-10 grid grid-cols-2 md:grid-cols-3 gap-3">
                 {
@@ -66,7 +70,7 @@ const Wishlist = () => {
                     ))
                 }
             </div>
-        </div>
+        </>
     );
 };
 

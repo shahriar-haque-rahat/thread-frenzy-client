@@ -10,6 +10,7 @@ import { MdBookmarks } from "react-icons/md";
 import { FaCartShopping } from "react-icons/fa6";
 import { TbLogout } from "react-icons/tb";
 import { IoHome } from "react-icons/io5";
+import { FiMessageSquare } from "react-icons/fi";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
@@ -71,6 +72,13 @@ const Sidebar = ({ userByEmail }) => {
                                 : " flex gap-2 items-center text-lg py-2 pl-2"
                         }>
                             <HiOutlineUsers size={21} />Manage Users
+                        </NavLink>
+                        <NavLink to={"/dashboard/messages"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <FiMessageSquare size={23} />Messages
                         </NavLink>
                         <NavLink to={"/dashboard/profile"} className={({ isActive }) =>
                             isActive

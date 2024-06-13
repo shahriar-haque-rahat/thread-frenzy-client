@@ -5,6 +5,7 @@ import SalesOverviewSkeleton from "../pages/skeletons/SalesOverviewSkeleton";
 import ManageOrdersSkeleton from "../pages/skeletons/ManageOrdersSkeleton";
 import ManageProductsSkeleton from "../pages/skeletons/ManageProductsSkeleton";
 import ManageUsersSkeleton from "../pages/skeletons/ManageUsersSkeleton";
+import MessagesSkeleton from "../pages/skeletons/MessagesSkeleton";
 
 
 const AdminRouter = ({ children }) => {
@@ -36,6 +37,11 @@ const AdminRouter = ({ children }) => {
                 {
                     (location.pathname.split('/')[1] === 'manage-users' || location.pathname.split('/')[2] === 'manage-users')
                     && <ManageUsersSkeleton />
+                }
+
+                {
+                    (location.pathname.split('/')[1] === 'messages' || location.pathname.split('/')[2] === 'messages')
+                    && <MessagesSkeleton />
                 }
 
                 {/* <div className=" flex justify-center dark:text-white"><span className="loading loading-bars loading-lg"></span></div> */}

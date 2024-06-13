@@ -19,6 +19,7 @@ import ManageUsers from "../pages/profile/adminComponents/ManageUsers";
 import PrivateRouter from "./PrivateRouter";
 import AdminRouter from "./AdminRouter";
 import ContactUs from "../pages/ContactUs";
+import Messages from "../pages/profile/adminComponents/Messages";
 
 
 const Router = createBrowserRouter(
@@ -94,6 +95,10 @@ const Router = createBrowserRouter(
                 {
                     path: '/dashboard/manage-users',
                     element: <AdminRouter><ManageUsers></ManageUsers></AdminRouter>
+                },
+                {
+                    path: '/dashboard/messages',
+                    element: <AdminRouter><Messages></Messages></AdminRouter>
                 },
             ]
         },

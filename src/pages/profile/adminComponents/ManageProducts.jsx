@@ -194,7 +194,7 @@ const ManageProducts = () => {
                                         <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
                                     </td>
                                     <td>
-                                        <Link to={`/product-details/${item._id}`}>{item.name}</Link>
+                                        <Link to={`/product-details/${item._id}`} className=' hover:underline'>{item.name}</Link>
                                     </td>
                                     <td>{item.brand}</td>
                                     <td>${item.price}</td>

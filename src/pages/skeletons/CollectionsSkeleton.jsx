@@ -7,11 +7,11 @@ const CollectionsSkeleton = () => {
                 <div className="skeleton h-14 w-72"></div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                <div className=" w-44 h-60 flex flex-col gap-1">
-                    <div className="skeleton w-full h-full rounded-none"></div>
-                    <div className="skeleton w-full h-full rounded-none"></div>
-                    <div className="skeleton w-full h-full rounded-none"></div>
-                    <div className="skeleton w-full h-full rounded-none"></div>
+                <div className="space-y-4">
+                    <div className="h-10 bg-gray-200 rounded"></div>
+                    <div className="h-10 bg-gray-200 rounded"></div>
+                    <div className="h-10 bg-gray-200 rounded"></div>
+                    <div className="h-10 bg-gray-200 rounded"></div>
                 </div>
                 <div className="flex gap-4">
                     <div className=" space-y-2 flex flex-col items-center">

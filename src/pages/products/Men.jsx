@@ -22,7 +22,7 @@ const Men = () => {
     };
 
 
-    if (allDataStatus === 'loading') {
+    if (allDataStatus === 'succeeded') {
         return <CollectionsSkeleton/>
     }
 

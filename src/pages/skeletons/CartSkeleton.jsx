@@ -5,7 +5,7 @@ const CartSkeleton = () => {
         <div className="px-[3%] grid lg:grid-cols-5 gap-10 pb-32">
             <div className="lg:col-span-3 space-y-10">
                 <h1 className="text-3xl mb-10 bg-gray-300 h-10 w-32 animate-pulse"></h1>
-                {[...Array(3)].map((_, index) => (
+                {[...Array(2)].map((_, index) => (
                     <div key={index} className="flex gap-4 h-40 border border-gray-300 animate-pulse">
                         <div className="bg-gray-300 h-full w-32"></div>
                         <div className="w-full flex flex-col justify-between p-3 space-y-2">

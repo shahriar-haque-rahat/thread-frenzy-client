@@ -14,9 +14,10 @@ import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 
 const Sidebar = ({ userByEmail }) => {
-    const { userSignOut } = useContext(AuthContext);
+    const { userSignOut, loading } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleUserSignOut = () => {
@@ -113,6 +114,11 @@ const Sidebar = ({ userByEmail }) => {
             }
         </>
     );
+
+
+    if (loading) {
+        return <SidebarSkeleton/>
+    }
 
     return (
         <>

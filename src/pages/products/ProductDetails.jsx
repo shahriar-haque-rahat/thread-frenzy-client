@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
 import { getReview } from "../../redux/reviewSlice";
+import ProductDetailsSkeleton from "../skeletons/ProductDetailsSkeleton";
 
 const ProductDetails = () => {
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
@@ -146,6 +147,10 @@ const ProductDetails = () => {
         }
     }, [itemId, reviewStatus, dispatch]);
 
+
+    if (singleProductStatus === 'loading') {
+        return <ProductDetailsSkeleton />
+    }
 
     if (singleProductStatus === 'failed' || userByEmailError === 'failed' || reviewStatus === 'failed' || wishlistStatus === 'failed') {
         return <div>Error: {error} || {userByEmailError || reviewError || wishlistError}</div>;

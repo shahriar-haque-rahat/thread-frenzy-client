@@ -76,7 +76,7 @@ const AddProductForm = ({ closeModal, allData }) => {
         <div className="relative pt-12">
             <button onClick={closeModal} className="absolute top-1 right-1 text-red-500"><RxCross2 size={30} /></button>
             <form onSubmit={handleSubmit(onFirstSubmit)} className="space-y-6">
-                <div className="flex gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control relative w-full">
                         <input name="name" type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("name", { required: true })} />
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Product Name</label>
@@ -88,7 +88,7 @@ const AddProductForm = ({ closeModal, allData }) => {
                         {errors.brand && <span className="text-red-500">This field is required</span>}
                     </div>
                 </div>
-                <div className="flex gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="form-control relative w-full">
                         <select name="gender" className="border border-gray-400 h-12 pl-3 outline-none" {...register("gender", { required: true })}>
                             <option value="">Select Gender</option>
@@ -109,7 +109,7 @@ const AddProductForm = ({ closeModal, allData }) => {
                         {errors.color && <span className="text-red-500">{errors.color.message || "This field is required"}</span>}
                     </div>
                 </div>
-                <div className="flex gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control relative w-full">
                         <textarea name="about_product" className="border border-gray-400 h-24 pl-3 pt-3 outline-none" {...register("about_product", { required: true })}></textarea>
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">About Product</label>

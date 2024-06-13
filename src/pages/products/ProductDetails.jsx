@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
 import { getReview } from "../../redux/reviewSlice";
 import ProductDetailsSkeleton from "../skeletons/ProductDetailsSkeleton";
+import { Helmet } from "react-helmet-async";
 
 const ProductDetails = () => {
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
@@ -157,7 +158,10 @@ const ProductDetails = () => {
     }
 
     return (
-        <div>
+        <>
+            <Helmet>
+                <title>Product Details | Thread Frenzy</title>
+            </Helmet>
             <div className="px-[3%] mt-16 pb-32">
                 {selectedItem && (
                     <div className="grid grid-cols-5 gap-5">
@@ -245,7 +249,7 @@ const ProductDetails = () => {
                 <SimilarProducts itemBrand={selectedItem?.brand} itemId={itemId}></SimilarProducts>
                 <Review reviewItems={reviewItems} productId={itemId} user={userByEmail}></Review>
             </div>
-        </div>
+        </>
     );
 };
 

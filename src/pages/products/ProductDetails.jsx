@@ -164,7 +164,7 @@ const ProductDetails = () => {
             </Helmet>
             <div className="px-[3%] mt-16 pb-32">
                 {selectedItem && (
-                    <div className="grid grid-cols-5 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
                         <div className="col-span-3 grid grid-cols-2 grid-rows-2 gap-2 h-fit">
                             {selectedItem.images[selectedItem.color[colorIndex]]?.map((item, index) => (
                                 <img key={index} src={item} alt="loading..." className="h-96 w-full object-cover object-top" />

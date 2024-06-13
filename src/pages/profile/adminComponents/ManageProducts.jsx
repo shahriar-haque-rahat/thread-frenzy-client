@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import AddProductForm from "./AddProductForm";
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import ManageProductsSkeleton from '../../skeletons/ManageProductsSkeleton';
 
 const MySwal = withReactContent(Swal);
 
@@ -85,6 +86,9 @@ const ManageProducts = () => {
         dispatch(allData(filters))
     }, [dispatch, priceOrder, selectedGender, selectedBrands]);
 
+    if (allDataStatus === 'succeeded') {
+        return <ManageProductsSkeleton/>;
+    }
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }

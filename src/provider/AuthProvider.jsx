@@ -14,7 +14,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
-    
+
 
     const googleSignIn = () => {
         return signInWithPopup(auth, googleProvider)
@@ -51,9 +51,9 @@ const AuthProvider = ({ children }) => {
                 photoURL: photoUrl,
                 email: auth.currentUser.email,
             }))
-                .then(() => {
-                    setLoading(false);
-                })
+            // .then(() => {
+            //     setLoading(false);
+            // })
         }).catch(error => {
             console.log("Error updating profile: ", error);
         });
@@ -79,7 +79,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
-            setLoading(false);
+            // setLoading(false);
         });
         return () => {
             unSubscribe();
@@ -88,10 +88,13 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (user) {
-            dispatch(getUserByEmail(user?.email));
+            dispatch(getUserByEmail(user?.email))
+                .then(() => {
+                    setLoading(false);
+                })
         }
     }, [dispatch, user]);
-    
+
 
 
     const authInfo = {
@@ -106,7 +109,7 @@ const AuthProvider = ({ children }) => {
         userSignOut,
         userDatabaseEntry,
         userByEmail,
-        userByEmailStatus, 
+        userByEmailStatus,
         userByEmailError,
     }
 

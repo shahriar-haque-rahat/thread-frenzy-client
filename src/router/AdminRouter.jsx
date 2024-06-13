@@ -7,7 +7,7 @@ const AdminRouter = ({ children }) => {
     const { userByEmail, loading } = useContext(AuthContext);
     const location = useLocation();
 
-    if (userByEmail && userByEmail.role === 'admin') {
+    if (userByEmail?.role === 'admin') {
         return children;
     }
     else if (loading) {

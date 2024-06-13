@@ -14,9 +14,9 @@ const ProductDetailsSkeleton = () => {
                 {/* Product Info skeleton */}
                 <div className="col-span-2 space-y-6">
                     {/* Product name and wishlist */}
-                    <div className="flex gap-12">
+                    <div className="flex items-center gap-12">
                         <div className="h-8 w-48 bg-gray-300 animate-pulse"></div>
-                        <div className="h-8 w-8 bg-gray-300 animate-pulse rounded-full"></div>
+                        <div className="h-8 w-8 bg-gray-300 animate-pulse "></div>
                     </div>
 
                     {/* Rating skeleton */}

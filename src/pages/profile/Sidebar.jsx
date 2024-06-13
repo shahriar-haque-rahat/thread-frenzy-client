@@ -44,13 +44,6 @@ const Sidebar = ({ userByEmail }) => {
                         }>
                             <IoHomeOutline size={21} /> Home
                         </NavLink>
-                        <NavLink to={"/dashboard/profile"} className={({ isActive }) =>
-                            isActive
-                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
-                                : " flex gap-2 items-center text-lg py-2 pl-2"
-                        }>
-                            <RiAccountCircleLine size={23} />Profile
-                        </NavLink>
                         <NavLink to={"/dashboard/sales-overview"} className={({ isActive }) =>
                             isActive
                                 ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
@@ -78,6 +71,13 @@ const Sidebar = ({ userByEmail }) => {
                                 : " flex gap-2 items-center text-lg py-2 pl-2"
                         }>
                             <HiOutlineUsers size={21} />Manage Users
+                        </NavLink>
+                        <NavLink to={"/dashboard/profile"} className={({ isActive }) =>
+                            isActive
+                                ? "flex gap-2 items-center text-lg py-2 pl-2 text-black bg-white"
+                                : " flex gap-2 items-center text-lg py-2 pl-2"
+                        }>
+                            <RiAccountCircleLine size={23} />Profile
                         </NavLink>
                     </ul>
 
@@ -117,7 +117,7 @@ const Sidebar = ({ userByEmail }) => {
 
 
     if (loading) {
-        return <SidebarSkeleton/>
+        return <SidebarSkeleton />
     }
 
     return (

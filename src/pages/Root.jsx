@@ -11,7 +11,7 @@ const Root = () => {
                     <Navbar></Navbar>
                 </div>
             </div>
-            <div className=" max-w-[1440px] mx-auto">
+            <div className=" max-w-[1440px] mx-auto mt-24">
                 <Outlet></Outlet>
             </div>
             <div className=" bg-black text-white">

@@ -2,14 +2,14 @@ import { useForm } from "react-hook-form";
 import Payment from "./Payment";
 import { useContext, useEffect, useState } from "react";
 import ShippingInfo from "./ShippingInfo";
-import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "../../provider/AuthProvider";
-import { getUserByEmail } from "../../redux/userSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { getUserByEmail } from "../../redux/userSlice";
 
 const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
-    const dispatch = useDispatch();
-    const { user } = useContext(AuthContext);
-    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    // const dispatch = useDispatch();
+    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm({
         defaultValues: {
             firstName: '',
@@ -43,11 +43,11 @@ const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
         setIsPaying(allFieldsFilled);
     };
 
-    useEffect(() => {
-        if (user) {
-            dispatch(getUserByEmail(user?.email));
-        }
-    }, [dispatch, user]);
+    // useEffect(() => {
+    //     if (user) {
+    //         dispatch(getUserByEmail(user?.email));
+    //     }
+    // }, [dispatch, user]);
 
     useEffect(() => {
         if (userByEmailStatus === 'succeeded') {
@@ -76,7 +76,7 @@ const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
             {
                 isPaying &&
                 <Payment
-                setIsCheckingOut={setIsCheckingOut}
+                    setIsCheckingOut={setIsCheckingOut}
                     cartItems={cartItems}
                     totalPrice={totalPrice}
                     shippingInfo={shippingInfo}

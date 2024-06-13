@@ -1,8 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { addUser, resetUserState } from "../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, getUserByEmail, resetUserState } from "../redux/userSlice";
 
 
 export const AuthContext = createContext(null);
@@ -13,6 +13,8 @@ const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    
 
     const googleSignIn = () => {
         return signInWithPopup(auth, googleProvider)
@@ -84,6 +86,14 @@ const AuthProvider = ({ children }) => {
         };
     }, []);
 
+    useEffect(() => {
+        if (user) {
+            dispatch(getUserByEmail(user?.email));
+        }
+    }, [dispatch, user]);
+    
+
+
     const authInfo = {
         user,
         loading,
@@ -95,6 +105,9 @@ const AuthProvider = ({ children }) => {
         userSignIn,
         userSignOut,
         userDatabaseEntry,
+        userByEmail,
+        userByEmailStatus, 
+        userByEmailError,
     }
 
     return (

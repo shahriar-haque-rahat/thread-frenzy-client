@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUserByEmail, updateUser } from "../../redux/userSlice";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
@@ -13,8 +13,8 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const Profile = () => {
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
-    const { user } = useContext(AuthContext);
-    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
+    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
         defaultValues: {
@@ -99,11 +99,11 @@ const Profile = () => {
         }
     };
 
-    useEffect(() => {
-        if (user) {
-            dispatch(getUserByEmail(user?.email))
-        }
-    }, [dispatch, user])
+    // useEffect(() => {
+    //     if (user) {
+    //         dispatch(getUserByEmail(user?.email))
+    //     }
+    // }, [dispatch, user])
 
     if (userByEmailStatus === 'failed') {
         return <div>Error: {userByEmailError}</div>;

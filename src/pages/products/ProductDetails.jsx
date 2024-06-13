@@ -148,7 +148,7 @@ const ProductDetails = () => {
     }, [itemId, reviewStatus, dispatch]);
 
 
-    if (singleProductStatus === 'loading') {
+    if (singleProductStatus === 'loading' || userByEmailError === 'loading' || reviewStatus === 'loading' || wishlistStatus === 'loading') {
         return <ProductDetailsSkeleton />
     }
 

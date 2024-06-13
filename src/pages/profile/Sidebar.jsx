@@ -116,7 +116,7 @@ const Sidebar = ({ userByEmail }) => {
 
     return (
         <>
-            <div className="fixed z-50 bg-black min-h-screen w-[25%] text-white pl-6 pt-6  hidden lg:block">
+            <div className="fixed bg-black min-h-screen w-[25%] text-white pl-6 pt-6  hidden lg:block">
                 <div>
                     <Link to={'/'}><h1 className="text-2xl font-bold">Thread Frenzy</h1></Link>
                     <Menu />

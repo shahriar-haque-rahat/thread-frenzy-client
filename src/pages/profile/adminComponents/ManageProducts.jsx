@@ -111,7 +111,7 @@ const ManageProducts = () => {
     ];
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 mr-2 md:mr-0">
             <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
 
             <button onClick={openModal} className="border border-black font-semibold p-2 w-full">Add Product</button>
@@ -163,43 +163,51 @@ const ManageProducts = () => {
                     }}
                 />
             </div>
+
             <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                 <AddProductForm closeModal={closeModal} allData={allData} />
             </Modal>
-            <div>
-                <div className="grid grid-cols-8 gap-3 font-bold border-b-2 border-gray-800 py-2">
-                    <div></div>
-                    <div className="col-span-2">Name</div>
-                    <div>Brand</div>
-                    <div>Price</div>
-                    <div>Color</div>
-                    <div>Gender</div>
-                    <div></div>
-                </div>
-                <div className="overflow-y-scroll h-screen">
-                    {data?.map((item, idx) => (
-                        <div key={idx} className="grid grid-cols-8 gap-3 border-b border-gray-400">
-                            <div>
-                                <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
-                            </div>
-                            <div className="py-2 col-span-2">
-                                <Link to={`/product-details/${item._id}`}>{item.name}</Link>
-                            </div>
-                            <div className="py-2">{item.brand}</div>
-                            <div className="py-2">${item.price}</div>
-                            <div className="py-2">
-                                {item.color.map((color, idx) => (
-                                    <div key={idx}>{color}, </div>
-                                ))}
-                            </div>
-                            <div className="py-2">{item.gender}</div>
-                            <div className="py-2">
-                                <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} />
-                            </div>
-                        </div>
-                    ))}
-                </div>
+
+            <div className=" overflow-x-auto">
+                <table className="table">
+                    <thead className="text-black font-bold pb-2">
+                        <tr className="border-b border-black">
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Brand</th>
+                            <th>Price</th>
+                            <th>Color</th>
+                            <th>Gender</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data?.map((item, idx) => (
+                            <tr key={idx} className="border-b border-gray-400">
+                                <td className="w-24">
+                                    <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
+                                </td>
+                                <td>
+                                    <Link to={`/product-details/${item._id}`}>{item.name}</Link>
+                                </td>
+                                <td>{item.brand}</td>
+                                <td>${item.price}</td>
+                                <td>
+                                    {
+                                        item.color.map((color) => (
+                                            <>{color}, </>
+                                        ))
+                                    }
+                                </td>
+                                <td>{item.gender}</td>
+                                <td>
+                                    <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

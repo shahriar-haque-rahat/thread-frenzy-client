@@ -97,6 +97,11 @@ const Navbar = () => {
             }>
                 Women
             </NavLink>
+            <NavLink to={"/contact-us"} className={({ isActive }) =>
+                isActive ? "border-b-2 border-black font-bold" : " "
+            }>
+                Contact Us
+            </NavLink>
         </>
     );
 

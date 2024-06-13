@@ -18,6 +18,7 @@ import ManageOrders from "../pages/profile/adminComponents/ManageOrders";
 import ManageUsers from "../pages/profile/adminComponents/ManageUsers";
 import PrivateRouter from "./PrivateRouter";
 import AdminRouter from "./AdminRouter";
+import ContactUs from "../pages/ContactUs";
 
 
 const Router = createBrowserRouter(
@@ -54,6 +55,10 @@ const Router = createBrowserRouter(
                 {
                     path: '/cart',
                     element: <PrivateRouter><Cart></Cart></PrivateRouter>
+                },
+                {
+                    path: '/contact-us',
+                    element: <ContactUs></ContactUs>
                 },
             ],
         },

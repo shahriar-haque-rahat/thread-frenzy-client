@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserSpecificPayment } from "../../../redux/paymentSlice";
 import { AuthContext } from "../../../provider/AuthProvider";
-import OrderHistorySkeleton from "../../skeletons/OrderHistorySkeleton";
 
 const OrderHistory = () => {
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
@@ -17,9 +16,6 @@ const OrderHistory = () => {
         }
     }, [dispatch, userByEmailStatus, paymentStatus, userByEmail]);
 
-    if (paymentStatus === 'succeeded' || userByEmailStatus === 'succeeded') {
-        return <OrderHistorySkeleton/>;
-    }
     if (paymentStatus === 'failed' || userByEmailStatus === 'failed') {
         return <div>Error: {paymentError || userByEmailError}</div>;
     }

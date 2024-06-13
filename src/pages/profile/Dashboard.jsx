@@ -1,20 +1,10 @@
-// import { useDispatch } from "react-redux";
 import { useContext } from "react";
-// import { getUserByEmail } from "../../redux/userSlice";
 import { AuthContext } from "../../provider/AuthProvider";
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
-    // const dispatch = useDispatch();
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
-    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
-
-    // useEffect(() => {
-    //     if (user) {
-    //         dispatch(getUserByEmail(user?.email))
-    //     }
-    // }, [dispatch, user])
 
 
 

@@ -14,7 +14,6 @@ const Profile = () => {
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
-    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
         defaultValues: {
@@ -98,12 +97,6 @@ const Profile = () => {
             uploadImage(file);
         }
     };
-
-    // useEffect(() => {
-    //     if (user) {
-    //         dispatch(getUserByEmail(user?.email))
-    //     }
-    // }, [dispatch, user])
 
     if (userByEmailStatus === 'failed') {
         return <div>Error: {userByEmailError}</div>;

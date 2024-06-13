@@ -9,7 +9,6 @@ import SimilarProducts from "./SimilarProducts";
 import { AuthContext } from "../../provider/AuthProvider";
 import { IoBookmarks, IoBookmarksOutline } from "react-icons/io5";
 import { addToWishlist, deleteWishlistItem, getWishlist } from "../../redux/wishlistSlice";
-// import { getUserByEmail } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
@@ -21,7 +20,6 @@ const ProductDetails = () => {
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
     const { wishlistItems, wishlistStatus, wishlistError } = useSelector(state => state.wishlist);
-    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -129,11 +127,6 @@ const ProductDetails = () => {
         dispatch(getItemById(itemId));
     }, [dispatch, itemId]);
 
-    // useEffect(() => {
-    //     if (user?.email) {
-    //         dispatch(getUserByEmail(user.email))
-    //     }
-    // }, [dispatch, user]);
 
     useEffect(() => {
         if (userByEmailStatus === 'succeeded' && wishlistStatus === 'idle') {

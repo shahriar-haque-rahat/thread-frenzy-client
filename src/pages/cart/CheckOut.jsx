@@ -3,12 +3,8 @@ import Payment from "./Payment";
 import { useContext, useEffect, useState } from "react";
 import ShippingInfo from "./ShippingInfo";
 import { AuthContext } from "../../provider/AuthProvider";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getUserByEmail } from "../../redux/userSlice";
 
 const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
-    // const dispatch = useDispatch();
-    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm({
         defaultValues: {
@@ -42,12 +38,6 @@ const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
         const allFieldsFilled = Object.values(watchedFields).every(value => value !== "");
         setIsPaying(allFieldsFilled);
     };
-
-    // useEffect(() => {
-    //     if (user) {
-    //         dispatch(getUserByEmail(user?.email));
-    //     }
-    // }, [dispatch, user]);
 
     useEffect(() => {
         if (userByEmailStatus === 'succeeded') {

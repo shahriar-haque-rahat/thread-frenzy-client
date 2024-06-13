@@ -3,19 +3,12 @@ import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserSpecificPayment } from "../../../redux/paymentSlice";
 import { AuthContext } from "../../../provider/AuthProvider";
-// import { getUserByEmail } from "../../../redux/userSlice";
 
 const OrderHistory = () => {
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
     const dispatch = useDispatch();
-    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { userSpecificPayment, paymentStatus, paymentError } = useSelector(state => state.payment);
 
-    // useEffect(() => {
-    //     if (user) {
-    //         dispatch(getUserByEmail(user?.email))
-    //     }
-    // }, [dispatch, user])
 
     useEffect(() => {
         if (userByEmailStatus === 'succeeded') {

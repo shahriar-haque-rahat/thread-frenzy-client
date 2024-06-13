@@ -7,15 +7,12 @@ import { Link } from "react-router-dom";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { AuthContext } from "../../../provider/AuthProvider";
-// import { getUserByEmail } from "../../../redux/userSlice";
-
 
 const MySwal = withReactContent(Swal)
 
 const Wishlist = () => {
     const dispatch = useDispatch();
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
-    // const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
     const { wishlistItems, wishlistStatus, wishlistError } = useSelector(state => state.wishlist);
 
 
@@ -41,11 +38,6 @@ const Wishlist = () => {
     }
 
 
-    // useEffect(() => {
-    //     if (user) {
-    //         dispatch(getUserByEmail(user?.email))
-    //     }
-    // }, [dispatch, user])
 
     useEffect(() => {
         if (userByEmailStatus === "succeeded" && wishlistStatus === "idle") {

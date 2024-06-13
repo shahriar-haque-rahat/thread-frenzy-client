@@ -11,7 +11,7 @@ const ShippingInfo = ({ shippingInfo, setShippingInfo, handlePayment, register, 
         <div>
             <h1 className="text-3xl mb-10">Shipping Information</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="flex gap-6">
+                <div className=" grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control relative w-full">
                         <input name="firstName" defaultValue={shippingInfo?.firstName} type="text" className="border border-gray-400 h-12 pl-3 outline-none" {...register("firstName", { required: true })} />
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">First Name*</label>
@@ -29,7 +29,7 @@ const ShippingInfo = ({ shippingInfo, setShippingInfo, handlePayment, register, 
                     {errors.address && <span className="text-red-500">This field is required</span>}
                 </div>
                 <p className="text-xl">Contact Information</p>
-                <div className="flex gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control relative w-full">
                         <input name="email" defaultValue={shippingInfo?.email} type="email" className="border border-gray-400 h-12 pl-3 outline-none" {...register("email", { required: true })} />
                         <label className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Email*</label>

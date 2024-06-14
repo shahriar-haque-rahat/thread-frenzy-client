@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import useAxiosPublic from "../hooks/useAxiosPublic";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
@@ -32,9 +32,9 @@ export const getUserByEmail = createAsyncThunk('user/getUserByEmail', async (use
 });
 
 export const addUser = createAsyncThunk('user/addUser', async (userInfo, { rejectWithValue }) => {
-    const axiosPrivate = useAxiosPrivate();
+    const axiosPublic = useAxiosPublic();
     try {
-        const res = await axiosPrivate.post(`/user`, userInfo);
+        const res = await axiosPublic.post(`/user`, userInfo);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -44,20 +44,6 @@ export const addUser = createAsyncThunk('user/addUser', async (userInfo, { rejec
         }
     }
 });
-
-// export const updateUser = createAsyncThunk('user/updateUser', async ({ id, userInfo }, { rejectWithValue }) => {
-//     const axiosPrivate = useAxiosPrivate();
-//     try {
-//         const res = await axiosPrivate.put(`/user/${id}`, userInfo);
-//         return res.data;
-//     } catch (error) {
-//         if (error.response && error.response.data) {
-//             return rejectWithValue(error.response.data.message);
-//         } else {
-//             return rejectWithValue(error.message);
-//         }
-//     }
-// });
 
 export const updateUser = createAsyncThunk('user/updateUser', async ({ id, userInfo }, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();

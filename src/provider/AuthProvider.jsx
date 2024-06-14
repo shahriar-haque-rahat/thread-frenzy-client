@@ -3,6 +3,7 @@ import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, getUserByEmail, resetUserState } from "../redux/userSlice";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 
 export const AuthContext = createContext(null);
@@ -10,6 +11,7 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
+    const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -35,6 +37,7 @@ const AuthProvider = ({ children }) => {
         return signOut(auth).then(() => {
             dispatch(resetUserState());
             setUser(null);
+            document.cookie = 'jwt=; Max-Age=0; path=/;';
         });
     }
 
@@ -77,23 +80,35 @@ const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             // setLoading(false);
+
+            try {
+                const response = await axiosPublic.post('/jwt', { email: currentUser.email }, { withCredentials: true });
+                if (response.data.success) {
+                    dispatch(getUserByEmail(currentUser.email))
+                        .then(() => {
+                            setLoading(false);
+                        })
+                }
+            } catch (error) {
+                console.log('Error fetching user data: ', error);
+            }
         });
         return () => {
             unSubscribe();
         };
-    }, []);
+    }, [dispatch, axiosPublic]);
 
-    useEffect(() => {
-        if (user) {
-            dispatch(getUserByEmail(user?.email))
-                .then(() => {
-                    setLoading(false);
-                })
-        }
-    }, [dispatch, user]);
+    // useEffect(() => {
+    //     if (user) {
+    //         dispatch(getUserByEmail(user?.email))
+    //             .then(() => {
+    //                 setLoading(false);
+    //             })
+    //     }
+    // }, [dispatch, user]);
 
 
 

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { BsMoonStars, BsSun } from "react-icons/bs";
-import { AiOutlineUser } from "react-icons/ai";
+// import { AiOutlineUser } from "react-icons/ai";
 import { IoBagOutline } from "react-icons/io5";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { AuthContext } from "../../provider/AuthProvider";
@@ -10,7 +10,7 @@ import { useScroll, motion, useMotionValueEvent } from "framer-motion";
 import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
-    const { user, userSignOut, userByEmail } = useContext(AuthContext);
+    const { user, userSignOut, userByEmail, loading } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState("light");
     const [hidden, setHidden] = useState(false);
@@ -114,8 +114,8 @@ const Navbar = () => {
             }}
             animate={hidden ? "hidden" : "visible"}
             transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="fixed top-0 left-0 w-full z-50 bg-white"
-        >
+            className="fixed top-0 left-0 w-full z-50 bg-white">
+
             <div className="navbar flex justify-between px-6 py-6 text-black" ref={navbarRef}>
                 <div>
                     <div className="dropdown hover:cursor-pointer">
@@ -148,30 +148,36 @@ const Navbar = () => {
                             <IoBagOutline size={25} />
                         </div>
                     </Link>
-                    {user ? (
-                        <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
-                            <div tabIndex={0} role="button">
-                                <AiOutlineUser size={25} />
-                            </div>
-                            <ul tabIndex={0} className="dropdown-content menu z-[50] p-3 shadow bg-white w-44 space-y-3 border border-black">
-                                <h1 className="font-semibold text-lg">{user.displayName}</h1>
-                                {
-                                    userByEmail.role === 'admin'
-                                        ? <Link to={'/dashboard/sales-overview'} className="border-y border-gray-300 hover:border-y hover:border-black py-1 text-start">
-                                            <button>Profile</button>
-                                        </Link>
-                                        : <Link to={'/dashboard/profile'} className="border-y border-gray-300 hover:border-y hover:border-black py-1 text-start">
-                                            <button>Profile</button>
-                                        </Link>
-                                }
-                                <button onClick={handleUserSignOut} className="bg-black text-white py-1 w-full">Sign Out</button>
-                            </ul>
-                        </div>
-                    ) : (
-                        <Link to={'/sign-in'}>
-                            <button className="bg-black text-white px-2 py-1">Sign In</button>
-                        </Link>
-                    )}
+                    <div className=" w-16 h-10 flex justify-end items-center">
+                        {
+                            loading ? <div><span className="loading loading-ring loading-md"></span></div>
+                                : user ? (
+                                    <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                                        <div tabIndex={0} role="button">
+                                            {/* <AiOutlineUser size={25} /> */}
+                                            <img className=" w-10 h-10 rounded-full" src={userByEmail.photoUrl} alt="" />
+                                        </div>
+                                        <ul tabIndex={0} className="dropdown-content menu z-[50] p-3 shadow bg-white w-44 space-y-3 border border-black">
+                                            <h1 className="font-semibold text-lg">{user.displayName}</h1>
+                                            {
+                                                userByEmail.role === 'admin'
+                                                    ? <Link to={'/dashboard/sales-overview'} className="border-y border-gray-300 hover:border-y hover:border-black py-1 text-start">
+                                                        <button>Profile</button>
+                                                    </Link>
+                                                    : <Link to={'/dashboard/profile'} className="border-y border-gray-300 hover:border-y hover:border-black py-1 text-start">
+                                                        <button>Profile</button>
+                                                    </Link>
+                                            }
+                                            <button onClick={handleUserSignOut} className="bg-black text-white py-1 w-full">Sign Out</button>
+                                        </ul>
+                                    </div>
+                                ) : (
+                                    <Link to={'/sign-in'}>
+                                        <button className="bg-black text-white text-sm px-2 py-1">Sign In</button>
+                                    </Link>
+                                )
+                        }
+                    </div>
                 </div>
             </div>
         </motion.div>

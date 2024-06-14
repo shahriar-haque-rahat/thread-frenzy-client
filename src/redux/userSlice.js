@@ -17,6 +17,20 @@ export const getUser = createAsyncThunk('user/getUser', async (_, { rejectWithVa
     }
 });
 
+export const getBannedUsers = createAsyncThunk('user/getBannedUsers', async (_, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/user/banned`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const getUserByEmail = createAsyncThunk('user/getUserByEmail', async (userEmail, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -83,6 +97,9 @@ const userSlice = createSlice({
         userByEmail: {},
         userByEmailStatus: 'idle',
         userByEmailError: null,
+        bannedUsers: [],
+        bannedUsersStatus: 'idle',
+        bannedUsersError: null,
     },
     reducers: {
         resetUserState(state) {
@@ -92,6 +109,9 @@ const userSlice = createSlice({
             state.userByEmailStatus = 'idle';
             state.userError = null;
             state.userByEmailError = null;
+            state.bannedUsers = [];
+            state.bannedUsersStatus = 'idle';
+            state.bannedUsersError = null;
         }
     },
     extraReducers: (builder) => {
@@ -139,6 +159,17 @@ const userSlice = createSlice({
             .addCase(updateUser.rejected, (state, action) => {
                 state.userStatus = 'failed';
                 state.userError = action.payload || action.error.message;
+            })
+            .addCase(getBannedUsers.pending, (state) => {
+                state.bannedUsersStatus = 'loading';
+            })
+            .addCase(getBannedUsers.fulfilled, (state, action) => {
+                state.bannedUsersStatus = 'succeeded';
+                state.bannedUsers = action.payload;
+            })
+            .addCase(getBannedUsers.rejected, (state, action) => {
+                state.bannedUsersStatus = 'failed';
+                state.bannedUsersError = action.payload || action.error.message;
             })
     }
 })

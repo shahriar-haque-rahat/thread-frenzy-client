@@ -6,6 +6,7 @@ import wishlistReducer from "./wishlistSlice";
 import paymentReducer from "./paymentSlice"
 import reviewSlice from "./reviewSlice";
 import messageSlice from "./messageSlice";
+import banUserSlice from "./banUserSlice";
 
 
 const store = configureStore({
@@ -17,6 +18,7 @@ const store = configureStore({
         payment: paymentReducer,
         review: reviewSlice,
         message: messageSlice,
+        banUser: banUserSlice,
     },
 });
 

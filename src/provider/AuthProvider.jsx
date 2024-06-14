@@ -10,6 +10,7 @@ import { resetPaymentState } from "../redux/paymentSlice";
 import { resetReviewState } from "../redux/reviewSlice";
 import { resetWishlistState } from "../redux/wishlistSlice";
 import { resetCartState } from "../redux/cartSlice";
+import { resetBanUserState } from "../redux/banUserSlice";
 
 
 export const AuthContext = createContext(null);
@@ -49,6 +50,7 @@ const AuthProvider = ({ children }) => {
             dispatch(resetReviewState());
             dispatch(resetWishlistState());
             dispatch(resetCartState());
+            dispatch(resetBanUserState());
             setUser(null);
             document.cookie = 'jwt=; Max-Age=0; path=/;';
         });
@@ -83,6 +85,7 @@ const AuthProvider = ({ children }) => {
             userEmail,
             photoUrl,
             role: 'user',
+            status: 'active',
         };
         console.log(userInfo);
         dispatch(addUser(userInfo))

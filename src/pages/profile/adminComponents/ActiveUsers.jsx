@@ -29,8 +29,8 @@ const ActiveUsers = ({ admins, users, handleRoleChange, handleDeleteUser, handle
                                     <td>
                                         <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button>
                                     </td>
-                                    <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
                                     <td><FaBan onClick={() => handleBanUser(user)} className="hover:cursor-pointer" size={18} /></td>
+                                    <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
                                 </tr>
                             ))}
                         </tbody>
@@ -62,8 +62,8 @@ const ActiveUsers = ({ admins, users, handleRoleChange, handleDeleteUser, handle
                                     <td>
                                         <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Make Admin</button>
                                     </td>
-                                    <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
                                     <td><FaBan onClick={() => handleBanUser(user)} className="hover:cursor-pointer" size={18} /></td>
+                                    <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
                                 </tr>
                             ))}
                         </tbody>

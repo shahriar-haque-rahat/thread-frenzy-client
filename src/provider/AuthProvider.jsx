@@ -10,7 +10,7 @@ import { resetPaymentState } from "../redux/paymentSlice";
 import { resetReviewState } from "../redux/reviewSlice";
 import { resetWishlistState } from "../redux/wishlistSlice";
 import { resetCartState } from "../redux/cartSlice";
-import { resetBanUserState } from "../redux/banUserSlice";
+import { getBanUser, resetBanUserState } from "../redux/banUserSlice";
 
 
 export const AuthContext = createContext(null);
@@ -23,6 +23,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { banUser, banUserStatus, banUserError } = useSelector(state => state.banUser);
 
 
     const googleSignIn = () => {
@@ -117,6 +118,12 @@ const AuthProvider = ({ children }) => {
         };
     }, [dispatch, axiosPublic]);
 
+    useEffect(() => {
+        if (banUserStatus === 'idle') {
+            dispatch(getBanUser())
+        }
+    }, [dispatch, banUserStatus])
+
     // useEffect(() => {
     //     if (user) {
     //         dispatch(getUserByEmail(user?.email))
@@ -142,6 +149,9 @@ const AuthProvider = ({ children }) => {
         userByEmail,
         userByEmailStatus,
         userByEmailError,
+        banUser,
+        banUserStatus,
+        banUserError,
     }
 
     return (

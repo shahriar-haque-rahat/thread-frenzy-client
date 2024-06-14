@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 export const getBanUser = createAsyncThunk('banUser/getBanUser', async (_, { rejectWithValue }) => {
-    const axiosPrivate = useAxiosPrivate();
+    const axiosPublic = useAxiosPublic();
     try {
-        const res = await axiosPrivate.get(`/ban-user`);
+        const res = await axiosPublic.get(`/ban-user`);
         return res.data;
     } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);

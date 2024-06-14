@@ -5,10 +5,14 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+const MySwal = withReactContent(Swal)
 
 
 const GoogleGithub = () => {
-    const { googleSignIn, githubSignIn, userDatabaseEntry } = useContext(AuthContext);
+    const { googleSignIn, githubSignIn, userDatabaseEntry, banUser, userSignOut } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -16,9 +20,27 @@ const GoogleGithub = () => {
         googleSignIn()
             .then(result => {
                 console.log(result);
-                toast.success('Successfully logged in');
-                userDatabaseEntry(result.user.displayName, result.user.email, result.user.photoURL);
-                navigate(location?.state ? location.state : "/");
+
+                if (banUser?.find(bannedUser => bannedUser.userEmail === result.user.email)) {
+                    userSignOut();
+
+                    MySwal.fire({
+                        title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
+                        icon: "error",
+                        confirmButtonText: "Okay",
+                        confirmButtonColor: 'black',
+                        customClass: {
+                            popup: 'square',
+                            confirmButton: 'square'
+                        }
+                    })
+                }
+
+                else {
+                    toast.success('Successfully logged in');
+                    userDatabaseEntry(result.user.displayName, result.user.email, result.user.photoURL);
+                    navigate(location?.state ? location.state : "/");
+                }
             })
             .catch(error => {
                 console.log(error);

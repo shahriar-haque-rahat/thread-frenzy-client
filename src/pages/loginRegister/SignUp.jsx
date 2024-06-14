@@ -12,50 +12,65 @@ import { Helmet } from "react-helmet-async";
 const MySwal = withReactContent(Swal)
 
 const SignUp = () => {
-    const { userSignUp, updateUserProfile } = useContext(AuthContext);
+    const { userSignUp, updateUserProfile, banUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm();
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        const { name, photoUrl = '', email, password } = data;
+        if (banUser?.find(bannedUser => bannedUser.userEmail === data.email)) {
+            MySwal.fire({
+                title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
+                icon: "error",
+                confirmButtonText: "Okay",
+                confirmButtonColor: 'black',
+                customClass: {
+                    popup: 'square',
+                    confirmButton: 'square'
+                }
+            })
+        }
 
-        userSignUp(email, password)
-            .then(result => {
-                console.log(result);
-                updateUserProfile(name, photoUrl)
-                    .then(result => {
-                        console.log(result);
-                        MySwal.fire({
-                            title: '<p className="text-3xl font-bold mb-4">Welcome to Thread Frenzy</p>',
-                            html: (
-                                '<div className="text-lg">' +
-                                '<p>Thank you for joining us! You\'re now part of the Thread Frenzy family. Enjoy shopping our exclusive collection of T-shirts!</p>' +
-                                '</div>'
-                            ),
-                            icon: 'success',
-                            confirmButtonColor: 'black',
-                            confirmButtonText: 'Start Shopping',
-                            customClass: {
-                                popup: 'square',
-                                confirmButton: 'square'
-                            }
+        else {
+            const { name, photoUrl = '', email, password } = data;
+
+            userSignUp(email, password)
+                .then(result => {
+                    console.log(result);
+                    updateUserProfile(name, photoUrl)
+                        .then(result => {
+                            console.log(result);
+                            MySwal.fire({
+                                title: '<p className="text-3xl font-bold mb-4">Welcome to Thread Frenzy</p>',
+                                html: (
+                                    '<div className="text-lg">' +
+                                    '<p>Thank you for joining us! You\'re now part of the Thread Frenzy family. Enjoy shopping our exclusive collection of T-shirts!</p>' +
+                                    '</div>'
+                                ),
+                                icon: 'success',
+                                confirmButtonColor: 'black',
+                                confirmButtonText: 'Start Shopping',
+                                customClass: {
+                                    popup: 'square',
+                                    confirmButton: 'square'
+                                }
+                            })
+                                .then(() => {
+                                    navigate(location?.state ? location.state : "/");
+                                });
                         })
-                            .then(() => {
-                                navigate(location?.state ? location.state : "/");
-                            });
-                    })
-            })
-            .catch(error => {
-                console.log(error);
-                MySwal.fire({
-                    title: <p className="text-3xl font-bold mb-4">Email Already Exists</p>,
-                    icon: "error",
-                    confirmButtonColor: 'red',
-                    confirmButtonText: "Okay"
                 })
-            })
+                .catch(error => {
+                    console.log(error);
+                    MySwal.fire({
+                        title: <p className="text-3xl font-bold mb-4">Email Already Exists</p>,
+                        icon: "error",
+                        confirmButtonColor: 'red',
+                        confirmButtonText: "Okay"
+                    })
+                })
+        }
     }
 
     return (

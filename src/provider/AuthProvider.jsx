@@ -41,6 +41,7 @@ const AuthProvider = ({ children }) => {
 
     const userSignOut = () => {
         return signOut(auth).then(() => {
+            setLoading(false);
             dispatch(resetUserState());
             dispatch(resetDataState());
             dispatch(resetMessageState());

@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, updateUser } from "../../../redux/userSlice";
+import { deleteUser, getUser, updateUser } from "../../../redux/userSlice";
 // import { FaRegEdit } from "react-icons/fa";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet-async";
+import { MdOutlineDeleteForever } from "react-icons/md";
 
 
 const MySwal = withReactContent(Swal)
@@ -63,6 +64,53 @@ const ManageUsers = () => {
         })
     }
 
+    const handleDeleteUser = (id) => {
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sure',
+            customClass: {
+                popup: 'square',
+                confirmButton: 'square',
+                cancelButton: 'square',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteUser(id))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(getUser())
+                        return MySwal.fire({
+                            title: 'User Deleted',
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Delete operation failed:', error);
+                        MySwal.fire({
+                            title: 'Error!',
+                            text: 'Failed to delete the user. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    });
+            }
+        })
+    }
+
     useEffect(() => {
         dispatch(getUser())
     }, [dispatch])
@@ -89,6 +137,7 @@ const ManageUsers = () => {
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -101,7 +150,7 @@ const ManageUsers = () => {
                                             <td>
                                                 <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button>
                                             </td>
-                                            {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
+                                            <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
                                         </tr>
                                     ))
                                 }
@@ -121,6 +170,7 @@ const ManageUsers = () => {
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -133,7 +183,7 @@ const ManageUsers = () => {
                                             <td>
                                                 <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Make Admin</button>
                                             </td>
-                                            {/* <FaRegEdit className="text-blue-500 w-1/2" size={23} /> */}
+                                            <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
                                         </tr>
                                     ))
                                 }

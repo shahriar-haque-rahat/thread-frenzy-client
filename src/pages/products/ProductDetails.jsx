@@ -143,13 +143,11 @@ const ProductDetails = () => {
     }, [wishlistItems, selectedItem]);
 
     useEffect(() => {
-        if (reviewStatus === 'idle') {
             dispatch(getReview(itemId));
-        }
-    }, [itemId, reviewStatus, dispatch]);
+    }, [itemId, dispatch]);
 
 
-    if (singleProductStatus === 'loading' || userByEmailError === 'loading' || reviewStatus === 'loading' || wishlistStatus === 'loading') {
+    if (singleProductStatus === 'loading') {
         return <ProductDetailsSkeleton />
     }
 

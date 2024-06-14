@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 export const getMessages = createAsyncThunk('messages/getMessages', async (_, { rejectWithValue }) => {
-    const axiosPublic = useAxiosPublic();
+    const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPublic.get(`/contact-us`);
+        const res = await axiosPrivate.get(`/contact-us`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {

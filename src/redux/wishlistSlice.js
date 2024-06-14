@@ -29,7 +29,6 @@ export const addToWishlist = createAsyncThunk('wishlist/addToWishlist', async (w
     }
 });
 
-
 export const deleteWishlistItem = createAsyncThunk('wishlist/deleteWishlistItem', async (id, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -50,6 +49,13 @@ const wishlistSlice = createSlice({
         wishlistItems: [],
         wishlistStatus: 'idle',
         wishlistError: null,
+    },
+    reducers: {
+        resetWishlist: (state) => {
+            state.wishlistItems = [];
+            state.wishlistStatus = 'idle';
+            state.wishlistError = null;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -72,5 +78,7 @@ const wishlistSlice = createSlice({
             })
     },
 });
+
+export const { resetWishlist } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;

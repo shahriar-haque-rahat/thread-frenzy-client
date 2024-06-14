@@ -14,16 +14,33 @@ const ContactUs = () => {
 
     const onSubmit = async (data) => {
         try {
-            dispatch(addMessages(data))
+            dispatch(addMessages(data)).unwrap()
                 .then(() => {
                     MySwal.fire({
                         title: 'Message Sent!',
                         text: 'Your message has been sent successfully. Thank you for your feedback!',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: 'black',
+                        customClass: {
+                            popup: 'square',
+                            confirmButton: 'square'
+                        }
                     });
 
                     reset();
+                }).catch((error)=>{
+                    MySwal.fire({
+                        title: 'Message not Sent!',
+                        text: error,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: 'black',
+                        customClass: {
+                            popup: 'square',
+                            confirmButton: 'square'
+                        }
+                    });
                 })
 
         } catch (error) {
@@ -32,7 +49,12 @@ const ContactUs = () => {
                 title: 'Error!',
                 text: 'There was an error sending your message. Please try again later.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'black',
+                customClass: {
+                    popup: 'square',
+                    confirmButton: 'square'
+                }
             });
         }
     };

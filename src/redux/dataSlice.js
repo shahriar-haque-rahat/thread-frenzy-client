@@ -84,6 +84,15 @@ const dataSlice = createSlice({
         },
         filterWomenCollections: (state) => {
             state.womenCollections = state.data?.filter(item => item.gender === 'Female');
+        },
+        resetDataState(state) {
+            state.data = [];
+            state.selectedItem = null;
+            state.menCollections = [];
+            state.womenCollections = [];
+            state.allDataStatus = 'idle';
+            state.singleProductStatus = 'idle';
+            state.error = null;
         }
     },
     extraReducers: (builder) => {
@@ -115,6 +124,6 @@ const dataSlice = createSlice({
     },
 });
 
-export const { setSelectedItem, filterMenCollections, filterWomenCollections } = dataSlice.actions;
+export const { setSelectedItem, filterMenCollections, filterWomenCollections, resetDataState } = dataSlice.actions;
 
 export default dataSlice.reducer;

@@ -2,8 +2,14 @@ import { createContext, useEffect, useState } from "react";
 import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser, getUserByEmail, resetUserState } from "../redux/userSlice";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import { addUser, getUserByEmail, resetUserState } from "../redux/userSlice";
+import { resetDataState } from "../redux/dataSlice";
+import { resetMessageState } from "../redux/messageSlice";
+import { resetPaymentState } from "../redux/paymentSlice";
+import { resetReviewState } from "../redux/reviewSlice";
+import { resetWishlistState } from "../redux/wishlistSlice";
+import { resetCartState } from "../redux/cartSlice";
 
 
 export const AuthContext = createContext(null);
@@ -36,6 +42,12 @@ const AuthProvider = ({ children }) => {
     const userSignOut = () => {
         return signOut(auth).then(() => {
             dispatch(resetUserState());
+            dispatch(resetDataState());
+            dispatch(resetMessageState());
+            dispatch(resetPaymentState());
+            dispatch(resetReviewState());
+            dispatch(resetWishlistState());
+            dispatch(resetCartState());
             setUser(null);
             document.cookie = 'jwt=; Max-Age=0; path=/;';
         });

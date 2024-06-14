@@ -51,6 +51,13 @@ const wishlistSlice = createSlice({
         wishlistStatus: 'idle',
         wishlistError: null,
     },
+    reducers: {
+        resetWishlistState(state) {
+            state.wishlistItems = [];
+            state.wishlistStatus = 'idle';
+            state.wishlistError = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getWishlist.pending, (state) => {
@@ -73,4 +80,5 @@ const wishlistSlice = createSlice({
     },
 });
 
+export const { resetWishlistState } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

@@ -39,6 +39,13 @@ const messageSlice = createSlice({
         messagesStatus: 'idle',
         messagesError: null,
     },
+    reducers: {
+        resetMessageState(state) {
+            state.messages = [];
+            state.messagesStatus = 'idle';
+            state.messagesError = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getMessages.pending, (state) => {
@@ -55,4 +62,5 @@ const messageSlice = createSlice({
     }
 })
 
+export const { resetMessageState } = messageSlice.actions;
 export default messageSlice.reducer;

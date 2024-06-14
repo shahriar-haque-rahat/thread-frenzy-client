@@ -64,6 +64,13 @@ const reviewSlice = createSlice({
         reviewStatus: 'idle',
         reviewError: null,
     },
+    reducers: {
+        resetReviewState(state) {
+            state.reviewItems = [];
+            state.reviewStatus = 'idle';
+            state.reviewError = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getReview.pending, (state) => {
@@ -105,4 +112,5 @@ const reviewSlice = createSlice({
     },
 });
 
+export const { resetReviewState } = reviewSlice.actions;
 export default reviewSlice.reducer;

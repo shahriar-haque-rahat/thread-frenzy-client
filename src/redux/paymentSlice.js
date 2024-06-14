@@ -68,6 +68,14 @@ const paymentSlice = createSlice({
         paymentStatus: 'idle',
         paymentError: null,
     },
+    reducers: {
+        resetPaymentState(state) {
+            state.payment = [];
+            state.userSpecificPayment = [];
+            state.paymentStatus = 'idle';
+            state.paymentError = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getPayment.pending, (state) => {
@@ -106,4 +114,5 @@ const paymentSlice = createSlice({
     }
 })
 
+export const { resetPaymentState } = paymentSlice.actions;
 export default paymentSlice.reducer;

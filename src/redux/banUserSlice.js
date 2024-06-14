@@ -21,10 +21,10 @@ export const addBanUser = createAsyncThunk('banUser/addBanUser', async (banUserI
     }
 });
 
-export const deleteBanUser = createAsyncThunk('banUser/deleteBanUser', async (id, { rejectWithValue }) => {
+export const deleteBanUser = createAsyncThunk('banUser/deleteBanUser', async (userEmail, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.delete(`/ban-user/${id}`);
+        const res = await axiosPrivate.delete(`/ban-user/${userEmail}`);
         return res.data;
     } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);

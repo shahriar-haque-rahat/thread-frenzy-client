@@ -10,7 +10,6 @@ const OrderHistory = () => {
     const dispatch = useDispatch();
     const { userSpecificPayment, paymentStatus, paymentError } = useSelector(state => state.payment);
 
-
     useEffect(() => {
         if (userByEmailStatus === 'succeeded') {
             dispatch(getUserSpecificPayment(userByEmail.userEmail));
@@ -26,10 +25,10 @@ const OrderHistory = () => {
             <Helmet>
                 <title>Order History | Thread Frenzy</title>
             </Helmet>
-            <div className=" mr-2 md:mr-0">
+            <div className="mr-2 md:mr-0">
                 <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Order History</h1>
 
-                <div className=" overflow-x-auto pt-10">
+                <div className="overflow-x-auto pt-10">
                     <table className="table">
                         <thead className="text-black font-bold pb-2">
                             <tr className="border-b border-black">
@@ -43,26 +42,43 @@ const OrderHistory = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                                userSpecificPayment?.map(item => (
-                                    <tr key={item._id} className=" border-b border-gray-400">
-                                        <td>{item.date.split('T')[0]}</td>
-                                        {
-                                            item.orderedItems.map((orderedItem) => (
-                                                <>
-                                                    <td><Link to={`/product-details/${orderedItem.itemId}`}>{orderedItem.name}</Link></td>
-                                                    <td>{orderedItem.color}</td>
-                                                    <td>{orderedItem.size}</td>
-                                                    <td>{orderedItem.quantity}</td>
-                                                </>
-
-                                            ))
-                                        }
-                                        <td>{item.price}</td>
-                                        <td className={item.status === 'pending' ? " text-orange-500" : " text-green-500"}>{item.status}</td>
-                                    </tr>
-                                ))
-                            }
+                            {userSpecificPayment?.map(item => (
+                                <tr key={item._id} className="border-b border-gray-400">
+                                    <td>{item.date.split('T')[0]}</td>
+                                    <td>
+                                        {item.orderedItems.map(orderedItem => (
+                                            <div key={orderedItem._id}>
+                                                <Link to={`/product-details/${orderedItem.itemId}`} className=" hover:underline">
+                                                    {orderedItem.name}
+                                                </Link>
+                                            </div>
+                                        ))}
+                                    </td>
+                                    <td>
+                                        {item.orderedItems.map(orderedItem => (
+                                            <div key={orderedItem._id}>
+                                                {orderedItem.color}
+                                            </div>
+                                        ))}
+                                    </td>
+                                    <td>
+                                        {item.orderedItems.map(orderedItem => (
+                                            <div key={orderedItem._id}>
+                                                {orderedItem.size}
+                                            </div>
+                                        ))}
+                                    </td>
+                                    <td>
+                                        {item.orderedItems.map(orderedItem => (
+                                            <div key={orderedItem._id}>
+                                                {orderedItem.quantity}
+                                            </div>
+                                        ))}
+                                    </td>
+                                    <td>{item.price}</td>
+                                    <td className={item.status === 'pending' ? "text-orange-500" : "text-green-500"}>{item.status}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

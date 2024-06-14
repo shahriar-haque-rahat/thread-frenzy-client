@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getBannedUsers, getUser, updateUser } from "../../../redux/userSlice";
 import withReactContent from 'sweetalert2-react-content';
@@ -15,6 +15,7 @@ const ManageUsers = () => {
     const { user, userStatus, userError, bannedUsers, bannedUsersStatus, bannedUsersError } = useSelector(state => state.user);
     const admins = user?.filter(admin => admin.role === 'admin');
     const users = user?.filter(user => user.role === 'user');
+    const [showBannedUser, setShowBannedUser] = useState(false);
 
     const handleRoleChange = (user) => {
         MySwal.fire({
@@ -245,11 +246,13 @@ const ManageUsers = () => {
             <div className="space-y-10 mr-2 md:mr-0">
                 <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
 
-                <button className=" bg-black px-2 py-1 text-white">Ban Users</button>
+                <button onClick={() => setShowBannedUser(!showBannedUser)} className=" bg-black px-2 py-1 text-white">{showBannedUser ? "Active Users" : "Ban Users"}</button>
 
-                <ActiveUsers admins={admins} users={users} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
-
-                <BannedUser bannedUsers={bannedUsers} handleUnbanUser={handleUnbanUser} />
+                {
+                    showBannedUser
+                        ? <BannedUser bannedUsers={bannedUsers} handleUnbanUser={handleUnbanUser} />
+                        : <ActiveUsers admins={admins} users={users} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
+                }
             </div>
         </>
     );

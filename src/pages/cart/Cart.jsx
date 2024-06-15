@@ -1,14 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "../../provider/AuthProvider";
-import { getCart, updateCartItem, deleteCartItem } from "../../redux/cartSlice";
+import { getCart, updateCartItem } from "../../redux/cartSlice";
 import CartItem from "./CartItem";
 import CheckOut from "./CheckOut";
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet-async";
-
-const MySwal = withReactContent(Swal);
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -38,52 +34,7 @@ const Cart = () => {
         });
     };
 
-    const handleDeleteCartItem = (id) => {
-        MySwal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            customClass: {
-                popup: 'square',
-                confirmButton: 'square',
-                cancelButton: 'square',
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                dispatch(deleteCartItem(id))
-                    .unwrap()
-                    .then(() => {
-                        dispatch(getCart(user.email));
-                        return MySwal.fire({
-                            title: 'Product Deleted',
-                            icon: 'success',
-                            confirmButtonColor: 'black',
-                            customClass: {
-                                popup: 'square',
-                                confirmButton: 'square'
-                            }
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Delete operation failed:', error);
-                        MySwal.fire({
-                            title: 'Error!',
-                            text: 'Failed to delete the product. Please try again.',
-                            icon: 'error',
-                            confirmButtonColor: 'black',
-                            customClass: {
-                                popup: 'square',
-                                confirmButton: 'square'
-                            }
-                        });
-                    });
-            }
-        });
-    };
+
 
     useEffect(() => {
         if (user?.email) {
@@ -121,7 +72,7 @@ const Cart = () => {
                             : <div>
                                 {
                                     !isCheckingOut
-                                        ? <CartItem cartItems={cartItems} handleDeleteCartItem={handleDeleteCartItem} quantities={quantities} handleQuantity={handleQuantity} />
+                                        ? <CartItem cartItems={cartItems} quantities={quantities} handleQuantity={handleQuantity} userEmail={user.email}/>
                                         : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
                                 }
                             </div>

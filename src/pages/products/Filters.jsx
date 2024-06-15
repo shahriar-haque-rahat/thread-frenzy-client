@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const Filters = ({ collections, setFilteredData, onFilterChange }) => {
     const [selectedBrands, setSelectedBrands] = useState([]);

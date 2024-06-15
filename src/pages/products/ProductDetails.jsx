@@ -78,7 +78,6 @@ const ProductDetails = () => {
             quantity: productQuantity,
             userEmail: userByEmail.userEmail,
             status: 'pending',
-            date: new Date().toISOString(),
             transactionId: 'pending',
         };
         setErrorMessage('');

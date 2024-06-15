@@ -76,7 +76,6 @@ const PaymentForm = ({ totalPrice, shippingInfo, cartItems, setIsCheckingOut }) 
                     email: shippingInfo?.email,
                     price: totalPrice,
                     transactionId: paymentIntent.id,
-                    date: new Date(),
                     orderedItems: cartItems,
                     status: 'pending',
                 }

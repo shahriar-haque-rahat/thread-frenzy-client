@@ -150,7 +150,7 @@ const Navbar = () => {
                     </Link>
                     <div className=" w-16 h-10 flex justify-end items-center">
                         {
-                            loading==='true' ? <div><span className="loading loading-ring loading-md"></span></div>
+                            loading===true ? <div><span className="loading loading-ring loading-md"></span></div>
                                 : user ? (
                                     <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
                                         <div tabIndex={0} role="button">

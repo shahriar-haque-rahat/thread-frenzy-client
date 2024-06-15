@@ -90,6 +90,13 @@ const AuthProvider = ({ children }) => {
         };
         console.log(userInfo);
         dispatch(addUser(userInfo))
+            .unwrap()
+            .then(() => {
+                dispatch(getUserByEmail(userEmail))
+                    .then(() => {
+                        setLoading(false);
+                    })
+            })
             .catch((error) => {
                 console.error("Error saving user to database: ", error);
             });

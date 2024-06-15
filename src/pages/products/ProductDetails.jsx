@@ -74,6 +74,7 @@ const ProductDetails = () => {
             image: selectedItem.images[selectedItem.color[colorIndex]][0],
             price: selectedItem.price,
             color: selectedItem.color[colorIndex],
+            gender: selectedItem.gender,
             size: selectedSize,
             quantity: productQuantity,
             userEmail: userByEmail.userEmail,

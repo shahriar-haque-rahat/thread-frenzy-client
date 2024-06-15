@@ -2,29 +2,17 @@ import { useState, useEffect } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const Filters = ({ collections, setFilteredData, onFilterChange }) => {
-    const [isBrandOpen, setIsBrandOpen] = useState(false);
-    const [isPriceOpen, setIsPriceOpen] = useState(false);
-    const [isSizeOpen, setIsSizeOpen] = useState(false);
-    const [isRatingOpen, setIsRatingOpen] = useState(false);
     const [selectedBrands, setSelectedBrands] = useState([]);
-    const [selectedPrices, setSelectedPrices] = useState([]);
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
     const [selectedSizes, setSelectedSizes] = useState([]);
-    const [selectedRatings, setSelectedRatings] = useState([]);
 
     const brands = ["Calvin Klein", "Everlane", "Adidas", "Levis", "Nike", "Buck Mason", "Allen Solly", "Lacoste"];
-    const prices = ["$0 - $25", "$25 - $50", "$50 - $100", "$100 - $150"];
     const sizes = ["s", "m", "l", "xl", "xxl"];
-    const ratings = ["1 - 2", "2 - 3", "3 - 4", "4 - 5"];
 
     const handleBrandChange = (brand) => {
         setSelectedBrands(prev =>
             prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
-        );
-    };
-
-    const handlePriceChange = (price) => {
-        setSelectedPrices(prev =>
-            prev.includes(price) ? prev.filter(p => p !== price) : [...prev, price]
         );
     };
 
@@ -34,25 +22,13 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
         );
     };
 
-    const handleRatingChange = (rating) => {
-        setSelectedRatings(prev =>
-            prev.includes(rating) ? prev.filter(r => r !== rating) : [...prev, rating]
-        );
-    };
-
     const filterCollections = () => {
         const filtered = collections.filter(item => {
             const matchBrand = selectedBrands.length === 0 || selectedBrands.includes(item.brand);
-            const matchPrice = selectedPrices.length === 0 || selectedPrices.some(priceRange => {
-                const [min, max] = priceRange.replace(/\$/g, '').split(' - ').map(Number);
-                return item.price >= min && item.price <= max;
-            });
+            const matchPrice = (!minPrice && !maxPrice) || (item.price >= (minPrice || 0) && item.price <= (maxPrice || Infinity));
             const matchSize = selectedSizes.length === 0 || selectedSizes.some(size => item.size.includes(size));
-            const matchRating = selectedRatings.length === 0 || selectedRatings.some(ratingRange => {
-                const [min, max] = ratingRange.split(' - ').map(Number);
-                return item.rating >= min && item.rating <= max;
-            });
-            return matchBrand && matchPrice && matchSize && matchRating;
+
+            return matchBrand && matchPrice && matchSize;
         });
         setFilteredData(filtered);
     };
@@ -61,19 +37,16 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
         filterCollections();
         onFilterChange({
             brand: selectedBrands.join(','),
-            price: selectedPrices.map(priceRange => priceRange.replace(/\$/g, '').replace(' - ', ',')).join(','),
+            price: `${minPrice},${maxPrice}`,
             size: selectedSizes.join(','),
-            rating: selectedRatings.map(ratingRange => ratingRange.replace(' - ', ',')).join(',')
         });
-    }, [selectedBrands, selectedPrices, selectedSizes, selectedRatings, collections]);
+    }, [selectedBrands, minPrice, maxPrice, selectedSizes, collections]);
 
     return (
         <div className=" md:flex lg:flex-col border-b border-gray-400 h-fit">
-            <div className="collapse border-t border-gray-400 rounded-none">
-                <input type="checkbox" className="peer" checked={isBrandOpen} onChange={() => setIsBrandOpen(!isBrandOpen)} />
-                <div className="collapse-title flex items-center justify-between">
-                    Brand {isBrandOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                </div>
+            <div className="collapse collapse-arrow border-t border-gray-400 rounded-none">
+                <input type="checkbox" className="peer" />
+                <div className="collapse-title flex items-center justify-between">Brand</div>
                 <div className="collapse-content ">
                     <ul >
                         {brands.map(brand => (
@@ -88,30 +61,38 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
                 </div>
             </div>
 
-            <div className="collapse border-t border-gray-400 rounded-none">
-                <input type="checkbox" className="peer" checked={isPriceOpen} onChange={() => setIsPriceOpen(!isPriceOpen)} />
-                <div className="collapse-title flex items-center justify-between">
-                    Price {isPriceOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                </div>
+            <div className="collapse collapse-arrow border-t border-gray-400 rounded-none">
+                <input type="checkbox" className="peer" />
+                <div className="collapse-title flex items-center justify-between">Price</div>
                 <div className="collapse-content ">
-                    <ul>
-                        {prices.map(price => (
-                            <li key={price}>
-                                <label className=" flex gap-3">
-                                    <input type="checkbox" checked={selectedPrices.includes(price)} onChange={() => handlePriceChange(price)} />
-                                    {price}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="flex flex-col gap-3">
+                        <span>Min Price:</span>
+                        <label className="flex gap-3">
+                            <input
+                                type="number"
+                                value={minPrice}
+                                onChange={(e) => setMinPrice(e.target.value)}
+                                className="border p-1 w-32"
+                                placeholder="0"
+                            />
+                        </label>
+                        <span>Max Price:</span>
+                        <label className="flex gap-3">
+                            <input
+                                type="number"
+                                value={maxPrice}
+                                onChange={(e) => setMaxPrice(e.target.value)}
+                                className="border p-1 w-32"
+                                placeholder="Any"
+                            />
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div className="collapse border-t border-gray-400 rounded-none">
-                <input type="checkbox" className="peer" checked={isSizeOpen} onChange={() => setIsSizeOpen(!isSizeOpen)} />
-                <div className="collapse-title flex items-center justify-between">
-                    Size {isSizeOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                </div>
+            <div className="collapse collapse-arrow border-t border-gray-400 rounded-none">
+                <input type="checkbox" className="peer" />
+                <div className="collapse-title flex items-center justify-between">Size</div>
                 <div className="collapse-content ">
                     <ul >
                         {sizes.map(size => (
@@ -119,25 +100,6 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
                                 <label className=" flex gap-3">
                                     <input type="checkbox" checked={selectedSizes.includes(size)} onChange={() => handleSizeChange(size)} />
                                     {size.toUpperCase()}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-            <div className="collapse border-t border-gray-400 rounded-none">
-                <input type="checkbox" className="peer" checked={isRatingOpen} onChange={() => setIsRatingOpen(!isRatingOpen)} />
-                <div className="collapse-title flex items-center justify-between">
-                    Rating {isRatingOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                </div>
-                <div className="collapse-content ">
-                    <ul >
-                        {ratings.map(rating => (
-                            <li key={rating}>
-                                <label className=" flex gap-3">
-                                    <input type="checkbox" checked={selectedRatings.includes(rating)} onChange={() => handleRatingChange(rating)} />
-                                    {rating}
                                 </label>
                             </li>
                         ))}

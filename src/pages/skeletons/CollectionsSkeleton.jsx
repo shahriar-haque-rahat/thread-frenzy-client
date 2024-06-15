@@ -11,8 +11,7 @@ const CollectionsSkeleton = () => {
                     <div className="h-10 bg-gray-300 animate-pulse"></div>
                     <div className="h-10 bg-gray-300 animate-pulse block md:hidden lg:block"></div>
                     <div className="h-10 bg-gray-300 animate-pulse block md:hidden lg:block"></div>
-                    <div className="h-10 bg-gray-300 animate-pulse block md:hidden lg:block"></div>
-                </div>
+                 </div>
                 <div className="flex gap-4">
                     {[...Array(3)].map((_, index) => (
                         <div key={index} className="space-y-2 flex flex-col items-center">

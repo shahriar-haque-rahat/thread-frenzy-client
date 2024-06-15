@@ -71,7 +71,7 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
                                 type="number"
                                 value={minPrice}
                                 onChange={(e) => setMinPrice(e.target.value)}
-                                className="border p-1 w-32"
+                                className="border p-1 w-32 focus:outline-gray-400"
                                 placeholder="0"
                             />
                         </label>
@@ -81,7 +81,7 @@ const Filters = ({ collections, setFilteredData, onFilterChange }) => {
                                 type="number"
                                 value={maxPrice}
                                 onChange={(e) => setMaxPrice(e.target.value)}
-                                className="border p-1 w-32"
+                                className="border p-1 w-32 focus:outline-gray-400"
                                 placeholder="Any"
                             />
                         </label>

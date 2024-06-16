@@ -22,7 +22,6 @@ const SimilarProducts = ({ itemBrand, itemId }) => {
         }
     }, [allDataStatus, dispatch]);
 
-    // TODO: loading and failed status set korte hobe
 
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;

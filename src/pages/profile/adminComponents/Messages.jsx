@@ -28,7 +28,7 @@ const Messages = () => {
                     {
                         messagesStatus === 'succeeded' && messages.length === 0
                             ? <p>No messages available.</p>
-                            : messages.map(message => (
+                            : messages.slice().reverse().map(message => (
                                 <div key={message.id} className="border p-4 mb-4">
                                     <div className=" flex gap-2 items-center">
                                         <h2 className="text-lg font-bold">{message.email}</h2>

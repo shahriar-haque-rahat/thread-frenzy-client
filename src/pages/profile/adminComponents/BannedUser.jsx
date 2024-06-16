@@ -17,7 +17,7 @@ const BannedUser = ({ bannedUsers, handleUnbanUser }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {bannedUsers?.map(user => (
+                            {bannedUsers?.slice().reverse().map(user => (
                                 <tr key={user._id} className="border-b border-gray-600 py-2">
                                     <td>{user.firstName}</td>
                                     <td>{user.userEmail}</td>

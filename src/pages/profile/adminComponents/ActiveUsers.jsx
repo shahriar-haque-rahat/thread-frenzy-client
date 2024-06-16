@@ -54,7 +54,7 @@ const ActiveUsers = ({ admins, users, handleRoleChange, handleDeleteUser, handle
                             </tr>
                         </thead>
                         <tbody>
-                            {users?.map(user => (
+                            {users?.slice().reverse().map(user => (
                                 <tr key={user._id} className="border-b border-gray-600 py-2">
                                     <td>{user.firstName}</td>
                                     <td>{user.userEmail}</td>

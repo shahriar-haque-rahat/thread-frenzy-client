@@ -45,7 +45,7 @@ const ManageOrders = () => {
                             </tr>
                         </thead>
                         {
-                            payment?.map(item => (
+                            payment?.slice().reverse().map(item => (
                                 <tr key={item._id} className="text-center py-2 border-b border-gray-800">
                                     <td>{item.date.split('T')[0]}</td>
                                     <td>{item._id}</td>

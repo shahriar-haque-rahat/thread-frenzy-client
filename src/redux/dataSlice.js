@@ -48,6 +48,20 @@ export const addItem = createAsyncThunk('data/addItem', async (item, { rejectWit
     }
 });
 
+export const updateItem = createAsyncThunk('product/updateProduct', async ({ id, updatedProduct }, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.put(`/t-shirt/${id}`, updatedProduct);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const deleteItem = createAsyncThunk('data/deleteItem', async (itemId, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {

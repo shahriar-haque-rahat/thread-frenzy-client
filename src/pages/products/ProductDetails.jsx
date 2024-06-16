@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getItemById } from "../../redux/dataSlice";
+import { getItemById, updateItem } from "../../redux/dataSlice";
 import { addToCart } from "../../redux/cartSlice";
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import ReactStars from "react-rating-stars-component";
@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
 import { getReview } from "../../redux/reviewSlice";
-import ProductDetailsSkeleton from "../skeletons/ProductDetailsSkeleton";
 import { Helmet } from "react-helmet-async";
 
 const ProductDetails = () => {
@@ -48,10 +47,12 @@ const ProductDetails = () => {
         setOverallRating(calculateAverageRating(reviewItems));
     }, [reviewItems]);
 
-
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
         newQuantity = newQuantity < 1 ? 1 : newQuantity;
+        if (selectedItem && newQuantity > selectedItem.numberOfProduct) {
+            newQuantity = selectedItem.numberOfProduct;
+        }
         setProductQuantity(newQuantity);
     };
 
@@ -86,7 +87,17 @@ const ProductDetails = () => {
         dispatch(addToCart(cartItem))
             .unwrap()
             .then(() => {
+                const updatedProduct = {
+                    numberOfProduct: selectedItem.numberOfProduct - productQuantity
+                };
+
+                dispatch(updateItem({ id: selectedItem._id, updatedProduct }))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(getItemById(selectedItem._id))
+                    })
                 toast.success('Product added to cart');
+                setProductQuantity(1);
             })
             .catch(() => {
                 toast.error('Failed to add product');
@@ -121,14 +132,12 @@ const ProductDetails = () => {
             });
     }
 
-
     useEffect(() => {
         setColorIndex(0);
         setProductQuantity(1);
         setSelectedSize('');
         dispatch(getItemById(itemId));
     }, [dispatch, itemId]);
-
 
     useEffect(() => {
         if (userByEmailStatus === 'succeeded' && wishlistStatus === 'idle') {
@@ -139,17 +148,11 @@ const ProductDetails = () => {
     useEffect(() => {
         const wishList = wishlistItems.find(item => item.itemId._id === selectedItem?._id)
         setWishlisted(wishList);
-
     }, [wishlistItems, selectedItem]);
 
     useEffect(() => {
         dispatch(getReview(itemId));
     }, [itemId, dispatch]);
-
-
-    if (singleProductStatus === 'loading') {
-        return <ProductDetailsSkeleton />
-    }
 
     if (singleProductStatus === 'failed' || userByEmailError === 'failed' || reviewStatus === 'failed' || wishlistStatus === 'failed') {
         return <div>Error: {error} || {userByEmailError || reviewError || wishlistError}</div>;
@@ -171,7 +174,7 @@ const ProductDetails = () => {
                             </div>
                             <div className="col-span-2 space-y-6">
                                 {
-                                    selectedItem.numberOfProduct === 0 && <p className=" bg-black w-fit px-2 text-white">Stock Out</p>
+                                    selectedItem.numberOfProduct < 1 && <p className=" bg-black w-fit px-2 text-white">Stock Out</p>
                                 }
 
                                 <div className=" flex gap-12 ">
@@ -221,13 +224,18 @@ const ProductDetails = () => {
                                     ))}
                                 </ul>
                                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
+                                <p>Product Left: {selectedItem.numberOfProduct}</p>
                                 <div className="flex items-center">
                                     <div className="flex items-center gap-4 w-1/2">
                                         <p onClick={() => handleQuantity("-")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> - </p>
                                         <p className="px-5 py-1 font-semibold border ">{productQuantity}</p>
                                         <p onClick={() => handleQuantity("+")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> + </p>
                                     </div>
-                                    <button onClick={handleAddCart} className="bg-black text-white w-1/2 h-10">Add to Cart</button>
+
+                                    <button disabled={selectedItem.numberOfProduct < 1 || productQuantity > selectedItem.numberOfProduct} onClick={handleAddCart} className={`w-1/2 h-10 text-white ${selectedItem.numberOfProduct < 1 ? 'bg-gray-400' : 'bg-black'}`}>
+                                        {selectedItem.numberOfProduct < 1 ? 'Out of Stock' : 'Add to Cart'}
+                                    </button>
                                 </div>
                                 <div>
                                     <div className="collapse border-t border-gray-400 rounded-none">

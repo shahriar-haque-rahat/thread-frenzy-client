@@ -5,6 +5,11 @@ import { getCart, updateCartItem } from "../../redux/cartSlice";
 import CartItem from "./CartItem";
 import CheckOut from "./CheckOut";
 import { Helmet } from "react-helmet-async";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { allData, getItemById, updateItem } from "../../redux/dataSlice";
+
+const MySwal = withReactContent(Swal);
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -13,7 +18,7 @@ const Cart = () => {
     const [quantities, setQuantities] = useState({});
     const [isCheckingOut, setIsCheckingOut] = useState(false);
 
-    const handleQuantity = (id, operation) => {
+    const handleQuantity = (item, id, operation) => {
         setQuantities(prevQuantities => {
             const newQuantity = operation === "+" ? prevQuantities[id] + 1 : prevQuantities[id] - 1;
             const updatedQuantity = newQuantity < 1 ? 1 : newQuantity;
@@ -22,9 +27,20 @@ const Cart = () => {
                 .unwrap()
                 .then(() => {
                     dispatch(getCart(user.email));
+                    updateProductInventory(item.itemId, updatedQuantity - prevQuantities[id]);
                 })
                 .catch(error => {
                     console.error('Update operation failed:', error);
+                    MySwal.fire({
+                        title: 'Error!',
+                        text: 'Failed to update cart item. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: 'black',
+                        customClass: {
+                            popup: 'square',
+                            confirmButton: 'square'
+                        }
+                    });
                 });
 
             return {
@@ -34,7 +50,32 @@ const Cart = () => {
         });
     };
 
+    const updateProductInventory = (id, quantityChange) => {
+        dispatch(getItemById(id))
+            .then(response => {
+                const updatedProduct = {
+                    numberOfProduct: response.payload.numberOfProduct - quantityChange
+                };
 
+                return dispatch(updateItem({ id, updatedProduct }));
+            })
+            .then(() => {
+                dispatch(allData());
+            })
+            .catch(error => {
+                console.error('Update operation failed:', error);
+                MySwal.fire({
+                    title: 'Error!',
+                    text: 'Failed to update product inventory. Please try again.',
+                    icon: 'error',
+                    confirmButtonColor: 'black',
+                    customClass: {
+                        popup: 'square',
+                        confirmButton: 'square'
+                    }
+                });
+            });
+    };
 
     useEffect(() => {
         if (user?.email) {
@@ -50,7 +91,7 @@ const Cart = () => {
             }, {});
             setQuantities(initialQuantities);
         }
-    }, [cartItems, setQuantities]);
+    }, [cartItems]);
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * (quantities[item._id] || 1), 0).toFixed(2);
     const amountToPay = parseFloat(totalPrice) + 14.99;
@@ -72,7 +113,7 @@ const Cart = () => {
                             : <div>
                                 {
                                     !isCheckingOut
-                                        ? <CartItem cartItems={cartItems} quantities={quantities} handleQuantity={handleQuantity} userEmail={user.email}/>
+                                        ? <CartItem cartItems={cartItems} quantities={quantities} handleQuantity={handleQuantity} userEmail={user.email} />
                                         : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
                                 }
                             </div>
@@ -98,7 +139,7 @@ const Cart = () => {
                         {
                             isCheckingOut
                                 ? <button className="bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(false)}>Back to Cart</button>
-                                : <button disabled={cartItems < 1} className="disabled:bg-gray-400 bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
+                                : <button disabled={cartItems.length < 1} className="disabled:bg-gray-400 bg-black text-white text-lg font-semibold w-full h-12" onClick={() => setIsCheckingOut(true)}>Checkout</button>
                         }
                     </div>
                 </div>

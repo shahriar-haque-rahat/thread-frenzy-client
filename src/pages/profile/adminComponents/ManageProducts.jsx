@@ -197,7 +197,7 @@ const ManageProducts = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.map((item, idx) => (
+                            {data?.slice().reverse().map((item, idx) => (
                                 <tr key={idx} className="border-b border-gray-400">
                                     <td className="w-24">
                                         <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />

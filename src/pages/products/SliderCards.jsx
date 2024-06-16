@@ -17,7 +17,7 @@ const SliderCards = ({ data }) => {
                             spaceBetween={20}
                             slidesPerView={1}
                             scrollbar={{ draggable: true }}
-                            autoplay={{ delay: 10000 }}>
+                            autoplay={{ delay: 5000 }}>
 
                             <div>
                                 {

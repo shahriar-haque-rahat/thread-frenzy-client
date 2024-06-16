@@ -9,6 +9,7 @@ import AddProductForm from "./AddProductForm";
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
+import { FaEdit } from 'react-icons/fa';
 
 const MySwal = withReactContent(Swal);
 
@@ -16,17 +17,22 @@ const ManageProducts = () => {
     const dispatch = useDispatch();
     const { data, allDataStatus, error } = useSelector(state => state.data);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState('add');
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const [priceOrder, setPriceOrder] = useState(null);
     const [selectedGender, setSelectedGender] = useState(null);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
-    const openModal = () => {
+    const openModal = (mode, product = null) => {
+        setModalMode(mode);
+        setSelectedProduct(product);
         setIsModalOpen(true);
     }
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setSelectedProduct(null);
     }
 
     const handleDeleteItem = (id) => {
@@ -86,6 +92,10 @@ const ManageProducts = () => {
         dispatch(allData(filters))
     }, [dispatch, priceOrder, selectedGender, selectedBrands]);
 
+    useEffect(() => {
+        dispatch(allData());
+    }, [dispatch]);
+
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
@@ -119,7 +129,8 @@ const ManageProducts = () => {
             <div className="space-y-6 mr-2 md:mr-0">
                 <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
 
-                <button onClick={openModal} className="border border-black font-semibold p-2 w-full">Add Product</button>
+                <button onClick={() => openModal('add')} className="border border-black font-semibold p-2 w-full">Add Product</button>
+
                 <div className=' grid grid-cols-2 gap-6'>
                     <div>
                         <label className="mr-2">Sort by Price:</label>
@@ -170,9 +181,6 @@ const ManageProducts = () => {
                 </div>
 
                 <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
-                <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
-                    <AddProductForm closeModal={closeModal} allData={allData} />
-                </Modal>
 
                 <div className=" overflow-x-auto">
                     <table className="table">
@@ -184,6 +192,7 @@ const ManageProducts = () => {
                                 <th>Price</th>
                                 <th>Color</th>
                                 <th>Gender</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -199,13 +208,12 @@ const ManageProducts = () => {
                                     <td>{item.brand}</td>
                                     <td>${item.price}</td>
                                     <td>
-                                        {
-                                            item.color.map((color) => (
-                                                <>{color}, </>
-                                            ))
-                                        }
+                                        {item.color.join(', ')}
                                     </td>
                                     <td>{item.gender}</td>
+                                    <td>
+                                        <FaEdit size={20} onClick={() => openModal('update', item)} className="hover:cursor-pointer" />
+                                    </td>
                                     <td>
                                         <MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} />
                                     </td>
@@ -214,6 +222,15 @@ const ManageProducts = () => {
                         </tbody>
                     </table>
                 </div>
+
+                <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
+                    <AddProductForm
+                        closeModal={closeModal}
+                        allData={allData}
+                        initialData={selectedProduct}
+                        isUpdate={modalMode === 'update'}
+                    />
+                </Modal>
             </div>
         </>
     );

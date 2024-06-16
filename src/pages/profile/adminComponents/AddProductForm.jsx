@@ -1,23 +1,40 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
-import { addItem } from "../../../redux/dataSlice";
+import { addItem, updateItem } from "../../../redux/dataSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { TiDeleteOutline } from "react-icons/ti";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const AddProductForm = ({ closeModal, allData }) => {
+const AddProductForm = ({ closeModal, allData, initialData = null, isUpdate = false }) => {
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
-    const [productDetails, setProductDetails] = useState(null);
-    const [uploadedImages, setUploadedImages] = useState({});
+    const { register, handleSubmit, formState: { errors }, setError, clearErrors, reset } = useForm({
+        defaultValues: initialData ? {
+            ...initialData,
+            color: initialData.color.join(', '),
+            details: initialData.details.join(', ')
+        } : {}
+    });
+    const [productDetails, setProductDetails] = useState(initialData || null);
+    const [uploadedImages, setUploadedImages] = useState(initialData?.images || {});
     const axiosPublic = useAxiosPublic();
 
     const colorRegex = /^(\w+\s?\w*)(,\s*\w+\s?\w*)*$/;
+
+    useEffect(() => {
+        if (isUpdate && initialData) {
+            reset({
+                ...initialData,
+                color: initialData.color.join(', '),
+                details: initialData.details.join(', ')
+            });
+        }
+    }, [isUpdate, initialData, reset]);
 
     const onFirstSubmit = (data) => {
         if (!colorRegex.test(data.color)) {
@@ -57,26 +74,49 @@ const AddProductForm = ({ closeModal, allData }) => {
         }
     };
 
+    const deleteImage = (color, index) => {
+        setUploadedImages(prevImages => {
+            const updatedImages = { ...prevImages };
+            updatedImages[color] = updatedImages[color].filter((_, idx) => idx !== index);
+            return updatedImages;
+        });
+    };
+
     const onSubmit = () => {
         const finalData = { ...productDetails, images: uploadedImages, rating: 0 };
-        console.log(finalData);
-        dispatch(addItem(finalData))
-            .unwrap()
-            .then(() => {
-                dispatch(allData());
-                toast.success('Product successfully added');
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error('Failed to add product');
-            })
+
+        if (isUpdate) {
+            dispatch(updateItem({ id: initialData._id, updatedProduct: finalData }))
+                .unwrap()
+                .then(() => {
+                    dispatch(allData());
+                    toast.success('Product successfully updated');
+                    closeModal();
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error('Failed to update product');
+                });
+        } else {
+            dispatch(addItem(finalData))
+                .unwrap()
+                .then(() => {
+                    dispatch(allData());
+                    toast.success('Product successfully added');
+                    closeModal();
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error('Failed to add product');
+                });
+        }
     };
 
     return (
         <div className="relative font-clashGrotesk font-medium">
-            <h1 className=" text-center text-2xl font-semibold">Add Product</h1>
+            <h1 className="text-center text-2xl font-semibold">{isUpdate ? 'Update' : 'Add'} Product</h1>
             <button onClick={closeModal} className="absolute top-1 right-1 text-red-500"><RxCross2 size={30} /></button>
-            <div className=" pt-12">
+            <div className="pt-12">
                 <form onSubmit={handleSubmit(onFirstSubmit)} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="form-control relative w-full">
@@ -164,15 +204,23 @@ const AddProductForm = ({ closeModal, allData }) => {
                                         <input name={`images-${color}`} className="file-input w-full max-w-xs rounded-none h-8 border border-gray-400" type="file" multiple onChange={(e) => onImageUpload(e, color)} />
                                         {uploadedImages[color] && (
                                             <div className="flex flex-wrap mt-2">
-                                                {uploadedImages[color].map((url, idx) => (
-                                                    <img key={idx} src={url} alt={`Product Image for ${color} ${idx + 1}`} className="h-16 w-16 object-cover mr-2" />
-                                                ))}
+                                                {
+                                                    uploadedImages[color].map((url, idx) => (
+                                                        <div key={idx} className="relative h-16 w-16 flex items-end">
+                                                            <img src={url} alt={`Product Image for ${color} ${idx + 1}`} className="h-14 w-14 object-cover mr-2" />
+                                                            <TiDeleteOutline onClick={() => deleteImage(color, idx)} className="absolute top-0.5 right-0.5 text-red-500 hover:cursor-pointer" />
+                                                        </div>
+                                                    ))
+                                                }
                                             </div>
                                         )}
                                     </div>
                                 ))
                             }
-                            <div className="form-control mt-6">
+
+                            <div className="form-control mt-6">{
+                                isUpdate && <p className=" text-red-500 text-center text-sm">Make sure to submit details before submitting product</p>
+                            }
                                 <button type="submit" className="border border-black bg-black text-white font-bold py-2 hover:bg-white hover:text-black transition duration-300 ease-in-out">Submit Product</button>
                             </div>
                         </form>

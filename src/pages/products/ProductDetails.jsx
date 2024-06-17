@@ -50,8 +50,8 @@ const ProductDetails = () => {
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
         newQuantity = newQuantity < 1 ? 1 : newQuantity;
-        if (selectedItem && newQuantity > selectedItem.numberOfProduct) {
-            newQuantity = selectedItem.numberOfProduct;
+        if (selectedItem && newQuantity > selectedItem.quantity[selectedItem.color[colorIndex]]) {
+            newQuantity = selectedItem.quantity[selectedItem.color[colorIndex]];
         }
         setProductQuantity(newQuantity);
     };
@@ -87,21 +87,27 @@ const ProductDetails = () => {
         dispatch(addToCart(cartItem))
             .unwrap()
             .then(() => {
+                const updatedQuantity = selectedItem.quantity[selectedItem.color[colorIndex]] - productQuantity;
                 const updatedProduct = {
-                    numberOfProduct: selectedItem.numberOfProduct - productQuantity
+                    ...selectedItem,
+                    quantity: {
+                        ...selectedItem.quantity,
+                        [selectedItem.color[colorIndex]]: updatedQuantity,
+                    },
                 };
 
                 dispatch(updateItem({ id: selectedItem._id, updatedProduct }))
                     .unwrap()
                     .then(() => {
-                        dispatch(getItemById(selectedItem._id))
-                    })
+                        dispatch(getItemById(selectedItem._id));
+                    });
+
                 toast.success('Product added to cart');
                 setProductQuantity(1);
             })
             .catch(() => {
                 toast.error('Failed to add product');
-            })
+            });
     };
 
     const handleWishlist = () => {
@@ -130,7 +136,7 @@ const ProductDetails = () => {
                 console.error("Error removing item from wishlist: ", error);
                 toast.error('Error removing item from wishlist');
             });
-    }
+    };
 
     useEffect(() => {
         setColorIndex(0);
@@ -146,7 +152,7 @@ const ProductDetails = () => {
     }, [dispatch, wishlistStatus, userByEmail, userByEmailStatus]);
 
     useEffect(() => {
-        const wishList = wishlistItems.find(item => item.itemId._id === selectedItem?._id)
+        const wishList = wishlistItems.find(item => item.itemId._id === selectedItem?._id);
         setWishlisted(wishList);
     }, [wishlistItems, selectedItem]);
 
@@ -173,24 +179,22 @@ const ProductDetails = () => {
                                 ))}
                             </div>
                             <div className="col-span-2 space-y-6">
-                                {
-                                    selectedItem.numberOfProduct < 1 && <p className=" bg-black w-fit px-2 text-white">Stock Out</p>
-                                }
+                                {selectedItem.quantity[selectedItem.color[colorIndex]] < 1 && (
+                                    <p className="bg-black w-fit px-2 text-white">Stock Out</p>
+                                )}
 
-                                <div className=" flex gap-12 ">
+                                <div className="flex gap-12">
                                     <h1 className="text-2xl font-semibold">{selectedItem.name}</h1>
-                                    {
-                                        wishlisted
-                                            ? <button onClick={() => handleDeleteWishlistItem(wishlisted._id)} ><IoBookmarks size={30} /></button>
-                                            : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
+                                    {wishlisted
+                                        ? <button onClick={() => handleDeleteWishlistItem(wishlisted._id)}><IoBookmarks size={30} /></button>
+                                        : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
                                     }
                                 </div>
-                                {
-                                    overallRating === 0
-                                        ? <p>No reviews yet</p>
-                                        : <div>
-                                            <ReactStars value={overallRating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} key={overallRating} />
-                                        </div>
+                                {overallRating === 0
+                                    ? <p>No reviews yet</p>
+                                    : <div>
+                                        <ReactStars value={overallRating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} key={overallRating} />
+                                    </div>
                                 }
 
                                 <div className="flex gap-4 items-center">
@@ -225,7 +229,10 @@ const ProductDetails = () => {
                                 </ul>
                                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
-                                <p>Product Left: {selectedItem.numberOfProduct}</p>
+                                <div>
+                                    <p>Product Left: {selectedItem.quantity[selectedItem.color[colorIndex]]}</p>
+                                </div>
+
                                 <div className="flex items-center">
                                     <div className="flex items-center gap-4 w-1/2">
                                         <p onClick={() => handleQuantity("-")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> - </p>
@@ -233,8 +240,8 @@ const ProductDetails = () => {
                                         <p onClick={() => handleQuantity("+")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> + </p>
                                     </div>
 
-                                    <button disabled={selectedItem.numberOfProduct < 1 || productQuantity > selectedItem.numberOfProduct} onClick={handleAddCart} className={`w-1/2 h-10 text-white ${selectedItem.numberOfProduct < 1 ? 'bg-gray-400' : 'bg-black'}`}>
-                                        {selectedItem.numberOfProduct < 1 ? 'Out of Stock' : 'Add to Cart'}
+                                    <button disabled={selectedItem.quantity[selectedItem.color[colorIndex]] < 1 || productQuantity > selectedItem.quantity[selectedItem.color[colorIndex]]} onClick={handleAddCart} className={`w-1/2 h-10 text-white ${selectedItem.quantity[selectedItem.color[colorIndex]] < 1 ? 'bg-gray-400' : 'bg-black'}`}>
+                                        {selectedItem.quantity[selectedItem.color[colorIndex]] < 1 ? 'Out of Stock' : 'Add to Cart'}
                                     </button>
                                 </div>
                                 <div>
@@ -267,15 +274,14 @@ const ProductDetails = () => {
                                 </div>
                             </div>
                         </div>
-                        <p className=" w-full pt-4">{selectedItem.about_product}</p>
+                        <p className="w-full pt-4">{selectedItem.about_product}</p>
                     </>
                 )}
-                <SimilarProducts itemBrand={selectedItem?.brand} itemId={itemId}></SimilarProducts>
-                <Review reviewItems={reviewItems} productId={itemId} user={userByEmail}></Review>
+                <SimilarProducts itemBrand={selectedItem?.brand} itemId={itemId} />
+                <Review reviewItems={reviewItems} productId={itemId} user={userByEmail} />
             </div>
         </>
     );
 };
 
 export default ProductDetails;
-

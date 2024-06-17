@@ -12,7 +12,7 @@ const PrivateRouter = ({ children }) => {
     const { user, loading } = useContext(AuthContext);
     const location = useLocation();
 
-    console.log(location.pathname.split('/')[1], location.pathname.split('/')[2]);
+    // console.log(location.pathname.split('/')[1], location.pathname.split('/')[2]);
 
     if (user) {
         return children;

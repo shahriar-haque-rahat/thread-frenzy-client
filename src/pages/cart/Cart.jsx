@@ -27,7 +27,7 @@ const Cart = () => {
                 .unwrap()
                 .then(() => {
                     dispatch(getCart(user.email));
-                    updateProductInventory(item.itemId, updatedQuantity - prevQuantities[id]);
+                    updateProductInventory(item, updatedQuantity - prevQuantities[id]);
                 })
                 .catch(error => {
                     console.error('Update operation failed:', error);
@@ -50,14 +50,26 @@ const Cart = () => {
         });
     };
 
-    const updateProductInventory = (id, quantityChange) => {
-        dispatch(getItemById(id))
+    const updateProductInventory = (item, quantityChange) => {
+        dispatch(getItemById(item.itemId))
             .then(response => {
+                let colorIndex = -1;
+                Object.keys(response.payload.quantity).forEach((key, i) => {
+                    if (key === item.color) {
+                        colorIndex = i;
+                    }
+                });
+
+                const updatedQuantity = response.payload.quantity[item.color] - quantityChange;
                 const updatedProduct = {
-                    numberOfProduct: response.payload.numberOfProduct - quantityChange
+                    ...response.payload,
+                    quantity: {
+                        ...response.payload.quantity,
+                        [response.payload.color[colorIndex]]: updatedQuantity,
+                    },
                 };
 
-                return dispatch(updateItem({ id, updatedProduct }));
+                return dispatch(updateItem({ id: item.itemId, updatedProduct }));
             })
             .then(() => {
                 dispatch(allData());

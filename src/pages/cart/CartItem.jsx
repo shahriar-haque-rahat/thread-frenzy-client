@@ -43,8 +43,20 @@ const CartItem = ({ cartItems, quantities, handleQuantity, userEmail }) => {
                     .then(() => {
                         dispatch(getItemById(item.itemId))
                             .then(response => {
+                                let colorIndex = -1;
+                                Object.keys(response.payload.quantity).forEach((key, i) => {
+                                    if (key === item.color) {
+                                        colorIndex = i;
+                                    }
+                                });
+
+                                const updatedQuantity = response.payload.quantity[item.color] + item.quantity;
                                 const updatedProduct = {
-                                    numberOfProduct: response.payload.numberOfProduct + item.quantity
+                                    ...response.payload,
+                                    quantity: {
+                                        ...response.payload.quantity,
+                                        [response.payload.color[colorIndex]]: updatedQuantity,
+                                    },
                                 };
 
                                 dispatch(updateItem({ id: item.itemId, updatedProduct }))
@@ -124,8 +136,20 @@ const CartItem = ({ cartItems, quantities, handleQuantity, userEmail }) => {
                 for (const itemId of selectedItems) {
                     const item = cartItems.find(cartItem => cartItem._id === itemId);
                     const response = await dispatch(getItemById(item.itemId)).unwrap();
+                    let colorIndex = -1;
+                    Object.keys(response.quantity).forEach((key, i) => {
+                        if (key === item.color) {
+                            colorIndex = i;
+                        }
+                    });
+
+                    const updatedQuantity = response.quantity[item.color] + item.quantity;
                     const updatedProduct = {
-                        numberOfProduct: response.numberOfProduct + item.quantity
+                        ...response,
+                        quantity: {
+                            ...response.quantity,
+                            [response.color[colorIndex]]: updatedQuantity,
+                        },
                     };
                     await dispatch(updateItem({ id: item.itemId, updatedProduct })).unwrap();
                 }

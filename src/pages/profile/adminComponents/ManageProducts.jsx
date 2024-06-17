@@ -10,7 +10,7 @@ import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
 import { FaEdit } from 'react-icons/fa';
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+import Pagination from '../../products/Pagination';
 
 const MySwal = withReactContent(Swal);
 
@@ -99,7 +99,7 @@ const ManageProducts = () => {
         dispatch(allData(filters))
     }, [dispatch, priceOrder, selectedGender, selectedBrands, currentPage]);
 
-    
+
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
@@ -228,17 +228,7 @@ const ManageProducts = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-center mt-4">
-                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={currentPage === 1 ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
-                        <RiArrowLeftSLine size={20} />
-                    </button>
-
-                    <span className="px-4 py-2 w-32 text-center">{`Page ${currentPage} of ${totalPages}`}</span>
-
-                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={currentPage === totalPages ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
-                        <RiArrowRightSLine size={20} />
-                    </button>
-                </div>
+                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
 
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm

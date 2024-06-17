@@ -1,32 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
-import { allData } from "../../redux/dataSlice";
+import { fetchWomenCollections, setCurrentPage } from "../../redux/dataSlice";
 import { useEffect, useState } from "react";
 import SliderCards from "./SliderCards";
 import Filters from "./Filters";
 import CollectionsSkeleton from "../skeletons/CollectionsSkeleton";
 import { Helmet } from "react-helmet-async";
+import Pagination from "./Pagination";
 
 const Women = () => {
     const dispatch = useDispatch();
-    const { womenCollections, allDataStatus } = useSelector(state => state.data);
+    const { womenCollections, womenDataStatus, totalPages, currentPage } = useSelector(state => state.data);
     const [filteredData, setFilteredData] = useState([]);
     const [filters, setFilters] = useState({});
+    console.log(womenCollections);
 
     useEffect(() => {
-        if (allDataStatus === 'idle') {
-            dispatch(allData(filters));
-        }
-    }, [allDataStatus, dispatch, filters]);
+            dispatch(fetchWomenCollections(filters));
+    }, [dispatch]);
 
     const handleFilterChange = (newFilters) => {
         setFilters(newFilters);
     };
 
-
-    if (allDataStatus === 'loading') {
-        return <CollectionsSkeleton />
+    const handlePageChange = (newPage) => {
+        dispatch(setCurrentPage(newPage));
     }
 
+    if (womenDataStatus === 'loading') {
+        return <CollectionsSkeleton />;
+    }
 
     return (
         <>
@@ -41,6 +43,7 @@ const Women = () => {
                     <Filters collections={womenCollections} setFilteredData={setFilteredData} onFilterChange={handleFilterChange} />
                     <div className="lg:col-span-4 overflow-y-scroll h-screen">
                         <SliderCards data={filteredData} />
+                        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
                     </div>
                 </div>
             </div>
@@ -49,4 +52,3 @@ const Women = () => {
 };
 
 export default Women;
-

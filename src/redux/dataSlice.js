@@ -77,7 +77,37 @@ export const deleteItem = createAsyncThunk('data/deleteItem', async (itemId, { r
     }
 });
 
-// Data slice
+export const fetchMenCollections = createAsyncThunk('data/fetchMenCollections', async (filters, { rejectWithValue }) => {
+    const axiosPublic = useAxiosPublic();
+    try {
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPublic.get(`/t-shirt/men?${query}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
+export const fetchWomenCollections = createAsyncThunk('data/fetchWomenCollections', async (filters, { rejectWithValue }) => {
+    const axiosPublic = useAxiosPublic();
+    try {
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPublic.get(`/t-shirt/women?${query}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
+// dataSlice.js
 const dataSlice = createSlice({
     name: 'data',
     initialState: {
@@ -86,6 +116,8 @@ const dataSlice = createSlice({
         menCollections: [],
         womenCollections: [],
         allDataStatus: 'idle',
+        menDataStatus: 'idle',
+        womenDataStatus: 'idle',
         singleProductStatus: 'idle',
         error: null,
         totalItems: 0,
@@ -96,18 +128,14 @@ const dataSlice = createSlice({
         setSelectedItem: (state, action) => {
             state.selectedItem = action.payload;
         },
-        filterMenCollections: (state) => {
-            state.menCollections = state.data?.filter(item => item.gender === 'Male');
-        },
-        filterWomenCollections: (state) => {
-            state.womenCollections = state.data?.filter(item => item.gender === 'Female');
-        },
         resetDataState(state) {
             state.data = [];
             state.selectedItem = null;
             state.menCollections = [];
             state.womenCollections = [];
             state.allDataStatus = 'idle';
+            state.menDataStatus = 'idle';
+            state.womenDataStatus = 'idle';
             state.singleProductStatus = 'idle';
             state.error = null;
             state.totalItems = 0;
@@ -146,10 +174,39 @@ const dataSlice = createSlice({
             .addCase(getItemById.rejected, (state, action) => {
                 state.singleProductStatus = 'failed';
                 state.error = action.payload || action.error.message;
+            })
+            .addCase(fetchMenCollections.pending, (state) => {
+                state.menDataStatus = 'loading';
+            })
+            .addCase(fetchMenCollections.fulfilled, (state, action) => {
+                state.menDataStatus = 'succeeded';
+                state.menCollections = action.payload.data;
+                state.totalItems = action.payload.totalItems;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
+            })
+            .addCase(fetchMenCollections.rejected, (state, action) => {
+                state.menDataStatus = 'failed';
+                state.error = action.payload || action.error.message;
+            })
+            .addCase(fetchWomenCollections.pending, (state) => {
+                state.womenDataStatus = 'loading';
+            })
+            .addCase(fetchWomenCollections.fulfilled, (state, action) => {
+                state.womenDataStatus = 'succeeded';
+                state.womenCollections = action.payload.data;
+                state.totalItems = action.payload.totalItems;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
+            })
+            .addCase(fetchWomenCollections.rejected, (state, action) => {
+                state.womenDataStatus = 'failed';
+                state.error = action.payload || action.error.message;
             });
     },
 });
 
-export const { setSelectedItem, filterMenCollections, filterWomenCollections, resetDataState, setCurrentPage } = dataSlice.actions;
+export const { setSelectedItem, resetDataState, setCurrentPage } = dataSlice.actions;
 
 export default dataSlice.reducer;
+

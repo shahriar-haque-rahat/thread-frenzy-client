@@ -1,32 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
-import { allData } from "../../redux/dataSlice";
+import { fetchMenCollections, setCurrentPage } from "../../redux/dataSlice";
 import { useEffect, useState } from "react";
 import SliderCards from "./SliderCards";
 import Filters from "./Filters";
 import CollectionsSkeleton from "../skeletons/CollectionsSkeleton";
 import { Helmet } from "react-helmet-async";
+import Pagination from "./Pagination";
 
 const Men = () => {
     const dispatch = useDispatch();
-    const { menCollections, allDataStatus } = useSelector(state => state.data);
+    const { menCollections, menDataStatus, totalPages, currentPage } = useSelector(state => state.data);
     const [filteredData, setFilteredData] = useState([]);
     const [filters, setFilters] = useState({});
+    console.log(menCollections);
 
     useEffect(() => {
-        if (allDataStatus === 'idle') {
-            dispatch(allData(filters));
-        }
-    }, [allDataStatus, dispatch, filters]);
+            dispatch(fetchMenCollections(filters));
+    }, [dispatch]);
 
     const handleFilterChange = (newFilters) => {
         setFilters(newFilters);
     };
 
-
-    if (allDataStatus === 'loading') {
-        return <CollectionsSkeleton />
+    const handlePageChange = (newPage) => {
+        dispatch(setCurrentPage(newPage));
     }
 
+    if (menDataStatus === 'loading') {
+        return <CollectionsSkeleton />;
+    }
 
     return (
         <>
@@ -41,6 +43,7 @@ const Men = () => {
                     <Filters collections={menCollections} setFilteredData={setFilteredData} onFilterChange={handleFilterChange} />
                     <div className="lg:col-span-4 overflow-y-scroll h-screen">
                         <SliderCards data={filteredData} />
+                        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
                     </div>
                 </div>
             </div>
@@ -49,4 +52,3 @@ const Men = () => {
 };
 
 export default Men;
-

@@ -88,6 +88,9 @@ const dataSlice = createSlice({
         allDataStatus: 'idle',
         singleProductStatus: 'idle',
         error: null,
+        totalItems: 0,
+        totalPages: 0,
+        currentPage: 1,
     },
     reducers: {
         setSelectedItem: (state, action) => {
@@ -107,6 +110,12 @@ const dataSlice = createSlice({
             state.allDataStatus = 'idle';
             state.singleProductStatus = 'idle';
             state.error = null;
+            state.totalItems = 0;
+            state.totalPages = 0;
+            state.currentPage = 1;
+        },
+        setCurrentPage(state, action) {
+            state.currentPage = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -116,9 +125,12 @@ const dataSlice = createSlice({
             })
             .addCase(allData.fulfilled, (state, action) => {
                 state.allDataStatus = 'succeeded';
-                state.data = action.payload;
-                state.menCollections = action.payload.filter(item => item.gender === 'Male');
-                state.womenCollections = action.payload.filter(item => item.gender === 'Female');
+                state.data = action.payload.data;
+                state.totalItems = action.payload.totalItems;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
+                state.menCollections = action.payload.data.filter(item => item.gender === 'Male');
+                state.womenCollections = action.payload.data.filter(item => item.gender === 'Female');
             })
             .addCase(allData.rejected, (state, action) => {
                 state.allDataStatus = 'failed';
@@ -134,10 +146,10 @@ const dataSlice = createSlice({
             .addCase(getItemById.rejected, (state, action) => {
                 state.singleProductStatus = 'failed';
                 state.error = action.payload || action.error.message;
-            })
+            });
     },
 });
 
-export const { setSelectedItem, filterMenCollections, filterWomenCollections, resetDataState } = dataSlice.actions;
+export const { setSelectedItem, filterMenCollections, filterWomenCollections, resetDataState, setCurrentPage } = dataSlice.actions;
 
 export default dataSlice.reducer;

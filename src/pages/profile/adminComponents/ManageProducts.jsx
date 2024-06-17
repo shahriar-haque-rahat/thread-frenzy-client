@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { allData, deleteItem } from "../../../redux/dataSlice";
+import { allData, deleteItem, setCurrentPage } from "../../../redux/dataSlice";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -10,12 +10,13 @@ import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
 import { FaEdit } from 'react-icons/fa';
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 const MySwal = withReactContent(Swal);
 
 const ManageProducts = () => {
     const dispatch = useDispatch();
-    const { data, allDataStatus, error } = useSelector(state => state.data);
+    const { data, allDataStatus, error, totalPages, currentPage } = useSelector(state => state.data);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState('add');
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -82,20 +83,23 @@ const ManageProducts = () => {
         })
     }
 
+    const handlePageChange = (newPage) => {
+        dispatch(setCurrentPage(newPage));
+    }
+
     useEffect(() => {
         const filters = {
             ...(priceOrder && { sort: priceOrder.value }),
             ...(selectedGender && { gender: selectedGender.value }),
-            ...(selectedBrands.length > 0 && { brand: selectedBrands.map(b => b.value).join(',') })
+            ...(selectedBrands.length > 0 && { brand: selectedBrands.map(b => b.value).join(',') }),
+            page: currentPage,
+            limit: 6
         };
 
         dispatch(allData(filters))
-    }, [dispatch, priceOrder, selectedGender, selectedBrands]);
+    }, [dispatch, priceOrder, selectedGender, selectedBrands, currentPage]);
 
-    useEffect(() => {
-        dispatch(allData());
-    }, [dispatch]);
-
+    
     if (allDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
@@ -120,6 +124,7 @@ const ManageProducts = () => {
         { value: 'Allen Solly', label: 'Allen Solly' },
         { value: 'Lacoste', label: 'Lacoste' },
     ];
+
 
     return (
         <>
@@ -197,7 +202,7 @@ const ManageProducts = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.slice().reverse().map((item, idx) => (
+                            {data?.map((item, idx) => (
                                 <tr key={idx} className="border-b border-gray-400">
                                     <td className="w-24">
                                         <img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" />
@@ -221,6 +226,18 @@ const ManageProducts = () => {
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                <div className="flex justify-center mt-4">
+                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={currentPage === 1 ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
+                        <RiArrowLeftSLine size={20} />
+                    </button>
+
+                    <span className="px-4 py-2 w-32 text-center">{`Page ${currentPage} of ${totalPages}`}</span>
+
+                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={currentPage === totalPages ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
+                        <RiArrowRightSLine size={20} />
+                    </button>
                 </div>
 
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >

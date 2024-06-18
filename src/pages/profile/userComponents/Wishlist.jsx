@@ -61,7 +61,7 @@ const Wishlist = () => {
                 <title>Wishlist | Thread Frenzy</title>
             </Helmet>
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Wishlist</h1>
-            <div className="pt-10 grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="pt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-black">
                 {
                     wishlistItems?.map(item => (
                         <div key={item.itemId._id} className="relative">

@@ -116,20 +116,20 @@ const Profile = () => {
                             <input
                                 id="firstName"
                                 type="text"
-                                className="border border-gray-400 h-12 pl-3 outline-none"
+                                className="border border-gray-400 bg-transparent h-12 pl-3 outline-none"
                                 {...register("firstName", { required: true })}
                             />
-                            <label htmlFor="firstName" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">First Name*</label>
+                            <label htmlFor="firstName" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white dark:bg-[#292929] dark:text-white">First Name*</label>
                             {errors.firstName && <span className="text-red-500">This field is required</span>}
                         </div>
                         <div className="form-control relative w-full">
                             <input
                                 id="lastName"
                                 type="text"
-                                className="border border-gray-400 h-12 pl-3 outline-none"
+                                className="border border-gray-400 bg-transparent h-12 pl-3 outline-none"
                                 {...register("lastName", { required: true })}
                             />
-                            <label htmlFor="lastName" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Last Name*</label>
+                            <label htmlFor="lastName" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white dark:bg-[#292929] dark:text-white">Last Name*</label>
                             {errors.lastName && <span className="text-red-500">This field is required</span>}
                         </div>
                     </div>
@@ -137,10 +137,10 @@ const Profile = () => {
                         <input
                             id="address"
                             type="text"
-                            className="border border-gray-400 h-12 pl-3 outline-none"
+                            className="border border-gray-400 bg-transparent h-12 pl-3 outline-none"
                             {...register("address", { required: true })}
                         />
-                        <label htmlFor="address" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Address*</label>
+                        <label htmlFor="address" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white dark:bg-[#292929] dark:text-white">Address*</label>
                         {errors.address && <span className="text-red-500">This field is required</span>}
                     </div>
 
@@ -152,10 +152,10 @@ const Profile = () => {
                                 disabled
                                 id="email"
                                 type="email"
-                                className="border border-gray-400 h-12 pl-3 outline-none"
+                                className="border border-gray-400 bg-transparent h-12 pl-3 outline-none"
                                 {...register("email", { required: true })}
                             />
-                            <label htmlFor="email" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Email*</label>
+                            <label htmlFor="email" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white dark:bg-[#292929] dark:text-white">Email*</label>
                             {errors.email && <span className="text-red-500">This field is required</span>}
                         </div>
                         <div className="form-control relative w-full">
@@ -163,16 +163,16 @@ const Profile = () => {
                                 defaultValue={userByEmail?.phoneNumber}
                                 id="phoneNumber"
                                 type="number"
-                                className="border border-gray-400 h-12 pl-3 outline-none"
+                                className="border border-gray-400 bg-transparent h-12 pl-3 outline-none"
                                 {...register("phoneNumber", { required: true })}
                             />
-                            <label htmlFor="phoneNumber" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white">Phone Number*</label>
+                            <label htmlFor="phoneNumber" className="absolute left-6 -top-2 text-gray-600 text-sm bg-white dark:bg-[#292929] dark:text-white">Phone Number*</label>
                             {errors.phoneNumber && <span className="text-red-500">This field is required</span>}
                         </div>
                     </div>
 
                     <div className="form-control relative w-full">
-                        <input name="photoUrl" type="file" className="file-input h-10 border border-gray-400 focus:outline-none rounded-none w-full max-w-xs" {...register("photoUrl")} onChange={handleImageChange} />
+                        <input name="photoUrl" type="file" className="file-input h-10 border border-gray-400 bg-transparent focus:outline-none rounded-none w-full max-w-xs" {...register("photoUrl")} onChange={handleImageChange} />
                         <div className=" h-16">
                             {
                                 uploading

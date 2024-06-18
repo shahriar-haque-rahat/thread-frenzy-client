@@ -18,8 +18,8 @@ const ActiveUsers = ({ users, totalPages, currentPage, handleRoleChange, handleD
 
                 <div className=" overflow-x-auto">
                     <table className="table">
-                        <thead className="text-black font-bold pb-2">
-                            <tr className="border-b border-black">
+                        <thead className="text-black dark:text-white font-bold pb-2">
+                            <tr className="border-b border-black dark:border-white">
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
@@ -30,7 +30,7 @@ const ActiveUsers = ({ users, totalPages, currentPage, handleRoleChange, handleD
                         </thead>
                         <tbody>
                             {users?.map(user => (
-                                <tr key={user._id} className="border-b border-gray-600 py-2">
+                                <tr key={user._id} className="border-b py-2">
                                     <td>{user.firstName}</td>
                                     <td>{user.userEmail}</td>
                                     <td>{user.phoneNumber}</td>

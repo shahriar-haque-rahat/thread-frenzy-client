@@ -134,12 +134,13 @@ const ManageProducts = () => {
             <div className="space-y-6 mr-2 md:mr-0">
                 <h1 className="h-40 w-full text-4xl md:text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Product Management</h1>
 
-                <button onClick={() => openModal('add')} className="border border-black font-semibold p-2 w-full">Add Product</button>
+                <button onClick={() => openModal('add')} className="border border-black dark:border-white font-semibold p-2 w-full">Add Product</button>
 
                 <div className=' grid grid-cols-2 gap-6'>
                     <div>
                         <label className="mr-2">Sort by Price:</label>
                         <Select
+                            className='text-black'
                             value={priceOrder}
                             onChange={setPriceOrder}
                             options={priceOptions}
@@ -155,6 +156,7 @@ const ManageProducts = () => {
                     <div>
                         <label className="mr-2">Filter by Gender:</label>
                         <Select
+                            className='text-black'
                             value={selectedGender}
                             onChange={setSelectedGender}
                             options={genderOptions}
@@ -171,6 +173,7 @@ const ManageProducts = () => {
                 <div>
                     <label className="mr-2">Filter by Brands:</label>
                     <Select
+                        className='text-black'
                         isMulti
                         value={selectedBrands}
                         onChange={setSelectedBrands}
@@ -189,8 +192,8 @@ const ManageProducts = () => {
 
                 <div className=" overflow-x-auto">
                     <table className="table">
-                        <thead className="text-black font-bold pb-2">
-                            <tr className="border-b border-black">
+                        <thead className="text-black dark:text-white font-bold pb-2">
+                            <tr className="border-b border-black dark:border-white">
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Brand</th>

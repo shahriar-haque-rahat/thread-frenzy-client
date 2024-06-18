@@ -173,7 +173,7 @@ const ProductDetails = () => {
             <Helmet>
                 <title>Product Details | Thread Frenzy</title>
             </Helmet>
-            <div className="px-[3%] mt-16 pb-32">
+            <div className="px-[3%] pt-16 pb-32">
                 {selectedItem && (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-5">

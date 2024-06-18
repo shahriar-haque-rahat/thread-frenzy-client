@@ -40,8 +40,8 @@ const OrderHistory = () => {
 
                 <div className="overflow-x-auto pt-10">
                     <table className="table">
-                        <thead className="text-black font-bold pb-2">
-                            <tr className="border-b border-black">
+                        <thead className="text-black dark:text-white font-bold pb-2">
+                            <tr className="border-b border-black dark:border-white">
                                 <th>Date</th>
                                 <th>Product</th>
                                 <th>Color</th>

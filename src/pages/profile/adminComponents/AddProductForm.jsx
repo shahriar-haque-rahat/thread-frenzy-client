@@ -121,7 +121,7 @@ const AddProductForm = ({ closeModal, allData, initialData = null, isUpdate = fa
     };
 
     return (
-        <div className="relative font-clashGrotesk font-medium">
+        <div className="relative font-clashGrotesk font-medium text-black">
             <h1 className="text-center text-2xl font-semibold">{isUpdate ? 'Update' : 'Add'} Product</h1>
             <button onClick={closeModal} className="absolute top-1 right-1 text-red-500"><RxCross2 size={30} /></button>
             <div className="pt-12">

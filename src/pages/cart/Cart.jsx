@@ -117,7 +117,7 @@ const Cart = () => {
             <Helmet>
                 <title>Cart | Thread Frenzy</title>
             </Helmet>
-            <div className="px-[3%] grid lg:grid-cols-5 gap-10 pb-32">
+            <div className="px-[3%] grid lg:grid-cols-5 gap-10 pt-16 pb-32">
                 <div className="lg:col-span-3">
                     {
                         (cartItems.length === 0)

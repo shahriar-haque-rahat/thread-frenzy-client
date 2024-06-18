@@ -44,8 +44,8 @@ const ManageOrders = () => {
 
                 <div className="overflow-x-auto">
                     <table className="table">
-                        <thead className="text-black font-bold pb-2">
-                            <tr className="border-b border-black">
+                        <thead className="text-black dark:text-white font-bold pb-2">
+                            <tr className="border-b border-black dark:border-white">
                                 <th>Date</th>
                                 <th>Order ID</th>
                                 <th>Transaction ID</th>
@@ -55,7 +55,7 @@ const ManageOrders = () => {
                         </thead>
                         <tbody>
                             {payment?.map(item => (
-                                <tr key={item._id} className="text-center py-2 border-b border-gray-800">
+                                <tr key={item._id} className="text-center py-2 border-b">
                                     <td>{item.date.split('T')[0]}</td>
                                     <td>{item._id}</td>
                                     <td>{item.transactionId}</td>

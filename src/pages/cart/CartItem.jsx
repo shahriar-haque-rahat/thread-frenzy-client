@@ -202,7 +202,7 @@ const CartItem = ({ cartItems, quantities, handleQuantity, userEmail }) => {
                 cartItems.map(item => (
                     <div key={item._id} className=" my-6">
                         <input type="checkbox" checked={selectedItems.includes(item._id)} onChange={() => handleSelectItem(item._id)} />
-                        <div className="flex gap-4 h-40 border border-black">
+                        <div className="flex gap-4 h-40 border border-black dark:border-white">
                             <img className="h-full w-32 object-cover object-top" src={item.image} alt="loading..." />
                             <div className="w-full flex flex-col justify-between p-3">
                                 <div className="flex justify-between items-start">

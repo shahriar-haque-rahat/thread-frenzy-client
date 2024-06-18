@@ -4,7 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
     return (
-        <div className=" p-5 lg:p-10 grid md:grid-cols-4 space-y-6 md:space-y-0 ">
+        <div className=" max-w-[1440px] mx-auto p-5 lg:p-10 grid md:grid-cols-4 space-y-6 md:space-y-0 ">
             <div className=" hidden col-span-3 md:grid grid-rows-3">
 
                 {/* lists for medium device */}

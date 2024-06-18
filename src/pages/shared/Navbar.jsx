@@ -116,7 +116,7 @@ const Navbar = () => {
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className="fixed top-0 left-0 w-full z-50 bg-white">
 
-            <div className="navbar flex justify-between px-6 py-6 text-black" ref={navbarRef}>
+            <div className=" max-w-[1440px] mx-auto navbar flex justify-between px-6 py-6 text-black" ref={navbarRef}>
                 <div>
                     <div className="dropdown hover:cursor-pointer">
                         <div tabIndex={0} className="pr-4 lg:hidden" onClick={toggleMenu}>
@@ -151,7 +151,8 @@ const Navbar = () => {
                     <div className=" w-16 h-10 flex justify-end items-center">
                         {
                             loading===true ? <div><span className="loading loading-ring loading-md"></span></div>
-                                : user ? (
+                                :
+                                 user ? (
                                     <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
                                         <div tabIndex={0} role="button">
                                             {/* <AiOutlineUser size={25} /> */}

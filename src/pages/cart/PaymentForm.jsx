@@ -123,7 +123,7 @@ const PaymentForm = ({ totalPrice, shippingInfo, cartItems, setIsCheckingOut }) 
                             style: {
                                 base: {
                                     iconColor: '#c4f0ff',
-                                    color: '#32325d',
+                                    color: '#aab7c4',
                                     fontSize: '16px',
                                     '::placeholder': {
                                         color: '#aab7c4',

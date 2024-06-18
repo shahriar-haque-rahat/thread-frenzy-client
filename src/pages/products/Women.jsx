@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWomenCollections, setCurrentPage, setFilters } from "../../redux/dataSlice";
+import { fetchWomenCollections, setFilters, setWomenCurrentPage } from "../../redux/dataSlice";
 import { useEffect } from "react";
 import SliderCards from "./SliderCards";
 import Filters from "./Filters";
@@ -8,19 +8,19 @@ import Pagination from "./Pagination";
 
 const Women = () => {
     const dispatch = useDispatch();
-    const { womenCollections, womenDataStatus, error, totalPages, currentPage, filters } = useSelector(state => state.data);
+    const { womenCollections, womenDataStatus, error, womenTotalPages, womenCurrentPage, filters } = useSelector(state => state.data);
 
     useEffect(() => {
-        dispatch(fetchWomenCollections({ ...filters, page: currentPage, limit: 6 }));
-    }, [dispatch, filters, currentPage]);
+        dispatch(fetchWomenCollections({ ...filters, page: womenCurrentPage, limit: 6 }));
+    }, [dispatch, filters, womenCurrentPage]);
 
     const handleFilterChange = (newFilters) => {
         dispatch(setFilters(newFilters));
-        dispatch(setCurrentPage(1));
+        dispatch(setWomenCurrentPage(1));
     };
 
     const handlePageChange = (page) => {
-        dispatch(setCurrentPage(page));
+        dispatch(setWomenCurrentPage(page));
     };
 
     if (womenDataStatus === 'failed') {
@@ -40,7 +40,7 @@ const Women = () => {
                     <Filters onFilterChange={handleFilterChange} />
                     <div className="lg:col-span-4">
                         <SliderCards data={womenCollections} />
-                        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+                        <Pagination currentPage={womenCurrentPage} totalPages={womenTotalPages} onPageChange={handlePageChange} />
                     </div>
                 </div>
             </div>

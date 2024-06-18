@@ -139,6 +139,12 @@ const dataSlice = createSlice({
         totalItems: 0,
         totalPages: 0,
         currentPage: 1,
+        menTotalItems: 0,
+        menTotalPages: 0,
+        menCurrentPage: 1,
+        womenTotalItems: 0,
+        womenTotalPages: 0,
+        womenCurrentPage: 1,
         filters: {},
     },
     reducers: {
@@ -160,10 +166,22 @@ const dataSlice = createSlice({
             state.totalItems = 0;
             state.totalPages = 0;
             state.currentPage = 1;
+            state.menTotalItems = 0;
+            state.menTotalPages = 0;
+            state.menCurrentPage = 1;
+            state.womenTotalItems = 0;
+            state.womenTotalPages = 0;
+            state.womenCurrentPage = 1;
             state.filters = {};
         },
         setCurrentPage(state, action) {
             state.currentPage = action.payload;
+        },
+        setMenCurrentPage(state, action) {
+            state.menCurrentPage = action.payload;
+        },
+        setWomenCurrentPage(state, action) {
+            state.womenCurrentPage = action.payload;
         },
         setFilters(state, action) {
             state.filters = action.payload;
@@ -213,9 +231,9 @@ const dataSlice = createSlice({
             .addCase(fetchMenCollections.fulfilled, (state, action) => {
                 state.menDataStatus = 'succeeded';
                 state.menCollections = action.payload.data;
-                state.totalItems = action.payload.totalItems;
-                state.totalPages = action.payload.totalPages;
-                state.currentPage = action.payload.currentPage;
+                state.menTotalItems = action.payload.totalItems;
+                state.menTotalPages = action.payload.totalPages;
+                state.menCurrentPage = action.payload.currentPage;
             })
             .addCase(fetchMenCollections.rejected, (state, action) => {
                 state.menDataStatus = 'failed';
@@ -227,9 +245,9 @@ const dataSlice = createSlice({
             .addCase(fetchWomenCollections.fulfilled, (state, action) => {
                 state.womenDataStatus = 'succeeded';
                 state.womenCollections = action.payload.data;
-                state.totalItems = action.payload.totalItems;
-                state.totalPages = action.payload.totalPages;
-                state.currentPage = action.payload.currentPage;
+                state.womenTotalItems = action.payload.totalItems;
+                state.womenTotalPages = action.payload.totalPages;
+                state.womenCurrentPage = action.payload.currentPage;
             })
             .addCase(fetchWomenCollections.rejected, (state, action) => {
                 state.womenDataStatus = 'failed';
@@ -238,7 +256,7 @@ const dataSlice = createSlice({
     },
 });
 
-export const { setSelectedItem, resetDataState, setCurrentPage, setFilters } = dataSlice.actions;
+export const { setSelectedItem, resetDataState, setCurrentPage, setMenCurrentPage, setWomenCurrentPage, setFilters } = dataSlice.actions;
 
 export default dataSlice.reducer;
 

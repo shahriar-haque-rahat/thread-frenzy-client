@@ -8,7 +8,7 @@ import ReactStars from "react-rating-stars-component";
 import SimilarProducts from "./SimilarProducts";
 import { AuthContext } from "../../provider/AuthProvider";
 import { IoBookmarks, IoBookmarksOutline } from "react-icons/io5";
-import { addToWishlist, deleteWishlistItem, getWishlist } from "../../redux/wishlistSlice";
+import { addToWishlist, deleteWishlistItem, getAllWishlist } from "../../redux/wishlistSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
@@ -16,11 +16,11 @@ import { getReview } from "../../redux/reviewSlice";
 import { Helmet } from "react-helmet-async";
 
 const ProductDetails = () => {
-    const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
+    const { userByEmail, userByEmailError } = useContext(AuthContext);
     const { itemId } = useParams();
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
-    const { wishlistItems, wishlistStatus, wishlistError } = useSelector(state => state.wishlist);
+    const { allWishlistItems, allWishlistStatus, allWishlistError } = useSelector(state => state.wishlist);
     const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -119,6 +119,7 @@ const ProductDetails = () => {
             .unwrap()
             .then(() => {
                 toast.success('Product added to wishlist');
+                dispatch(getAllWishlist(userByEmail._id));
             })
             .catch((error) => {
                 console.error("Error adding item to wishlist: ", error);
@@ -131,6 +132,7 @@ const ProductDetails = () => {
             .unwrap()
             .then(() => {
                 toast.success('Product removed from wishlist');
+                dispatch(getAllWishlist(userByEmail._id));
             })
             .catch((error) => {
                 console.error("Error removing item from wishlist: ", error);
@@ -146,22 +148,24 @@ const ProductDetails = () => {
     }, [dispatch, itemId]);
 
     useEffect(() => {
-        if (userByEmailStatus === 'succeeded' && wishlistStatus === 'idle') {
-            dispatch(getWishlist(userByEmail._id));
+        if (userByEmail && userByEmail._id) {
+            dispatch(getAllWishlist(userByEmail._id));
         }
-    }, [dispatch, wishlistStatus, userByEmail, userByEmailStatus]);
+    }, [dispatch, userByEmail]);
 
     useEffect(() => {
-        const wishList = wishlistItems.find(item => item.itemId._id === selectedItem?._id);
-        setWishlisted(wishList);
-    }, [wishlistItems, selectedItem]);
+        if (allWishlistItems && selectedItem) {
+            const wishList = allWishlistItems.find(item => item.itemId._id === selectedItem._id);
+            setWishlisted(wishList);
+        }
+    }, [allWishlistItems, selectedItem]);
 
     useEffect(() => {
         dispatch(getReview(itemId));
     }, [itemId, dispatch]);
 
-    if (singleProductStatus === 'failed' || userByEmailError === 'failed' || reviewStatus === 'failed' || wishlistStatus === 'failed') {
-        return <div>Error: {error} || {userByEmailError || reviewError || wishlistError}</div>;
+    if (singleProductStatus === 'failed' || userByEmailError === 'failed' || reviewStatus === 'failed' || allWishlistStatus === 'failed') {
+        return <div>Error: {error} || {userByEmailError || reviewError || allWishlistError}</div>;
     }
 
     return (

@@ -1,6 +1,15 @@
+import { useDispatch } from "react-redux";
+import { setCurrentBannedPage } from "../../../../redux/userSlice";
+import DashboardPagination from "../../DashboardPagination";
 
 
-const BannedUser = ({ bannedUsers, handleUnbanUser }) => {
+const BannedUser = ({ bannedUsers, totalBannedPages, currentBannedPage, handleUnbanUser }) => {
+    const dispatch = useDispatch();
+
+    const handlePageChange = (newPage) => {
+        dispatch(setCurrentBannedPage(newPage));
+    }
+
     return (
         <>
             <div>
@@ -30,6 +39,7 @@ const BannedUser = ({ bannedUsers, handleUnbanUser }) => {
                         </tbody>
                     </table>
                 </div>
+                <DashboardPagination currentPage={currentBannedPage} totalPages={totalBannedPages} handlePageChange={handlePageChange} />
             </div>
         </>
     );

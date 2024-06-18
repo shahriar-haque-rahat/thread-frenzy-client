@@ -1,21 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, getBannedUsers, getUser, updateUser } from "../../../redux/userSlice";
+import { deleteUser, getAdmin, getBannedUsers, getUser, updateUser } from "../../../redux/userSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet-async";
 import { addBanUser, deleteBanUser } from "../../../redux/banUserSlice";
-import ActiveUsers from "./ActiveUsers";
-import BannedUser from "./BannedUser";
+import ActiveUsers from "./userManagement/ActiveUsers";
+import BannedUser from "./userManagement/BannedUser";
+import Admins from "./userManagement/Admins";
 
 const MySwal = withReactContent(Swal);
 
 const ManageUsers = () => {
     const dispatch = useDispatch();
-    const { user, userStatus, userError, bannedUsers, bannedUsersStatus, bannedUsersError } = useSelector(state => state.user);
-    const admins = user?.filter(admin => admin.role === 'admin');
-    const users = user?.filter(user => user.role === 'user');
-    const [showBannedUser, setShowBannedUser] = useState(false);
+    const { user, userStatus, userError, admin, adminStatus, adminError, bannedUsers, bannedUsersStatus, bannedUsersError, totalPages, currentPage, totalAdminPages, currentAdminPage, totalBannedPages, currentBannedPage } = useSelector(state => state.user);
 
     const handleRoleChange = (user) => {
         MySwal.fire({
@@ -36,6 +34,9 @@ const ManageUsers = () => {
                 dispatch(updateUser({ id: user._id, userInfo: { role: updatedRole } }))
                     .unwrap()
                     .then(() => {
+                        dispatch(getUser());
+                        dispatch(getAdmin());
+                        dispatch(getBannedUsers());
                         return MySwal.fire({
                             title: 'Successfully updated',
                             text: `This person's role is now ${updatedRole}`,
@@ -84,6 +85,8 @@ const ManageUsers = () => {
                     .unwrap()
                     .then(() => {
                         dispatch(getUser());
+                        dispatch(getAdmin());
+                        dispatch(getBannedUsers());
                         return MySwal.fire({
                             title: 'User Deleted',
                             icon: 'success',
@@ -142,6 +145,7 @@ const ManageUsers = () => {
                             .unwrap()
                             .then(() => {
                                 dispatch(getUser());
+                                dispatch(getAdmin());
                                 dispatch(getBannedUsers());
                                 return MySwal.fire({
                                     title: 'User Banned',
@@ -199,6 +203,7 @@ const ManageUsers = () => {
                             .unwrap()
                             .then(() => {
                                 dispatch(getUser());
+                                dispatch(getAdmin());
                                 dispatch(getBannedUsers());
                                 return MySwal.fire({
                                     title: 'User Unbanned',
@@ -230,12 +235,22 @@ const ManageUsers = () => {
 
 
     useEffect(() => {
-        dispatch(getUser());
-        dispatch(getBannedUsers());
-    }, [dispatch]);
+        dispatch(getUser({
+            page: currentPage,
+            limit: 5,
+        }));
+        dispatch(getAdmin({
+            page: currentAdminPage,
+            limit: 5,
+        }));
+        dispatch(getBannedUsers({
+            page: currentBannedPage,
+            limit: 5,
+        }));
+    }, [dispatch, currentPage, currentAdminPage, currentBannedPage]);
 
-    if (userStatus === 'failed' || bannedUsersStatus === 'failed') {
-        return <div>Error: {userError || bannedUsersError}</div>;
+    if (userStatus === 'failed' || adminStatus === 'failed' || bannedUsersStatus === 'failed') {
+        return <div>Error: {userError || adminError || bannedUsersError}</div>;
     }
 
     return (
@@ -246,13 +261,11 @@ const ManageUsers = () => {
             <div className="space-y-10 mr-2 md:mr-0">
                 <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
 
-                <button onClick={() => setShowBannedUser(!showBannedUser)} className=" bg-black px-2 py-1 text-white">{showBannedUser ? "Active Users" : "Ban Users"}</button>
+                <Admins admins={admin} totalAdminPages={totalAdminPages} currentAdminPage={currentAdminPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
 
-                {
-                    showBannedUser
-                        ? <BannedUser bannedUsers={bannedUsers} handleUnbanUser={handleUnbanUser} />
-                        : <ActiveUsers admins={admins} users={users} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
-                }
+                <ActiveUsers users={user} totalPages={totalPages} currentPage={currentPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
+
+                <BannedUser bannedUsers={bannedUsers} totalBannedPages={totalBannedPages} currentBannedPage={currentBannedPage} handleUnbanUser={handleUnbanUser} />
             </div>
         </>
     );

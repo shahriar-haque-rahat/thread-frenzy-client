@@ -228,7 +228,7 @@ const ManageProducts = () => {
                     </table>
                 </div>
 
-                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
 
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm

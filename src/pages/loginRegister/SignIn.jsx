@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 const MySwal = withReactContent(Swal);
 
 const SignIn = () => {
-    const { userSignIn, banUser } = useContext(AuthContext);
+    const { userSignIn, banUser, allUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
@@ -35,7 +35,7 @@ const SignIn = () => {
             })
         }
 
-        else {
+        else if (allUser?.find(user => user.userEmail === data.email)) {
             const { email, password } = data;
 
             userSignIn(email, password)
@@ -48,6 +48,27 @@ const SignIn = () => {
                     console.log(error);
                     toast.error('Invalid user input');
                 })
+        }
+
+        else {
+            MySwal.fire({
+                title: 'User not found',
+                text: "Sign up instead",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sign Up',
+                customClass: {
+                    popup: 'square',
+                    confirmButton: 'square',
+                    cancelButton: 'square',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/sign-up");
+                }
+            })
         }
     }
 

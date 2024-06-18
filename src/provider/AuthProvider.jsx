@@ -3,7 +3,7 @@ import auth from "../../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosPublic from "../hooks/useAxiosPublic";
-import { addUser, getUserByEmail, resetUserState } from "../redux/userSlice";
+import { addUser, getAllUser, getUserByEmail, resetUserState } from "../redux/userSlice";
 import { resetDataState } from "../redux/dataSlice";
 import { resetMessageState } from "../redux/messageSlice";
 import { resetPaymentState } from "../redux/paymentSlice";
@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { userByEmail, userByEmailStatus, userByEmailError } = useSelector(state => state.user);
+    const { userByEmail, userByEmailStatus, userByEmailError, allUser, allUserStatus, allUserError } = useSelector(state => state.user);
     const { banUser, banUserStatus, banUserError } = useSelector(state => state.banUser);
 
 
@@ -126,6 +126,12 @@ const AuthProvider = ({ children }) => {
     }, [dispatch, axiosPublic]);
 
     useEffect(() => {
+        if (allUserStatus === 'idle') {
+            dispatch(getAllUser())
+        }
+    }, [dispatch, allUserStatus])
+
+    useEffect(() => {
         if (banUserStatus === 'idle') {
             dispatch(getBanUser())
         }
@@ -159,6 +165,9 @@ const AuthProvider = ({ children }) => {
         banUser,
         banUserStatus,
         banUserError,
+        allUser,
+        allUserStatus,
+        allUserError
     }
 
     return (

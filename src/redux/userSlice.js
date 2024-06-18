@@ -2,6 +2,21 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
+
+export const getAllUser = createAsyncThunk('user/getAllUser', async (_, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/user-all`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 const fetchWithFilters = async (axios, url, filters) => {
     const query = new URLSearchParams(filters).toString();
     const res = await axios.get(`${url}?${query}`);
@@ -78,6 +93,9 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (id, { rejec
 const userSlice = createSlice({
     name: 'user',
     initialState: {
+        allUser: [],
+        allUserStatus: 'idle',
+        allUserError: null,
         user: [],
         userStatus: 'idle',
         userError: null,
@@ -102,6 +120,9 @@ const userSlice = createSlice({
     },
     reducers: {
         resetUserState(state) {
+            state.allUser = [];
+            state.allUserStatus = 'idle';
+            state.allUserError = null;
             state.user = [];
             state.userStatus = 'idle';
             state.userError = null;
@@ -136,6 +157,17 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getAllUser.pending, (state) => {
+                state.allUserStatus = 'loading';
+            })
+            .addCase(getAllUser.fulfilled, (state, action) => {
+                state.allUserStatus = 'succeeded';
+                state.allUser = action.payload;
+            })
+            .addCase(getAllUser.rejected, (state, action) => {
+                state.allUserStatus = 'failed';
+                state.allUserError = action.payload || action.error.message;
+            })
             .addCase(getUser.pending, (state) => {
                 state.userStatus = 'loading';
             })

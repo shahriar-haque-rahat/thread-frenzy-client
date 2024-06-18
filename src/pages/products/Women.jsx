@@ -1,33 +1,30 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWomenCollections, setCurrentPage } from "../../redux/dataSlice";
-import { useEffect, useState } from "react";
+import { fetchWomenCollections, setCurrentPage, setFilters } from "../../redux/dataSlice";
+import { useEffect } from "react";
 import SliderCards from "./SliderCards";
 import Filters from "./Filters";
-import CollectionsSkeleton from "../skeletons/CollectionsSkeleton";
 import { Helmet } from "react-helmet-async";
 import Pagination from "./Pagination";
 
 const Women = () => {
     const dispatch = useDispatch();
-    const { womenCollections, womenDataStatus, totalPages, currentPage } = useSelector(state => state.data);
-    const [filteredData, setFilteredData] = useState([]);
-    const [filters, setFilters] = useState({});
-    console.log(womenCollections);
+    const { womenCollections, womenDataStatus, error, totalPages, currentPage, filters } = useSelector(state => state.data);
 
     useEffect(() => {
-            dispatch(fetchWomenCollections(filters));
-    }, [dispatch]);
+        dispatch(fetchWomenCollections({ ...filters, page: currentPage, limit: 6 }));
+    }, [dispatch, filters, currentPage]);
 
     const handleFilterChange = (newFilters) => {
-        setFilters(newFilters);
+        dispatch(setFilters(newFilters));
+        dispatch(setCurrentPage(1));
     };
 
-    const handlePageChange = (newPage) => {
-        dispatch(setCurrentPage(newPage));
-    }
+    const handlePageChange = (page) => {
+        dispatch(setCurrentPage(page));
+    };
 
-    if (womenDataStatus === 'loading') {
-        return <CollectionsSkeleton />;
+    if (womenDataStatus === 'failed') {
+        return <div>Error: {error}</div>;
     }
 
     return (
@@ -40,9 +37,9 @@ const Women = () => {
                     <h1 className="text-4xl">Women Collections</h1>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                    <Filters collections={womenCollections} setFilteredData={setFilteredData} onFilterChange={handleFilterChange} />
-                    <div className="lg:col-span-4 overflow-y-scroll h-screen">
-                        <SliderCards data={filteredData} />
+                    <Filters onFilterChange={handleFilterChange} />
+                    <div className="lg:col-span-4">
+                        <SliderCards data={womenCollections} />
                         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
                     </div>
                 </div>

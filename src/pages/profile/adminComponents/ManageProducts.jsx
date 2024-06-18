@@ -10,7 +10,7 @@ import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
 import { FaEdit } from 'react-icons/fa';
-import Pagination from '../../products/Pagination';
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 const MySwal = withReactContent(Swal);
 
@@ -228,8 +228,17 @@ const ManageProducts = () => {
                     </table>
                 </div>
 
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+                <div className="flex justify-center mt-4">
+                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={currentPage === 1 ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
+                        <RiArrowLeftSLine size={20} />
+                    </button>
 
+                    <span className="px-4 py-2 w-32 text-center">{`Page ${currentPage} of ${totalPages}`}</span>
+
+                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={currentPage === totalPages ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
+                        <RiArrowRightSLine size={20} />
+                    </button>
+                </div>
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm
                         closeModal={closeModal}

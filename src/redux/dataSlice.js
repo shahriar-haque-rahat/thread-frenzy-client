@@ -123,6 +123,7 @@ const dataSlice = createSlice({
         totalItems: 0,
         totalPages: 0,
         currentPage: 1,
+        filters: {},
     },
     reducers: {
         setSelectedItem: (state, action) => {
@@ -141,10 +142,14 @@ const dataSlice = createSlice({
             state.totalItems = 0;
             state.totalPages = 0;
             state.currentPage = 1;
+            state.filters = {};
         },
         setCurrentPage(state, action) {
             state.currentPage = action.payload;
-        }
+        },
+        setFilters(state, action) {
+            state.filters = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -202,11 +207,11 @@ const dataSlice = createSlice({
             .addCase(fetchWomenCollections.rejected, (state, action) => {
                 state.womenDataStatus = 'failed';
                 state.error = action.payload || action.error.message;
-            });
+            })
     },
 });
 
-export const { setSelectedItem, resetDataState, setCurrentPage } = dataSlice.actions;
+export const { setSelectedItem, resetDataState, setCurrentPage, setFilters } = dataSlice.actions;
 
 export default dataSlice.reducer;
 

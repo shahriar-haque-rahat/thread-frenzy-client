@@ -26,7 +26,7 @@ const BannedUser = ({ bannedUsers, totalBannedPages, currentBannedPage, handleUn
                             </tr>
                         </thead>
                         <tbody>
-                            {bannedUsers?.slice().reverse().map(user => (
+                            {bannedUsers?.map(user => (
                                 <tr key={user._id} className="border-b border-gray-600 py-2">
                                     <td>{user.firstName}</td>
                                     <td>{user.userEmail}</td>

@@ -1,6 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
+export const getAllReview = createAsyncThunk('review/getAllReview', async (productId, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/review-all/${productId}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const getReview = createAsyncThunk('review/getReview', async (productId, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -60,12 +74,18 @@ export const deleteReview = createAsyncThunk('review/deleteReview', async (id, {
 const reviewSlice = createSlice({
     name: 'review',
     initialState: {
+        allReviewItems: [],
+        allReviewStatus: 'idle',
+        allReviewError: null,
         reviewItems: [],
         reviewStatus: 'idle',
         reviewError: null,
     },
     reducers: {
         resetReviewState(state) {
+            state.allReviewItems = [];
+            state.allReviewStatus = 'idle';
+            state.allReviewError = null;
             state.reviewItems = [];
             state.reviewStatus = 'idle';
             state.reviewError = null;
@@ -73,6 +93,17 @@ const reviewSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getAllReview.pending, (state) => {
+                state.allReviewStatus = 'loading';
+            })
+            .addCase(getAllReview.fulfilled, (state, action) => {
+                state.allReviewStatus = 'succeeded';
+                state.allReviewItems = action.payload;
+            })
+            .addCase(getAllReview.rejected, (state, action) => {
+                state.allReviewStatus = 'failed';
+                state.allReviewError = action.payload || action.error.message;
+            })
             .addCase(getReview.pending, (state) => {
                 state.reviewStatus = 'loading';
             })

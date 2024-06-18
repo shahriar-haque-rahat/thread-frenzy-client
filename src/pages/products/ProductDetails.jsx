@@ -12,7 +12,7 @@ import { addToWishlist, deleteWishlistItem, getAllWishlist } from "../../redux/w
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Review from "./Review";
-import { getReview } from "../../redux/reviewSlice";
+import { getAllReview } from "../../redux/reviewSlice";
 import { Helmet } from "react-helmet-async";
 
 const ProductDetails = () => {
@@ -21,7 +21,7 @@ const ProductDetails = () => {
     const dispatch = useDispatch();
     const { selectedItem, singleProductStatus, error } = useSelector(state => state.data);
     const { allWishlistItems, allWishlistStatus, allWishlistError } = useSelector(state => state.wishlist);
-    const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
+    const { allReviewItems, allReviewStatus, allReviewError } = useSelector(state => state.review);
 
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
@@ -41,11 +41,11 @@ const ProductDetails = () => {
         const average = items.length ? totalRatings / items.length : 0;
         return roundToNearestValidRating(average);
     };
-    const [overallRating, setOverallRating] = useState(calculateAverageRating(reviewItems) || 0);
+    const [overallRating, setOverallRating] = useState(calculateAverageRating(allReviewItems) || 0);
 
     useEffect(() => {
-        setOverallRating(calculateAverageRating(reviewItems));
-    }, [reviewItems]);
+        setOverallRating(calculateAverageRating(allReviewItems));
+    }, [allReviewItems]);
 
     const handleQuantity = (e) => {
         let newQuantity = e === "+" ? productQuantity + 1 : productQuantity - 1;
@@ -161,11 +161,11 @@ const ProductDetails = () => {
     }, [allWishlistItems, selectedItem]);
 
     useEffect(() => {
-        dispatch(getReview(itemId));
+        dispatch(getAllReview(itemId));
     }, [itemId, dispatch]);
 
-    if (singleProductStatus === 'failed' || userByEmailError === 'failed' || reviewStatus === 'failed' || allWishlistStatus === 'failed') {
-        return <div>Error: {error} || {userByEmailError || reviewError || allWishlistError}</div>;
+    if (singleProductStatus === 'failed' || userByEmailError === 'failed' || allReviewStatus === 'failed' || allWishlistStatus === 'failed') {
+        return <div>Error: {error} || {userByEmailError || allReviewError || allWishlistError}</div>;
     }
 
     return (
@@ -282,7 +282,7 @@ const ProductDetails = () => {
                     </>
                 )}
                 <SimilarProducts itemBrand={selectedItem?.brand} itemId={itemId} />
-                <Review reviewItems={reviewItems} productId={itemId} user={userByEmail} />
+                <Review productId={itemId} user={userByEmail} />
             </div>
         </>
     );

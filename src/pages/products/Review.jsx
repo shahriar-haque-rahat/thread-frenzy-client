@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { addReview, deleteReview, getReview } from "../../redux/reviewSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addReview, deleteReview, getAllReview, getReview } from "../../redux/reviewSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import ReactStars from "react-rating-stars-component";
 
 const MySwal = withReactContent(Swal);
 
-const Review = ({ reviewItems, productId, user }) => {
+const Review = ({ productId, user }) => {
     const dispatch = useDispatch();
+    const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [rating, setRating] = useState(0);
 
@@ -26,6 +27,7 @@ const Review = ({ reviewItems, productId, user }) => {
         dispatch(addReview(review))
             .unwrap()
             .then(() => {
+                dispatch(getAllReview(productId));
                 dispatch(getReview(productId));
                 MySwal.fire({
                     title: '<p className="text-3xl font-bold mb-4">Thank you for the review</p>',
@@ -71,6 +73,7 @@ const Review = ({ reviewItems, productId, user }) => {
             }
         }).then((result) => {
             if (result.isConfirmed) {
+                dispatch(getAllReview(productId));
                 dispatch(deleteReview(id))
                     .then(() => {
                         dispatch(getReview(productId));
@@ -78,6 +81,16 @@ const Review = ({ reviewItems, productId, user }) => {
             }
         });
     };
+
+
+    useEffect(() => {
+        dispatch(getReview(productId));
+    }, [productId, dispatch]);
+
+
+    if (reviewStatus === 'failed') {
+        return <div>Error: {reviewError}</div>;
+    }
 
     return (
         <div className="border shadow-lg p-6 mt-10">
@@ -112,7 +125,7 @@ const Review = ({ reviewItems, productId, user }) => {
             </div>
             <div className="mt-10">
                 {reviewItems.length > 0 ? (
-                    reviewItems.slice().reverse().map((item) => (
+                    reviewItems.map((item) => (
                         <div key={item._id} className="py-5 space-y-2">
                             <span className=" flex gap-2 items-center">
                                 <p className="font-bold">{item.userName}</p>

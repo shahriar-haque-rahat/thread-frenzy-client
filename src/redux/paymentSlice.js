@@ -2,10 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-export const getPayment = createAsyncThunk('payment/getPayment', async (_, { rejectWithValue }) => {
+export const getPayment = createAsyncThunk('payment/getPayment', async (filters, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.get(`/payment`);
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPrivate.get(`/payment?${query}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -67,6 +68,9 @@ const paymentSlice = createSlice({
         userSpecificPayment: [],
         paymentStatus: 'idle',
         paymentError: null,
+        totalItems: 0,
+        totalPages: 0,
+        currentPage: 1,
     },
     reducers: {
         resetPaymentState(state) {
@@ -74,7 +78,13 @@ const paymentSlice = createSlice({
             state.userSpecificPayment = [];
             state.paymentStatus = 'idle';
             state.paymentError = null;
-        }
+            state.totalItems = 0;
+            state.totalPages = 0;
+            state.currentPage = 1;
+        },
+        setCurrentPage(state, action) {
+            state.currentPage = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -83,7 +93,10 @@ const paymentSlice = createSlice({
             })
             .addCase(getPayment.fulfilled, (state, action) => {
                 state.paymentStatus = 'succeeded';
-                state.payment = action.payload;
+                state.payment = action.payload.data;
+                state.totalItems = action.payload.totalItems;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
             })
             .addCase(getPayment.rejected, (state, action) => {
                 state.paymentStatus = 'failed';
@@ -110,9 +123,9 @@ const paymentSlice = createSlice({
             .addCase(addPayment.rejected, (state, action) => {
                 state.paymentStatus = 'failed';
                 state.paymentError = action.payload || action.error.message;
-            })
+            });
     }
-})
+});
 
-export const { resetPaymentState } = paymentSlice.actions;
+export const { resetPaymentState, setCurrentPage } = paymentSlice.actions;
 export default paymentSlice.reducer;

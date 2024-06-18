@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { allData, deleteItem } from "../../../redux/dataSlice";
+import { allData, deleteItem, setCurrentPage } from "../../../redux/dataSlice";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -83,6 +83,9 @@ const ManageProducts = () => {
         })
     }
 
+    const handlePageChange = (newPage) => {
+        dispatch(setCurrentPage(newPage));
+    }
 
     useEffect(() => {
         const filters = {
@@ -225,7 +228,7 @@ const ManageProducts = () => {
                     </table>
                 </div>
 
-                <DashboardPagination currentPage={currentPage} totalPages={totalPages} />
+                <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
 
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm

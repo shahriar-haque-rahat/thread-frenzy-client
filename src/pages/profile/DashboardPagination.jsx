@@ -1,14 +1,7 @@
-
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-import { useDispatch } from "react-redux";
-import { setCurrentPage } from "../../redux/dataSlice";
 
-const DashboardPagination = ({currentPage, totalPages}) => {
-    const dispatch = useDispatch();
+const DashboardPagination = ({ currentPage, totalPages, handlePageChange }) => {
 
-    const handlePageChange = (newPage) => {
-        dispatch(setCurrentPage(newPage));
-    }
 
     return (
         <div className="flex justify-center mt-4">

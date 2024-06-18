@@ -18,6 +18,20 @@ export const allData = createAsyncThunk('data/allData', async (filters, { reject
     }
 });
 
+export const similarItem = createAsyncThunk('data/similarItem', async (brand, { rejectWithValue }) => {
+    const axiosPublic = useAxiosPublic();
+    try {
+        const res = await axiosPublic.get(`/t-shirt/similar-product`, { params: { brand } });
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const getItemById = createAsyncThunk('data/getItemById', async (itemId, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -112,11 +126,13 @@ const dataSlice = createSlice({
     name: 'data',
     initialState: {
         data: [],
+        allDataStatus: 'idle',
+        similarItems: [],
+        similarItemsStatus: 'idle',
         selectedItem: null,
         menCollections: [],
-        womenCollections: [],
-        allDataStatus: 'idle',
         menDataStatus: 'idle',
+        womenCollections: [],
         womenDataStatus: 'idle',
         singleProductStatus: 'idle',
         error: null,
@@ -131,11 +147,13 @@ const dataSlice = createSlice({
         },
         resetDataState(state) {
             state.data = [];
+            state.allDataStatus = 'idle';
+            state.similarItems = [];
+            state.similarItemsStatus = 'idle';
             state.selectedItem = null;
             state.menCollections = [];
-            state.womenCollections = [];
-            state.allDataStatus = 'idle';
             state.menDataStatus = 'idle';
+            state.womenCollections = [];
             state.womenDataStatus = 'idle';
             state.singleProductStatus = 'idle';
             state.error = null;
@@ -162,11 +180,20 @@ const dataSlice = createSlice({
                 state.totalItems = action.payload.totalItems;
                 state.totalPages = action.payload.totalPages;
                 state.currentPage = action.payload.currentPage;
-                state.menCollections = action.payload.data.filter(item => item.gender === 'Male');
-                state.womenCollections = action.payload.data.filter(item => item.gender === 'Female');
             })
             .addCase(allData.rejected, (state, action) => {
                 state.allDataStatus = 'failed';
+                state.error = action.payload || action.error.message;
+            })
+            .addCase(similarItem.pending, (state) => {
+                state.similarItemsStatus = 'loading';
+            })
+            .addCase(similarItem.fulfilled, (state, action) => {
+                state.similarItemsStatus = 'succeeded';
+                state.similarItems = action.payload.data;
+            })
+            .addCase(similarItem.rejected, (state, action) => {
+                state.similarItemsStatus = 'failed';
                 state.error = action.payload || action.error.message;
             })
             .addCase(getItemById.pending, (state) => {

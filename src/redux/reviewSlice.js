@@ -15,10 +15,11 @@ export const getAllReview = createAsyncThunk('review/getAllReview', async (produ
     }
 });
 
-export const getReview = createAsyncThunk('review/getReview', async (productId, { rejectWithValue }) => {
+export const getReview = createAsyncThunk('review/getReview', async ({productId, filters}, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.get(`/review/${productId}`);
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPrivate.get(`/review/${productId}?${query}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -80,6 +81,9 @@ const reviewSlice = createSlice({
         reviewItems: [],
         reviewStatus: 'idle',
         reviewError: null,
+        totalItems: 0,
+        totalPages: 0,
+        currentPage: 1,
     },
     reducers: {
         resetReviewState(state) {
@@ -89,7 +93,13 @@ const reviewSlice = createSlice({
             state.reviewItems = [];
             state.reviewStatus = 'idle';
             state.reviewError = null;
-        }
+            state.totalItems = 0;
+            state.totalPages = 0;
+            state.currentPage = 1;
+        },
+        setCurrentPage(state, action) {
+            state.currentPage = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -109,7 +119,10 @@ const reviewSlice = createSlice({
             })
             .addCase(getReview.fulfilled, (state, action) => {
                 state.reviewStatus = 'succeeded';
-                state.reviewItems = action.payload;
+                state.reviewItems = action.payload.data; 
+                state.totalItems = action.payload.totalItems;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
             })
             .addCase(getReview.rejected, (state, action) => {
                 state.reviewStatus = 'failed';
@@ -139,9 +152,9 @@ const reviewSlice = createSlice({
             .addCase(updateReview.rejected, (state, action) => {
                 state.reviewStatus = 'failed';
                 state.reviewError = action.payload || action.error.message;
-            })
+            });
     },
 });
 
-export const { resetReviewState } = reviewSlice.actions;
+export const { resetReviewState, setCurrentPage } = reviewSlice.actions;
 export default reviewSlice.reducer;

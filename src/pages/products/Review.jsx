@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addReview, deleteReview, getAllReview, getReview } from "../../redux/reviewSlice";
+import { addReview, deleteReview, getAllReview, getReview, setCurrentPage } from "../../redux/reviewSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import ReactStars from "react-rating-stars-component";
+import DashboardPagination from "../profile/DashboardPagination";
 
 const MySwal = withReactContent(Swal);
 
 const Review = ({ productId, user }) => {
     const dispatch = useDispatch();
-    const { reviewItems, reviewStatus, reviewError } = useSelector(state => state.review);
+    const { reviewItems, reviewStatus, reviewError, totalPages, currentPage } = useSelector(state => state.review);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [rating, setRating] = useState(0);
-
 
     const onSubmit = (data) => {
         const review = {
@@ -28,7 +28,11 @@ const Review = ({ productId, user }) => {
             .unwrap()
             .then(() => {
                 dispatch(getAllReview(productId));
-                dispatch(getReview(productId));
+                const filters = {
+                    page: currentPage,
+                    limit: 3,
+                };
+                dispatch(getReview({ productId, filters }));
                 MySwal.fire({
                     title: '<p className="text-3xl font-bold mb-4">Thank you for the review</p>',
                     icon: 'success',
@@ -76,17 +80,27 @@ const Review = ({ productId, user }) => {
                 dispatch(getAllReview(productId));
                 dispatch(deleteReview(id))
                     .then(() => {
-                        dispatch(getReview(productId));
+                        const filters = {
+                            page: currentPage,
+                            limit: 3,
+                        };
+                        dispatch(getReview({ productId, filters }));
                     });
             }
         });
     };
 
+    const handlePageChange = (newPage) => {
+        dispatch(setCurrentPage(newPage));
+    };
 
     useEffect(() => {
-        dispatch(getReview(productId));
-    }, [productId, dispatch]);
-
+        const filters = {
+            page: currentPage,
+            limit: 3,
+        };
+        dispatch(getReview({ productId, filters }));
+    }, [productId, dispatch, currentPage]);
 
     if (reviewStatus === 'failed') {
         return <div>Error: {reviewError}</div>;
@@ -124,7 +138,7 @@ const Review = ({ productId, user }) => {
                 </form>
             </div>
             <div className="mt-10">
-                {reviewItems.length > 0 ? (
+                {
                     reviewItems.map((item) => (
                         <div key={item._id} className="py-5 space-y-2">
                             <span className=" flex gap-2 items-center">
@@ -147,10 +161,9 @@ const Review = ({ productId, user }) => {
                             )}
                         </div>
                     ))
-                ) : (
-                    <p>No reviews yet.</p>
-                )}
+                }
             </div>
+            <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
         </div>
     );
 };

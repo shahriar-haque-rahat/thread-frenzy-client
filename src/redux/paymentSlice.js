@@ -2,6 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
+export const getAllPayment = createAsyncThunk('payment/getAllPayment', async (_, { rejectWithValue }) => {
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/payment-all`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const getPayment = createAsyncThunk('payment/getPayment', async (filters, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
@@ -65,6 +79,9 @@ export const addPayment = createAsyncThunk('payment/addPayment', async (paymentI
 const paymentSlice = createSlice({
     name: 'payment',
     initialState: {
+        allPayment: [],
+        allPaymentStatus: 'idle',
+        allPaymentError: null,
         payment: [],
         userSpecificPayment: [],
         paymentStatus: 'idle',
@@ -78,6 +95,9 @@ const paymentSlice = createSlice({
     },
     reducers: {
         resetPaymentState(state) {
+            state.allPayment = [];
+            state.allPaymentStatus = 'idle';
+            state.allPaymentError = null;
             state.payment = [];
             state.userSpecificPayment = [];
             state.paymentStatus = 'idle';
@@ -98,6 +118,17 @@ const paymentSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getAllPayment.pending, (state) => {
+                state.allPaymentStatus = 'loading';
+            })
+            .addCase(getAllPayment.fulfilled, (state, action) => {
+                state.allPaymentStatus = 'succeeded';
+                state.allPayment = action.payload;
+            })
+            .addCase(getAllPayment.rejected, (state, action) => {
+                state.allPaymentStatus = 'failed';
+                state.allPaymentError = action.payload || action.error.message;
+            })
             .addCase(getPayment.pending, (state) => {
                 state.paymentStatus = 'loading';
             })

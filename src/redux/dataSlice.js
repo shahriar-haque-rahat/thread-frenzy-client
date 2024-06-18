@@ -3,6 +3,20 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
+export const getAllTshirtData = createAsyncThunk('data/getAllTshirtData', async (_, { rejectWithValue }) => {
+    const axiosPublic = useAxiosPublic();
+    try {
+        const res = await axiosPublic.get(`/t-shirt-all`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
+        }
+    }
+});
+
 export const allData = createAsyncThunk('data/allData', async (filters, { rejectWithValue }) => {
     const axiosPublic = useAxiosPublic();
     try {
@@ -125,6 +139,8 @@ export const fetchWomenCollections = createAsyncThunk('data/fetchWomenCollection
 const dataSlice = createSlice({
     name: 'data',
     initialState: {
+        allTshirtData: [],
+        allTshirtDataStatus: 'idle',
         data: [],
         allDataStatus: 'idle',
         similarItems: [],
@@ -152,6 +168,8 @@ const dataSlice = createSlice({
             state.selectedItem = action.payload;
         },
         resetDataState(state) {
+            state.allTshirtData = [];
+            state.allTshirtDataStatus = 'idle';
             state.data = [];
             state.allDataStatus = 'idle';
             state.similarItems = [];
@@ -189,6 +207,17 @@ const dataSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getAllTshirtData.pending, (state) => {
+                state.allTshirtDataStatus = 'loading';
+            })
+            .addCase(getAllTshirtData.fulfilled, (state, action) => {
+                state.allTshirtDataStatus = 'succeeded';
+                state.allTshirtData = action.payload.data;
+            })
+            .addCase(getAllTshirtData.rejected, (state, action) => {
+                state.allTshirtDataStatus = 'failed';
+                state.error = action.payload || action.error.message;
+            })
             .addCase(allData.pending, (state) => {
                 state.allDataStatus = 'loading';
             })

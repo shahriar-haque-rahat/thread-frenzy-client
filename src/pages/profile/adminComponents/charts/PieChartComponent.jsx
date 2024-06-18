@@ -1,8 +1,11 @@
 import { ResponsiveContainer, PieChart, Pie, Legend, Tooltip } from 'recharts';
 
-const PieChartComponent = ({ menCollections, womenCollections }) => {
-    const totalMen = menCollections.length;
-    const totalWomen = womenCollections.length;
+const PieChartComponent = ({ allTshirtData }) => {
+    const menCollections = allTshirtData?.filter(data => data.gender === 'Male');
+    const womenCollections = allTshirtData?.filter(data => data.gender === 'Female');
+
+    const totalMen = menCollections?.length;
+    const totalWomen = womenCollections?.length;
 
     const data = [
         { name: 'Total Men Products', value: totalMen, fill: '#8884d8' }, 

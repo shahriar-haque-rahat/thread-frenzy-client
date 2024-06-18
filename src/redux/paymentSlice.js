@@ -17,10 +17,11 @@ export const getPayment = createAsyncThunk('payment/getPayment', async (filters,
     }
 });
 
-export const getUserSpecificPayment = createAsyncThunk('payment/getUserSpecificPayment', async (email, { rejectWithValue }) => {
+export const getUserSpecificPayment = createAsyncThunk('payment/getUserSpecificPayment', async ({ email, filters }, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.get(`/payment/${email}`);
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPrivate.get(`/payment/${email}?${query}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -71,6 +72,9 @@ const paymentSlice = createSlice({
         totalItems: 0,
         totalPages: 0,
         currentPage: 1,
+        totalUserSpecificItems: 0,
+        totalUserSpecificPages: 0,
+        UserSpecificCurrentPage: 1,
     },
     reducers: {
         resetPaymentState(state) {
@@ -81,9 +85,15 @@ const paymentSlice = createSlice({
             state.totalItems = 0;
             state.totalPages = 0;
             state.currentPage = 1;
+            state.totalUserSpecificItems = 0;
+            state.totalUserSpecificPages = 0;
+            state.UserSpecificCurrentPage = 1;
         },
         setCurrentPage(state, action) {
             state.currentPage = action.payload;
+        },
+        setUserSpecificCurrentPage(state, action) {
+            state.UserSpecificCurrentPage = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -107,7 +117,10 @@ const paymentSlice = createSlice({
             })
             .addCase(getUserSpecificPayment.fulfilled, (state, action) => {
                 state.paymentStatus = 'succeeded';
-                state.userSpecificPayment = action.payload;
+                state.userSpecificPayment = action.payload.data;
+                state.totalUserSpecificItems = action.payload.totalItems;
+                state.totalUserSpecificPages = action.payload.totalPages;
+                state.UserSpecificCurrentPage = action.payload.currentPage;
             })
             .addCase(getUserSpecificPayment.rejected, (state, action) => {
                 state.paymentStatus = 'failed';
@@ -127,5 +140,6 @@ const paymentSlice = createSlice({
     }
 });
 
-export const { resetPaymentState, setCurrentPage } = paymentSlice.actions;
+
+export const { resetPaymentState, setCurrentPage, setUserSpecificCurrentPage } = paymentSlice.actions;
 export default paymentSlice.reducer;

@@ -1,20 +1,30 @@
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserSpecificPayment } from "../../../redux/paymentSlice";
+import { getUserSpecificPayment, setUserSpecificCurrentPage } from "../../../redux/paymentSlice";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import DashboardPagination from "../DashboardPagination";
 
 const OrderHistory = () => {
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { userSpecificPayment, paymentStatus, paymentError } = useSelector(state => state.payment);
+    const { userSpecificPayment, paymentStatus, paymentError, totalUserSpecificPages, UserSpecificCurrentPage } = useSelector(state => state.payment);
+
+    const handlePageChange = (newPage) => {
+        dispatch(setUserSpecificCurrentPage(newPage));
+    }
 
     useEffect(() => {
         if (userByEmailStatus === 'succeeded') {
-            dispatch(getUserSpecificPayment(userByEmail.userEmail));
+            const filters = {
+                page: UserSpecificCurrentPage,
+                limit: 10,
+            };
+
+            dispatch(getUserSpecificPayment({ email: userByEmail.userEmail, filters }));
         }
-    }, [dispatch, userByEmailStatus, paymentStatus, userByEmail]);
+    }, [dispatch, userByEmailStatus, userByEmail, UserSpecificCurrentPage]);
 
     if (paymentStatus === 'failed' || userByEmailStatus === 'failed') {
         return <div>Error: {paymentError || userByEmailError}</div>;
@@ -48,7 +58,7 @@ const OrderHistory = () => {
                                     <td>
                                         {item.orderedItems.map(orderedItem => (
                                             <div key={orderedItem._id}>
-                                                <Link to={`/product-details/${orderedItem.itemId}`} className=" hover:underline">
+                                                <Link to={`/product-details/${orderedItem.itemId}`} className="hover:underline">
                                                     {orderedItem.name}
                                                 </Link>
                                             </div>
@@ -82,6 +92,7 @@ const OrderHistory = () => {
                         </tbody>
                     </table>
                 </div>
+                <DashboardPagination currentPage={UserSpecificCurrentPage} totalPages={totalUserSpecificPages} handlePageChange={handlePageChange} />
             </div>
         </>
     );

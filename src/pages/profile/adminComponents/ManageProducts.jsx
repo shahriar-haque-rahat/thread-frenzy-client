@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { allData, deleteItem, setCurrentPage } from "../../../redux/dataSlice";
+import { allData, deleteItem } from "../../../redux/dataSlice";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
 import { FaEdit } from 'react-icons/fa';
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
+import DashboardPagination from '../DashboardPagination';
 
 const MySwal = withReactContent(Swal);
 
@@ -83,9 +83,6 @@ const ManageProducts = () => {
         })
     }
 
-    const handlePageChange = (newPage) => {
-        dispatch(setCurrentPage(newPage));
-    }
 
     useEffect(() => {
         const filters = {
@@ -228,17 +225,8 @@ const ManageProducts = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-center mt-4">
-                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={currentPage === 1 ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
-                        <RiArrowLeftSLine size={20} />
-                    </button>
+                <DashboardPagination currentPage={currentPage} totalPages={totalPages} />
 
-                    <span className="px-4 py-2 w-32 text-center">{`Page ${currentPage} of ${totalPages}`}</span>
-
-                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={currentPage === totalPages ? " px-4 py-2 border bg-gray-200" : "px-4 py-2 border"}>
-                        <RiArrowRightSLine size={20} />
-                    </button>
-                </div>
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm
                         closeModal={closeModal}

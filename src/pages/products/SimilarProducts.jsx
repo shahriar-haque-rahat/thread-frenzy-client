@@ -14,11 +14,12 @@ const SimilarProducts = ({ itemBrand, itemId }) => {
     const { similarItems, similarItemsStatus, error } = useSelector((state) => state.data);
     const filteredItems = similarItems?.filter(item => item._id !== itemId);
 
+
     useEffect(() => {
-        if (similarItemsStatus === 'idle' && itemBrand) {
+        if (itemBrand) {
             dispatch(similarItem(itemBrand));
         }
-    }, [similarItemsStatus, dispatch, itemBrand]);
+    }, [dispatch, itemBrand]);
 
     if (similarItemsStatus === 'failed') {
         return <div>Error: {error}</div>;

@@ -17,7 +17,7 @@ const Men = () => {
     const handleFilterChange = (newFilters) => {
         dispatch(setFilters(newFilters));
         dispatch(setCurrentPage(1));
-    };
+    };    
 
     const handlePageChange = (page) => {
         dispatch(setCurrentPage(page));

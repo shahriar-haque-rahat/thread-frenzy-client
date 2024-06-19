@@ -49,7 +49,7 @@ export const similarItem = createAsyncThunk('data/similarItem', async (brand, { 
 export const getItemById = createAsyncThunk('data/getItemById', async (itemId, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        const res = await axiosPrivate.get(`/t-shirt/${itemId}`);
+        const res = await axiosPrivate.get(`/t-shirt/single-product/${itemId}`);
         return res.data;
     }
     catch (error) {
@@ -109,7 +109,7 @@ export const fetchMenCollections = createAsyncThunk('data/fetchMenCollections', 
     const axiosPublic = useAxiosPublic();
     try {
         const query = new URLSearchParams(filters).toString();
-        const res = await axiosPublic.get(`/t-shirt/men?${query}`);
+        const res = await axiosPublic.get(`/t-shirt/Male?${query}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -124,7 +124,7 @@ export const fetchWomenCollections = createAsyncThunk('data/fetchWomenCollection
     const axiosPublic = useAxiosPublic();
     try {
         const query = new URLSearchParams(filters).toString();
-        const res = await axiosPublic.get(`/t-shirt/women?${query}`);
+        const res = await axiosPublic.get(`/t-shirt/Female?${query}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {

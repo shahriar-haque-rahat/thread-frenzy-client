@@ -31,6 +31,8 @@ const ProductDetails = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [wishlisted, setWishlisted] = useState();
 
+    console.log(selectedItem);
+
     // Rating calculation
     const validRatings = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
     const roundToNearestValidRating = (value) => {

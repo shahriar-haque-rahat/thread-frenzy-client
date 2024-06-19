@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, getAdmin, getBannedUsers, getUser, updateUser } from "../../../redux/userSlice";
+import { deleteUser, getUsers, updateUser } from "../../../redux/userSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet-async";
@@ -34,9 +34,9 @@ const ManageUsers = () => {
                 dispatch(updateUser({ id: user._id, userInfo: { role: updatedRole } }))
                     .unwrap()
                     .then(() => {
-                        dispatch(getUser());
-                        dispatch(getAdmin());
-                        dispatch(getBannedUsers());
+                        dispatch(getUsers({ status: 'active', role: 'user', }));
+                        dispatch(getUsers({ status: 'active', role: 'admin', }));
+                        dispatch(getUsers({ status: 'banned',}));
                         return MySwal.fire({
                             title: 'Successfully updated',
                             text: `This person's role is now ${updatedRole}`,
@@ -84,9 +84,9 @@ const ManageUsers = () => {
                 dispatch(deleteUser(id))
                     .unwrap()
                     .then(() => {
-                        dispatch(getUser());
-                        dispatch(getAdmin());
-                        dispatch(getBannedUsers());
+                        dispatch(getUsers({ status: 'active', role: 'user', }));
+                        dispatch(getUsers({ status: 'active', role: 'admin', }));
+                        dispatch(getUsers({ status: 'banned',}));
                         return MySwal.fire({
                             title: 'User Deleted',
                             icon: 'success',
@@ -144,9 +144,9 @@ const ManageUsers = () => {
                         dispatch(addBanUser(banUserInfo))
                             .unwrap()
                             .then(() => {
-                                dispatch(getUser());
-                                dispatch(getAdmin());
-                                dispatch(getBannedUsers());
+                                dispatch(getUsers({ status: 'active', role: 'user', }));
+                                dispatch(getUsers({ status: 'active', role: 'admin', }));
+                                dispatch(getUsers({ status: 'banned',}));
                                 return MySwal.fire({
                                     title: 'User Banned',
                                     icon: 'success',
@@ -202,9 +202,9 @@ const ManageUsers = () => {
                         dispatch(deleteBanUser(data.userEmail))
                             .unwrap()
                             .then(() => {
-                                dispatch(getUser());
-                                dispatch(getAdmin());
-                                dispatch(getBannedUsers());
+                                dispatch(getUsers({ status: 'active', role: 'user', }));
+                                dispatch(getUsers({ status: 'active', role: 'admin', }));
+                                dispatch(getUsers({ status: 'banned',}));
                                 return MySwal.fire({
                                     title: 'User Unbanned',
                                     icon: 'success',
@@ -235,15 +235,20 @@ const ManageUsers = () => {
 
 
     useEffect(() => {
-        dispatch(getUser({
+        dispatch(getUsers({
+            status: 'active',
+            role: 'user',
             page: currentPage,
             limit: 5,
         }));
-        dispatch(getAdmin({
+        dispatch(getUsers({
+            status: 'active',
+            role: 'admin',
             page: currentAdminPage,
             limit: 5,
         }));
-        dispatch(getBannedUsers({
+        dispatch(getUsers({
+            status: 'banned',
             page: currentBannedPage,
             limit: 5,
         }));

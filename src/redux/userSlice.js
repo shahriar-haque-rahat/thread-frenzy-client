@@ -17,34 +17,12 @@ export const getAllUser = createAsyncThunk('user/getAllUser', async (_, { reject
     }
 });
 
-const fetchWithFilters = async (axios, url, filters) => {
-    const query = new URLSearchParams(filters).toString();
-    const res = await axios.get(`${url}?${query}`);
-    return res.data;
-};
-
-export const getUser = createAsyncThunk('user/getUser', async (filters, { rejectWithValue }) => {
+export const getUsers = createAsyncThunk('user/getUsers', async (filters, { rejectWithValue }) => {
     const axiosPrivate = useAxiosPrivate();
     try {
-        return await fetchWithFilters(axiosPrivate, '/user', filters);
-    } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-    }
-});
-
-export const getAdmin = createAsyncThunk('user/getAdmin', async (filters, { rejectWithValue }) => {
-    const axiosPrivate = useAxiosPrivate();
-    try {
-        return await fetchWithFilters(axiosPrivate, '/user/admin', filters);
-    } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-    }
-});
-
-export const getBannedUsers = createAsyncThunk('user/getBannedUsers', async (filters, { rejectWithValue }) => {
-    const axiosPrivate = useAxiosPrivate();
-    try {
-        return await fetchWithFilters(axiosPrivate, '/user/banned', filters);
+        const query = new URLSearchParams(filters).toString();
+        const res = await axiosPrivate.get(`/user-specific?${query}`);
+        return res.data;
     } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -168,33 +146,31 @@ const userSlice = createSlice({
                 state.allUserStatus = 'failed';
                 state.allUserError = action.payload || action.error.message;
             })
-            .addCase(getUser.pending, (state) => {
+            .addCase(getUsers.pending, (state) => {
                 state.userStatus = 'loading';
             })
-            .addCase(getUser.fulfilled, (state, action) => {
+            .addCase(getUsers.fulfilled, (state, action) => {
                 state.userStatus = 'succeeded';
-                state.user = action.payload.data;
-                state.totalItems = action.payload.totalItems;
-                state.totalPages = action.payload.totalPages;
-                state.currentPage = action.payload.currentPage;
+                if (action.meta.arg.role === 'admin') {
+                    state.admin = action.payload.data;
+                    state.totalAdminItems = action.payload.totalItems;
+                    state.totalAdminPages = action.payload.totalPages;
+                    state.currentAdminPage = action.payload.currentPage;
+                } else if (action.meta.arg.status === 'banned') {
+                    state.bannedUsers = action.payload.data;
+                    state.totalBannedItems = action.payload.totalItems;
+                    state.totalBannedPages = action.payload.totalPages;
+                    state.currentBannedPage = action.payload.currentPage;
+                } else {
+                    state.user = action.payload.data;
+                    state.totalItems = action.payload.totalItems;
+                    state.totalPages = action.payload.totalPages;
+                    state.currentPage = action.payload.currentPage;
+                }
             })
-            .addCase(getUser.rejected, (state, action) => {
+            .addCase(getUsers.rejected, (state, action) => {
                 state.userStatus = 'failed';
                 state.userError = action.payload || action.error.message;
-            })
-            .addCase(getAdmin.pending, (state) => {
-                state.adminStatus = 'loading';
-            })
-            .addCase(getAdmin.fulfilled, (state, action) => {
-                state.adminStatus = 'succeeded';
-                state.admin = action.payload.data;
-                state.totalAdminItems = action.payload.totalItems;
-                state.totalAdminPages = action.payload.totalPages;
-                state.currentAdminPage = action.payload.currentPage;
-            })
-            .addCase(getAdmin.rejected, (state, action) => {
-                state.adminStatus = 'failed';
-                state.adminError = action.payload || action.error.message;
             })
             .addCase(getUserByEmail.pending, (state) => {
                 state.userByEmailStatus = 'loading';
@@ -206,20 +182,6 @@ const userSlice = createSlice({
             .addCase(getUserByEmail.rejected, (state, action) => {
                 state.userByEmailStatus = 'failed';
                 state.userByEmailError = action.payload || action.error.message;
-            })
-            .addCase(getBannedUsers.pending, (state) => {
-                state.bannedUsersStatus = 'loading';
-            })
-            .addCase(getBannedUsers.fulfilled, (state, action) => {
-                state.bannedUsersStatus = 'succeeded';
-                state.bannedUsers = action.payload.data;
-                state.totalBannedItems = action.payload.totalItems;
-                state.totalBannedPages = action.payload.totalPages;
-                state.currentBannedPage = action.payload.currentPage;
-            })
-            .addCase(getBannedUsers.rejected, (state, action) => {
-                state.bannedUsersStatus = 'failed';
-                state.bannedUsersError = action.payload || action.error.message;
             })
             .addCase(addUser.pending, (state) => {
                 state.userStatus = 'loading';

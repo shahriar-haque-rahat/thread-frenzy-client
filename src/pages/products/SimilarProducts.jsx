@@ -13,7 +13,7 @@ const SimilarProducts = ({ itemBrand, itemId }) => {
     const dispatch = useDispatch();
     const { similarItems, similarItemsStatus, error } = useSelector((state) => state.data);
     const filteredItems = similarItems?.filter(item => item._id !== itemId);
-
+console.log(similarItems);
 
     useEffect(() => {
         if (itemBrand) {

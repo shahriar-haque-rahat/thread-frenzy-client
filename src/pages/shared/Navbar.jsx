@@ -8,9 +8,13 @@ import { AuthContext } from "../../provider/AuthProvider";
 import { toast } from "react-toastify";
 import { useScroll, motion, useMotionValueEvent } from "framer-motion";
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "../../redux/cartSlice";
 
 const Navbar = () => {
+    const dispatch = useDispatch();
     const { user, userSignOut, userByEmail, loading } = useContext(AuthContext);
+    const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState("light");
     const [hidden, setHidden] = useState(false);
@@ -18,6 +22,11 @@ const Navbar = () => {
     const html = document.documentElement;
     const navbarRef = useRef(null);
 
+    useEffect(() => {
+        if (user?.email) {
+            dispatch(getCart(user.email));
+        }
+    }, [dispatch, user]);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme");
@@ -105,6 +114,9 @@ const Navbar = () => {
         </>
     );
 
+    if (cartStatus === 'failed') {
+        return <div>Error: {cartError}</div>;
+    }
 
     return (
         <motion.div
@@ -145,14 +157,16 @@ const Navbar = () => {
                     </div>
                     <Link to={'/cart'}>
                         <div className="hover:cursor-pointer">
-                            <IoBagOutline size={25} />
+                            <div className=" w-8 h-10 relative flex items-center"><IoBagOutline size={25} />
+                                <div className=" absolute text-[0.5rem] rounded-full bg-black text-white px-1 top-0 right-0">{cartItems.length}</div>
+                            </div>
                         </div>
                     </Link>
                     <div className=" w-16 h-10 flex justify-end items-center">
                         {
-                            loading===true ? <div><span className="loading loading-ring loading-md"></span></div>
+                            loading === true ? <div><span className="loading loading-ring loading-md"></span></div>
                                 :
-                                 user ? (
+                                user ? (
                                     <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
                                         <div tabIndex={0} role="button">
                                             {/* <AiOutlineUser size={25} /> */}

@@ -17,18 +17,18 @@ export const getWishlist = createAsyncThunk('wishlist/getWishlist', async ({ use
 });
 
 export const getAllWishlist = createAsyncThunk('wishlist/getAllWishlist', async (userId, { rejectWithValue }) => {
-        const axiosPrivate = useAxiosPrivate();
-        try {
-            const res = await axiosPrivate.get(`/wishlist-all/${userId}`);
-            return res.data;
-        } catch (error) {
-            if (error.response && error.response.data) {
-                return rejectWithValue(error.response.data.message);
-            } else {
-                return rejectWithValue(error.message);
-            }
+    const axiosPrivate = useAxiosPrivate();
+    try {
+        const res = await axiosPrivate.get(`/wishlist-all/${userId}`);
+        return res.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return rejectWithValue(error.response.data.message);
+        } else {
+            return rejectWithValue(error.message);
         }
     }
+}
 );
 
 export const addToWishlist = createAsyncThunk('wishlist/addToWishlist', async (wishlistItem, { rejectWithValue }) => {
@@ -94,6 +94,7 @@ const wishlistSlice = createSlice({
                 state.wishlistStatus = 'loading';
             })
             .addCase(getWishlist.fulfilled, (state, action) => {
+                console.log('API Response:', action.payload);
                 state.wishlistStatus = 'succeeded';
                 state.wishlistItems = action.payload.data;
                 state.totalItems = action.payload.totalItems;
@@ -109,7 +110,7 @@ const wishlistSlice = createSlice({
             })
             .addCase(getAllWishlist.fulfilled, (state, action) => {
                 state.allWishlistStatus = 'succeeded';
-                state.allWishlistItems = action.payload.data;  // Ensure this is correctly set
+                state.allWishlistItems = action.payload.data;
             })
             .addCase(getAllWishlist.rejected, (state, action) => {
                 state.allWishlistStatus = 'failed';

@@ -59,7 +59,7 @@ const ManageOrders = () => {
                                     <td>{item.date.split('T')[0]}</td>
                                     <td>{item._id}</td>
                                     <td>{item.transactionId}</td>
-                                    <td>{(item.price).toFixed(2)}</td>
+                                    <td>{item.price}</td>
                                     <td>
                                         <button disabled={item.status === 'delivered'} onClick={() => handleStatus(item)} className={item.status === 'pending' ? "text-orange-500" : "text-green-500"}>
                                             {item.status}

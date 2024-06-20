@@ -14,7 +14,7 @@ const PrivateRouter = ({ children }) => {
 
     // console.log(location.pathname.split('/')[1], location.pathname.split('/')[2]);
 
-    if (userByEmail?.role === 'user') {
+    if (userByEmail.userEmail) {
         return children;
     }
     else if (loading) {

@@ -14,7 +14,7 @@ const PrivateRouter = ({ children }) => {
 
     // console.log(location.pathname.split('/')[1], location.pathname.split('/')[2]);
 
-    if (userByEmail) {
+    if (userByEmail?.role === 'user') {
         return children;
     }
     else if (loading) {
@@ -32,17 +32,17 @@ const PrivateRouter = ({ children }) => {
 
                 {
                     (location.pathname.split('/')[1] === 'order-history' || location.pathname.split('/')[2] === 'order-history')
-                    && <OrderHistorySkeleton/>
+                    && <OrderHistorySkeleton />
                 }
 
                 {
                     (location.pathname.split('/')[1] === 'profile' || location.pathname.split('/')[2] === 'profile')
-                    && <ProfileSkeleton/>
+                    && <ProfileSkeleton />
                 }
 
                 {
                     (location.pathname.split('/')[1] === 'wishlist' || location.pathname.split('/')[2] === 'wishlist')
-                    && <WishlistSkeleton/>
+                    && <WishlistSkeleton />
                 }
 
                 {/* <div className=" flex justify-center dark:text-white"><span className="loading loading-bars loading-lg"></span></div> */}

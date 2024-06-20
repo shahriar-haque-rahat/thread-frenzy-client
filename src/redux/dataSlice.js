@@ -32,10 +32,10 @@ export const allData = createAsyncThunk('data/allData', async (filters, { reject
     }
 });
 
-export const similarItem = createAsyncThunk('data/similarItem', async (brand, { rejectWithValue }) => {
+export const similarProduct = createAsyncThunk('data/similarProduct', async (brand, { rejectWithValue }) => {
     const axiosPublic = useAxiosPublic();
     try {
-        const res = await axiosPublic.get(`/t-shirt/similar-product`, { params: { brand } });
+        const res = await axiosPublic.get(`/t-shirt/similar-products/${brand}`);
         return res.data;
     } catch (error) {
         if (error.response && error.response.data) {
@@ -143,8 +143,8 @@ const dataSlice = createSlice({
         allTshirtDataStatus: 'idle',
         data: [],
         allDataStatus: 'idle',
-        similarItems: [],
-        similarItemsStatus: 'idle',
+        similarProducts: [],
+        similarProductsStatus: 'idle',
         selectedItem: null,
         menCollections: [],
         menDataStatus: 'idle',
@@ -172,8 +172,8 @@ const dataSlice = createSlice({
             state.allTshirtDataStatus = 'idle';
             state.data = [];
             state.allDataStatus = 'idle';
-            state.similarItems = [];
-            state.similarItemsStatus = 'idle';
+            state.similarProducts = [];
+            state.similarProductsStatus = 'idle';
             state.selectedItem = null;
             state.menCollections = [];
             state.menDataStatus = 'idle';
@@ -232,15 +232,15 @@ const dataSlice = createSlice({
                 state.allDataStatus = 'failed';
                 state.error = action.payload || action.error.message;
             })
-            .addCase(similarItem.pending, (state) => {
-                state.similarItemsStatus = 'loading';
+            .addCase(similarProduct.pending, (state) => {
+                state.similarProductsStatus = 'loading';
             })
-            .addCase(similarItem.fulfilled, (state, action) => {
-                state.similarItemsStatus = 'succeeded';
-                state.similarItems = action.payload.data;
+            .addCase(similarProduct.fulfilled, (state, action) => {
+                state.similarProductsStatus = 'succeeded';
+                state.similarProducts = action.payload;
             })
-            .addCase(similarItem.rejected, (state, action) => {
-                state.similarItemsStatus = 'failed';
+            .addCase(similarProduct.rejected, (state, action) => {
+                state.similarProductsStatus = 'failed';
                 state.error = action.payload || action.error.message;
             })
             .addCase(getItemById.pending, (state) => {

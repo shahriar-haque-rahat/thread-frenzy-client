@@ -7,21 +7,21 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import { Link } from "react-router-dom";
-import { similarItem } from "../../redux/dataSlice";
+import { similarProduct } from "../../redux/dataSlice";
 
 const SimilarProducts = ({ itemBrand, itemId }) => {
     const dispatch = useDispatch();
-    const { similarItems, similarItemsStatus, error } = useSelector((state) => state.data);
-    const filteredItems = similarItems?.filter(item => item._id !== itemId);
-console.log(similarItems);
+    const { similarProducts, similarProductsStatus, error } = useSelector((state) => state.data);
+    const filteredItems = similarProducts?.filter(item => item._id !== itemId);
+
 
     useEffect(() => {
         if (itemBrand) {
-            dispatch(similarItem(itemBrand));
+            dispatch(similarProduct(itemBrand));
         }
     }, [dispatch, itemBrand]);
 
-    if (similarItemsStatus === 'failed') {
+    if (similarProductsStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
 

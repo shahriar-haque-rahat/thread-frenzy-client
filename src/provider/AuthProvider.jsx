@@ -19,7 +19,7 @@ const githubProvider = new GithubAuthProvider();
 const AuthProvider = ({ children }) => {
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
-    const [user, setUser] = useState(null);
+    // const [ firebaseUser, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const { userByEmail, userByEmailStatus, userByEmailError, allUser, allUserStatus, allUserError, users, admin, bannedUsers, userStatus, userError } = useSelector(state => state.user);
 
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
             dispatch(resetReviewState());
             dispatch(resetWishlistState());
             dispatch(resetCartState());
-            setUser(null);
+            // setUser(null);
             document.cookie = 'jwt=; Max-Age=0; path=/;';
         });
     }
@@ -61,15 +61,12 @@ const AuthProvider = ({ children }) => {
         }).then(() => {
             userDatabaseEntry(name, auth.currentUser.email, photoUrl)
 
-            setUser(currentUser => ({
-                ...currentUser,
-                displayName: name,
-                photoURL: photoUrl,
-                email: auth.currentUser.email,
-            }))
-            // .then(() => {
-            //     setLoading(false);
-            // })
+            // setUser(currentUser => ({
+            //     ...currentUser,
+            //     displayName: name,
+            //     photoURL: photoUrl,
+            //     email: auth.currentUser.email,
+            // }))
         }).catch(error => {
             console.log("Error updating profile: ", error);
         });
@@ -102,7 +99,7 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            setUser(currentUser);
+            // setUser(currentUser);
 
             try {
                 const response = await axiosPublic.post('/jwt', { email: currentUser.email }, { withCredentials: true });
@@ -147,7 +144,6 @@ const AuthProvider = ({ children }) => {
 
 
     const authInfo = {
-        user,
         loading,
         updateUserProfile,
         setLoading,

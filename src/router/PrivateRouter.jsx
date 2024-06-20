@@ -9,12 +9,12 @@ import WishlistSkeleton from "../pages/skeletons/WishlistSkeleton";
 
 
 const PrivateRouter = ({ children }) => {
-    const { user, loading } = useContext(AuthContext);
+    const { userByEmail, loading } = useContext(AuthContext);
     const location = useLocation();
 
     // console.log(location.pathname.split('/')[1], location.pathname.split('/')[2]);
 
-    if (user) {
+    if (userByEmail) {
         return children;
     }
     else if (loading) {

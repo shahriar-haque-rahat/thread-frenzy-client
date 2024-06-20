@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 
 const Join = () => {
-    const { user } = useContext(AuthContext);
+    const { userByEmail } = useContext(AuthContext);
 
     return (
         <div className="h-[550px] bg-cover bg-center relative" style={{ backgroundImage: `url(${joinNow})` }}>
@@ -12,7 +12,7 @@ const Join = () => {
                 <h1 className="text-3xl font-bold">Thread Frenzy</h1>
                 <p className="text-sm mb-6">Where style meets substance</p>
                 {
-                    user
+                    userByEmail
                         ? <div>
                             <p className="text-lg">Glad to have you here.</p>
                             <p className="text-base md:text-lg">Explore the latest fashion trends and updates.</p>

@@ -13,7 +13,7 @@ const MySwal = withReactContent(Swal);
 
 const Cart = () => {
     const dispatch = useDispatch();
-    const { user } = useContext(AuthContext);
+    const { userByEmail } = useContext(AuthContext);
     const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [quantities, setQuantities] = useState({});
     const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -26,7 +26,7 @@ const Cart = () => {
             dispatch(updateCartItem({ id, quantity: updatedQuantity }))
                 .unwrap()
                 .then(() => {
-                    dispatch(getCart(user.email));
+                    dispatch(getCart(userByEmail.userEmail));
                     updateProductInventory(item, updatedQuantity - prevQuantities[id]);
                 })
                 .catch(error => {
@@ -90,10 +90,10 @@ const Cart = () => {
     };
 
     useEffect(() => {
-        if (user?.email) {
-            dispatch(getCart(user.email));
+        if (userByEmail?.userEmail) {
+            dispatch(getCart(userByEmail.userEmail));
         }
-    }, [dispatch, user]);
+    }, [dispatch, userByEmail]);
 
     useEffect(() => {
         if (cartItems) {
@@ -125,7 +125,7 @@ const Cart = () => {
                             : <div>
                                 {
                                     !isCheckingOut
-                                        ? <CartItem cartItems={cartItems} quantities={quantities} handleQuantity={handleQuantity} userEmail={user.email} />
+                                        ? <CartItem cartItems={cartItems} quantities={quantities} handleQuantity={handleQuantity} userEmail={userByEmail.userEmail} />
                                         : <CheckOut totalPrice={amountToPay} cartItems={cartItems} setIsCheckingOut={setIsCheckingOut} />
                                 }
                             </div>

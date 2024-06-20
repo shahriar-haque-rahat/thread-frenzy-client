@@ -14,8 +14,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const Profile = () => {
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch();
-    const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
-    const { updateUserProfile } = useContext(AuthContext);
+    const { userByEmail, userByEmailStatus, userByEmailError, updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
         defaultValues: {
             firstName: '',

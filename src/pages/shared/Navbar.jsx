@@ -13,7 +13,7 @@ import { getCart } from "../../redux/cartSlice";
 
 const Navbar = () => {
     const dispatch = useDispatch();
-    const { user, userSignOut, userByEmail, loading } = useContext(AuthContext);
+    const { userSignOut, userByEmail, loading } = useContext(AuthContext);
     const { cartItems, cartStatus, cartError } = useSelector(state => state.cart);
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState("light");
@@ -23,10 +23,10 @@ const Navbar = () => {
     const navbarRef = useRef(null);
 
     useEffect(() => {
-        if (user?.email) {
-            dispatch(getCart(user.email));
+        if (userByEmail?.userEmail) {
+            dispatch(getCart(userByEmail.userEmail));
         }
-    }, [dispatch, user]);
+    }, [dispatch, userByEmail]);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme");
@@ -166,14 +166,14 @@ const Navbar = () => {
                         {
                             loading === true ? <div><span className="loading loading-ring loading-md"></span></div>
                                 :
-                                user ? (
+                                userByEmail.userEmail ? (
                                     <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
                                         <div tabIndex={0} role="button">
                                             {/* <AiOutlineUser size={25} /> */}
                                             <img className=" w-10 h-10 rounded-full" src={userByEmail.photoUrl} alt="" />
                                         </div>
                                         <ul tabIndex={0} className="dropdown-content menu z-[50] p-3 shadow bg-white w-44 space-y-3 border border-black">
-                                            <h1 className="font-semibold text-lg">{user.displayName}</h1>
+                                            <h1 className="font-semibold text-lg">{userByEmail.firstName}</h1>
                                             {
                                                 userByEmail.role === 'admin'
                                                     ? <Link to={'/dashboard/sales-overview'} className="border-y border-gray-300 hover:border-y hover:border-black py-1 text-start">

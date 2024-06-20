@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMenCollections, fetchWomenCollections } from "../../redux/dataSlice";
+import { getAllTshirtData } from "../../redux/dataSlice";
 import { useEffect } from "react";
 import { Scrollbar, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,29 +10,24 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { menCollections, womenCollections, menDataStatus, womenDataStatus, error } = useSelector((state) => state.data);
+    const { allTshirtData, allTshirtDataStatus, error } = useSelector((state) => state.data);
 
     useEffect(() => {
-        if (menDataStatus === 'idle') {
-            dispatch(fetchMenCollections());
+        if (allTshirtDataStatus === 'idle') {
+            dispatch(getAllTshirtData());
         }
-    }, [menDataStatus, dispatch]);
+    }, [allTshirtDataStatus, dispatch]);
 
-    useEffect(() => {
-        if (womenDataStatus === 'idle') {
-            dispatch(fetchWomenCollections());
-        }
-    }, [womenDataStatus, dispatch]);
+    // TODO: loading and failed status set korte hobe
 
-
-    if (menDataStatus === 'failed') {
+    if (allTshirtDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
 
 
     // Filter data
-    const maleData = menCollections.filter(item => item.gender === 'Male');
-    const femaleData = womenCollections.filter(item => item.gender === 'Female');
+    const maleData = allTshirtData.filter(item => item.gender === 'Male');
+    const femaleData = allTshirtData.filter(item => item.gender === 'Female');
 
     const femaleBrands = Array.from(new Set(femaleData.map(item => item.brand))).slice(0, 4);
     const maleBrands = Array.from(new Set(maleData.map(item => item.brand))).slice(0, 4);

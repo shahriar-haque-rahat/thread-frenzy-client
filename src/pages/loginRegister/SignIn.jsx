@@ -15,14 +15,14 @@ import Swal from 'sweetalert2';
 const MySwal = withReactContent(Swal);
 
 const SignIn = () => {
-    const { userSignIn, banUser, allUser } = useContext(AuthContext);
+    const { userSignIn, users, admin, bannedUsers } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        if (banUser?.find(bannedUser => bannedUser.userEmail === data.email)) {
+        if (bannedUsers?.find(bannedUser => bannedUser.userEmail === data.email)) {
             MySwal.fire({
                 title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
                 icon: "error",
@@ -35,7 +35,22 @@ const SignIn = () => {
             })
         }
 
-        else if (allUser?.find(user => user.userEmail === data.email)) {
+        else if (admin?.find(admin => admin.userEmail === data.email)) {
+            const { email, password } = data;
+
+            userSignIn(email, password)
+                .then(result => {
+                    console.log(result);
+                    toast.success('Successfully logged in as Admin');
+                    navigate(location?.state ? location.state : "/");
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error('Invalid user input');
+                })
+        }
+
+        else if (users?.find(user => user.userEmail === data.email)) {
             const { email, password } = data;
 
             userSignIn(email, password)
@@ -71,6 +86,7 @@ const SignIn = () => {
             })
         }
     }
+
 
     return (
         <>

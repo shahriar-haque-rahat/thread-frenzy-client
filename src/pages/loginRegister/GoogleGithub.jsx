@@ -12,7 +12,7 @@ const MySwal = withReactContent(Swal)
 
 
 const GoogleGithub = () => {
-    const { googleSignIn, githubSignIn, userDatabaseEntry, banUser, userSignOut } = useContext(AuthContext);
+    const { googleSignIn, githubSignIn, userDatabaseEntry, bannedUsers, userSignOut } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const GoogleGithub = () => {
             .then(result => {
                 console.log(result);
 
-                if (banUser?.find(bannedUser => bannedUser.userEmail === result.user.email)) {
+                if (bannedUsers?.find(bannedUser => bannedUser.userEmail === result.user.email)) {
                     userSignOut();
 
                     MySwal.fire({

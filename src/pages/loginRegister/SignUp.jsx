@@ -12,14 +12,14 @@ import { Helmet } from "react-helmet-async";
 const MySwal = withReactContent(Swal)
 
 const SignUp = () => {
-    const { userSignUp, updateUserProfile, banUser } = useContext(AuthContext);
+    const { userSignUp, updateUserProfile, bannedUsers } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm();
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        if (banUser?.find(bannedUser => bannedUser.userEmail === data.email)) {
+        if (bannedUsers?.find(bannedUser => bannedUser.userEmail === data.email)) {
             MySwal.fire({
                 title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
                 icon: "error",

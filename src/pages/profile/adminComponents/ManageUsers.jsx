@@ -4,7 +4,6 @@ import { deleteUser, getUsers, updateUser } from "../../../redux/userSlice";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet-async";
-import { addBanUser, deleteBanUser } from "../../../redux/banUserSlice";
 import ActiveUsers from "./userManagement/ActiveUsers";
 import BannedUser from "./userManagement/BannedUser";
 import Admins from "./userManagement/Admins";
@@ -13,7 +12,7 @@ const MySwal = withReactContent(Swal);
 
 const ManageUsers = () => {
     const dispatch = useDispatch();
-    const { user, userStatus, userError, admin, adminStatus, adminError, bannedUsers, bannedUsersStatus, bannedUsersError, totalPages, currentPage, totalAdminPages, currentAdminPage, totalBannedPages, currentBannedPage } = useSelector(state => state.user);
+    const { users, admin, bannedUsers, userStatus, userError, totalPages, currentPage, totalAdminPages, currentAdminPage, totalBannedPages, currentBannedPage } = useSelector(state => state.user);
 
     const handleRoleChange = (user) => {
         MySwal.fire({
@@ -36,7 +35,7 @@ const ManageUsers = () => {
                     .then(() => {
                         dispatch(getUsers({ status: 'active', role: 'user', }));
                         dispatch(getUsers({ status: 'active', role: 'admin', }));
-                        dispatch(getUsers({ status: 'banned',}));
+                        dispatch(getUsers({ status: 'banned', }));
                         return MySwal.fire({
                             title: 'Successfully updated',
                             text: `This person's role is now ${updatedRole}`,
@@ -86,7 +85,7 @@ const ManageUsers = () => {
                     .then(() => {
                         dispatch(getUsers({ status: 'active', role: 'user', }));
                         dispatch(getUsers({ status: 'active', role: 'admin', }));
-                        dispatch(getUsers({ status: 'banned',}));
+                        dispatch(getUsers({ status: 'banned', }));
                         return MySwal.fire({
                             title: 'User Deleted',
                             icon: 'success',
@@ -135,42 +134,34 @@ const ManageUsers = () => {
                     status: "banned",
                 }
 
-                const banUserInfo = {
-                    userEmail: data.userEmail,
-                };
-
                 dispatch(updateUser({ id: data._id, userInfo: updateUserInfo }))
                     .then(() => {
-                        dispatch(addBanUser(banUserInfo))
-                            .unwrap()
-                            .then(() => {
-                                dispatch(getUsers({ status: 'active', role: 'user', }));
-                                dispatch(getUsers({ status: 'active', role: 'admin', }));
-                                dispatch(getUsers({ status: 'banned',}));
-                                return MySwal.fire({
-                                    title: 'User Banned',
-                                    icon: 'success',
-                                    confirmButtonColor: 'black',
-                                    customClass: {
-                                        popup: 'square',
-                                        confirmButton: 'square'
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Ban operation failed:', error);
-                                MySwal.fire({
-                                    title: 'Error!',
-                                    text: 'Failed to ban the user. Please try again.',
-                                    icon: 'error',
-                                    confirmButtonColor: 'black',
-                                    customClass: {
-                                        popup: 'square',
-                                        confirmButton: 'square'
-                                    }
-                                });
-                            });
+                        dispatch(getUsers({ status: 'active', role: 'user', }));
+                        dispatch(getUsers({ status: 'active', role: 'admin', }));
+                        dispatch(getUsers({ status: 'banned', }));
+                        return MySwal.fire({
+                            title: 'User Banned',
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
                     })
+                    .catch(error => {
+                        console.error('Ban operation failed:', error);
+                        MySwal.fire({
+                            title: 'Error!',
+                            text: 'Failed to ban the user. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    });
 
             }
         });
@@ -199,36 +190,32 @@ const ManageUsers = () => {
 
                 dispatch(updateUser({ id: data._id, userInfo: updateUserInfo }))
                     .then(() => {
-                        dispatch(deleteBanUser(data.userEmail))
-                            .unwrap()
-                            .then(() => {
-                                dispatch(getUsers({ status: 'active', role: 'user', }));
-                                dispatch(getUsers({ status: 'active', role: 'admin', }));
-                                dispatch(getUsers({ status: 'banned',}));
-                                return MySwal.fire({
-                                    title: 'User Unbanned',
-                                    icon: 'success',
-                                    confirmButtonColor: 'black',
-                                    customClass: {
-                                        popup: 'square',
-                                        confirmButton: 'square'
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Unban operation failed:', error);
-                                MySwal.fire({
-                                    title: 'Error!',
-                                    text: 'Failed to unban the user. Please try again.',
-                                    icon: 'error',
-                                    confirmButtonColor: 'black',
-                                    customClass: {
-                                        popup: 'square',
-                                        confirmButton: 'square'
-                                    }
-                                });
-                            });
+                        dispatch(getUsers({ status: 'active', role: 'user', }));
+                        dispatch(getUsers({ status: 'active', role: 'admin', }));
+                        dispatch(getUsers({ status: 'banned', }));
+                        return MySwal.fire({
+                            title: 'User Unbanned',
+                            icon: 'success',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
                     })
+                    .catch(error => {
+                        console.error('Unban operation failed:', error);
+                        MySwal.fire({
+                            title: 'Error!',
+                            text: 'Failed to unban the user. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'black',
+                            customClass: {
+                                popup: 'square',
+                                confirmButton: 'square'
+                            }
+                        });
+                    });
             }
         });
     };
@@ -254,8 +241,8 @@ const ManageUsers = () => {
         }));
     }, [dispatch, currentPage, currentAdminPage, currentBannedPage]);
 
-    if (userStatus === 'failed' || adminStatus === 'failed' || bannedUsersStatus === 'failed') {
-        return <div>Error: {userError || adminError || bannedUsersError}</div>;
+    if (userStatus === 'failed') {
+        return <div>Error: {userError}</div>;
     }
 
     return (
@@ -268,7 +255,7 @@ const ManageUsers = () => {
 
                 <Admins admins={admin} totalAdminPages={totalAdminPages} currentAdminPage={currentAdminPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
 
-                <ActiveUsers users={user} totalPages={totalPages} currentPage={currentPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
+                <ActiveUsers users={users} totalPages={totalPages} currentPage={currentPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
 
                 <BannedUser bannedUsers={bannedUsers} totalBannedPages={totalBannedPages} currentBannedPage={currentBannedPage} handleUnbanUser={handleUnbanUser} />
             </div>

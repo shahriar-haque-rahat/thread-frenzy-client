@@ -74,18 +74,14 @@ const userSlice = createSlice({
         allUser: [],
         allUserStatus: 'idle',
         allUserError: null,
-        user: [],
+        users: [],
+        admin: [],
+        bannedUsers: [],
         userStatus: 'idle',
         userError: null,
-        admin: [],
-        adminStatus: 'idle',
-        adminError: null,
         userByEmail: {},
         userByEmailStatus: 'idle',
         userByEmailError: null,
-        bannedUsers: [],
-        bannedUsersStatus: 'idle',
-        bannedUsersError: null,
         totalItems: 0,
         totalPages: 0,
         currentPage: 1,
@@ -101,18 +97,14 @@ const userSlice = createSlice({
             state.allUser = [];
             state.allUserStatus = 'idle';
             state.allUserError = null;
-            state.user = [];
+            state.users = [];
+            state.admin = [];
+            state.bannedUsers = [];
             state.userStatus = 'idle';
             state.userError = null;
-            state.admin = [];
-            state.adminStatus = 'idle';
-            state.adminError = null;
             state.userByEmail = {};
             state.userByEmailStatus = 'idle';
             state.userByEmailError = null;
-            state.bannedUsers = [];
-            state.bannedUsersStatus = 'idle';
-            state.bannedUsersError = null;
             state.totalItems = 0;
             state.totalPages = 0;
             state.currentPage = 1;
@@ -162,7 +154,7 @@ const userSlice = createSlice({
                     state.totalBannedPages = action.payload.totalPages;
                     state.currentBannedPage = action.payload.currentPage;
                 } else {
-                    state.user = action.payload.data;
+                    state.users = action.payload.data;
                     state.totalItems = action.payload.totalItems;
                     state.totalPages = action.payload.totalPages;
                     state.currentPage = action.payload.currentPage;
@@ -184,34 +176,34 @@ const userSlice = createSlice({
                 state.userByEmailError = action.payload || action.error.message;
             })
             .addCase(addUser.pending, (state) => {
-                state.userStatus = 'loading';
+                state.allUserStatus = 'loading';
             })
             .addCase(addUser.fulfilled, (state, action) => {
-                state.userStatus = 'succeeded';
-                state.user.push(action.payload);
+                state.allUserStatus = 'succeeded';
+                state.allUser.push(action.payload);
             })
             .addCase(addUser.rejected, (state, action) => {
-                state.userStatus = 'failed';
-                state.userError = action.payload || action.error.message;
+                state.allUserStatus = 'failed';
+                state.allUserError = action.payload || action.error.message;
             })
             .addCase(updateUser.fulfilled, (state, action) => {
-                state.userStatus = 'succeeded';
-                const updatedUserIndex = state.user.findIndex(user => user._id === action.payload._id);
+                state.allUserStatus = 'succeeded';
+                const updatedUserIndex = state.allUser.findIndex(user => user._id === action.payload._id);
                 if (updatedUserIndex !== -1) {
-                    state.user[updatedUserIndex] = action.payload;
+                    state.allUser[updatedUserIndex] = action.payload;
                 }
             })
             .addCase(updateUser.rejected, (state, action) => {
-                state.userStatus = 'failed';
+                state.allUserStatus = 'failed';
                 state.userError = action.payload || action.error.message;
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
-                state.userStatus = 'succeeded';
-                state.user = state.user.filter(user => user._id !== action.payload._id);
+                state.allUserStatus = 'succeeded';
+                state.allUser = state.allUser.filter(user => user._id !== action.payload._id);
             })
             .addCase(deleteUser.rejected, (state, action) => {
-                state.userStatus = 'failed';
-                state.userError = action.payload || action.error.message;
+                state.allUserStatus = 'failed';
+                state.allUserError = action.payload || action.error.message;
             });
     },
 });

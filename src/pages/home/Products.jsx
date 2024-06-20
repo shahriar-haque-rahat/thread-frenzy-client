@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { allData } from "../../redux/dataSlice";
+import { fetchMenCollections, fetchWomenCollections } from "../../redux/dataSlice";
 import { useEffect } from "react";
 import { Scrollbar, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,24 +10,29 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { data, allDataStatus, error } = useSelector((state) => state.data);
+    const { menCollections, womenCollections, menDataStatus, womenDataStatus, error } = useSelector((state) => state.data);
 
     useEffect(() => {
-        if (allDataStatus === 'idle') {
-            dispatch(allData());
+        if (menDataStatus === 'idle') {
+            dispatch(fetchMenCollections());
         }
-    }, [allDataStatus, dispatch]);
+    }, [menDataStatus, dispatch]);
 
-    // TODO: loading and failed status set korte hobe
+    useEffect(() => {
+        if (womenDataStatus === 'idle') {
+            dispatch(fetchWomenCollections());
+        }
+    }, [womenDataStatus, dispatch]);
 
-    if (allDataStatus === 'failed') {
+
+    if (menDataStatus === 'failed') {
         return <div>Error: {error}</div>;
     }
 
 
     // Filter data
-    const maleData = data.filter(item => item.gender === 'Male');
-    const femaleData = data.filter(item => item.gender === 'Female');
+    const maleData = menCollections.filter(item => item.gender === 'Male');
+    const femaleData = womenCollections.filter(item => item.gender === 'Female');
 
     const femaleBrands = Array.from(new Set(femaleData.map(item => item.brand))).slice(0, 4);
     const maleBrands = Array.from(new Set(maleData.map(item => item.brand))).slice(0, 4);
@@ -94,7 +99,14 @@ const Products = () => {
                                 <div className=" h-fit py-6 space-y-2">
                                     <img className=" h-[300px] lg:h-[400px] xl:h-[500px] w-full object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="loading..." />
                                     <h1 className="text-white text-sm md:text-base px-2">{item.name}</h1>
-                                    <p className="text-white text-xs md:text-sm px-2">Price: ${(item.price).toFixed(2)}</p>
+                                    <div className="text-white flex gap-3 px-2">
+                                        <p>Price: ${(item.price - (item.price * (item.discount / 100))).toFixed(2)}</p>
+                                        {item.discount !== 0 && (
+                                            <>
+                                                <p className="line-through text-red-500">${(item.price).toFixed(2)}</p>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </Link>
                         </SwiperSlide>

@@ -13,7 +13,6 @@ const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
             address: '',
             email: '',
             phoneNumber: '',
-            photoUrl: '',
         }
     });
 
@@ -25,7 +24,6 @@ const CheckOut = ({ totalPrice, cartItems, setIsCheckingOut }) => {
                 address: userByEmail.address || '',
                 email: userByEmail.userEmail || '',
                 phoneNumber: userByEmail.phoneNumber || '',
-                photoUrl: userByEmail.photoUrl || '',
             });
         }
     }, [userByEmail, reset]);

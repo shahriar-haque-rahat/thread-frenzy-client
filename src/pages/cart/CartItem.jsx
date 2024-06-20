@@ -203,23 +203,23 @@ const CartItem = ({ cartItems, quantities, handleQuantity, userEmail }) => {
                     <div key={item._id} className=" my-6">
                         <input type="checkbox" checked={selectedItems.includes(item._id)} onChange={() => handleSelectItem(item._id)} />
                         <div className="flex gap-4 h-40 border border-black dark:border-white">
-                            <img className="h-full w-32 object-cover object-top" src={item.image} alt="loading..." />
-                            <div className="w-full flex flex-col justify-between p-3">
+                            <img className="h-full w-24 md:w-32 object-cover object-top" src={item.image} alt="loading..." />
+                            <div className="w-full flex flex-col justify-between p-2 md:p-3">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <Link to={`/product-details/${item.itemId}`}><h1 className="text-xl hover:underline">{item.name}</h1></Link>
-                                        <p>{item.color}</p>
-                                        <p>Size: {item.size}</p>
+                                        <Link to={`/product-details/${item.itemId}`}><h1 className=" text-base md:text-xl hover:underline">{item.name}</h1></Link>
+                                        <p className="text-sm md:text-base">{item.color}</p>
+                                        <p className="text-sm md:text-base">Size: {item.size}</p>
                                     </div>
                                     <button onClick={() => handleDeleteCartItem(item)}><RxCross2 size={25} /></button>
                                 </div>
-                                <div className="flex justify-between items-end">
+                                <div className="flex justify-between items-end text-xs md:text-base">
                                     <div className="flex items-center gap-4">
                                         <p onClick={() => handleQuantity(item, item._id, "-")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> - </p>
                                         <p className="px-5 py-1 font-semibold border ">{quantities[item._id]}</p>
                                         <p onClick={() => handleQuantity(item, item._id, "+")} className="w-[20px] h-[20px] lg:w-[35px] lg:h-[35px] rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-95 duration-300 border"> + </p>
                                     </div>
-                                    <p className="text-lg font-semibold">${(item.price * quantities[item._id]).toFixed(2)}</p>
+                                    <p className=" text-xs md:text-lg font-semibold">${(item.price * quantities[item._id]).toFixed(2)}</p>
                                 </div>
                             </div>
                         </div>

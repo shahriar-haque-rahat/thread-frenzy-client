@@ -3,7 +3,7 @@
 const SidebarSkeleton = () => {
     return (
         <>
-            <div className="fixed bg-black min-h-screen w-[25%] text-white pl-6 pt-6 hidden lg:block">
+            <div className="fixed bg-black min-h-screen w-[25%] 2xl:w-[350px] text-white pl-6 pt-6 hidden lg:block">
                 <div>
                     <div className="h-8 w-32 bg-gray-300 animate-pulse mb-6"></div>
                     <div className="py-6 flex gap-2 items-end">

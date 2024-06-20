@@ -55,7 +55,7 @@ const ManageOrders = () => {
                         </thead>
                         <tbody>
                             {payment?.map(item => (
-                                <tr key={item._id} className="text-center py-2 border-b">
+                                <tr key={item._id} className="py-2 border-b">
                                     <td>{item.date.split('T')[0]}</td>
                                     <td>{item._id}</td>
                                     <td>{item.transactionId}</td>

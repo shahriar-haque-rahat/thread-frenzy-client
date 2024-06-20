@@ -136,7 +136,7 @@ const Cart = () => {
                     <div className="border-y border-gray-300 w-full space-y-3 py-6 px-2">
                         <div className="flex justify-between">
                             <p>Total</p>
-                            <p>${totalPrice}</p>
+                            <p>${(totalPrice).toFixed(2)}</p>
                         </div>
                         <div className="flex justify-between">
                             <p>Shipping Fees</p>

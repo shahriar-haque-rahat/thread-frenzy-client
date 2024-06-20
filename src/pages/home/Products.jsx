@@ -94,7 +94,7 @@ const Products = () => {
                                 <div className=" h-fit py-6 space-y-2">
                                     <img className=" h-[300px] lg:h-[400px] xl:h-[500px] w-full object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="loading..." />
                                     <h1 className="text-white text-sm md:text-base px-2">{item.name}</h1>
-                                    <p className="text-white text-xs md:text-sm px-2">Price: ${item.price}</p>
+                                    <p className="text-white text-xs md:text-sm px-2">Price: ${(item.price).toFixed(2)}</p>
                                 </div>
                             </Link>
                         </SwiperSlide>

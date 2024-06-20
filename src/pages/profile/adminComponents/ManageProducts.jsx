@@ -214,7 +214,7 @@ const ManageProducts = () => {
                                         <Link to={`/product-details/${item._id}`} className=' hover:underline'>{item.name}</Link>
                                     </td>
                                     <td>{item.brand}</td>
-                                    <td>${item.price}</td>
+                                    <td>${(item.price).toFixed(2)}</td>
                                     <td>
                                         {item.color.join(', ')}
                                     </td>

@@ -31,7 +31,6 @@ const ProductDetails = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [wishlisted, setWishlisted] = useState();
 
-    console.log(selectedItem);
 
     // Rating calculation
     const validRatings = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
@@ -205,11 +204,11 @@ const ProductDetails = () => {
 
                                 <div className="flex gap-4 items-center">
                                     <p className="text-xl text-green-500 font-semibold">
-                                        ${selectedItem.price - (selectedItem.price * (selectedItem.discount / 100))}
+                                        ${(selectedItem.price - (selectedItem.price * (selectedItem.discount / 100))).toFixed(2)}
                                     </p>
                                     {selectedItem.discount !== 0 && (
                                         <>
-                                            <p className="line-through text-red-500 text-lg">${selectedItem.price}</p>
+                                            <p className="line-through text-red-500 text-lg">${(selectedItem.price).toFixed(2)}</p>
                                             <p className="text-sm text-gray-600 bg-red-200 px-2 py-1">{selectedItem.discount}% off</p>
                                         </>
                                     )}

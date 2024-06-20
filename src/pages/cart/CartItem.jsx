@@ -207,7 +207,7 @@ const CartItem = ({ cartItems, quantities, handleQuantity, userEmail }) => {
                             <div className="w-full flex flex-col justify-between p-3">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <Link to={`/product-details/${item.itemId}`}><h1 className="text-xl">{item.name}</h1></Link>
+                                        <Link to={`/product-details/${item.itemId}`}><h1 className="text-xl hover:underline">{item.name}</h1></Link>
                                         <p>{item.color}</p>
                                         <p>Size: {item.size}</p>
                                     </div>

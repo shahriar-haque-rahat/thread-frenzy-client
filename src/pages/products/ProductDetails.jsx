@@ -74,7 +74,7 @@ const ProductDetails = () => {
             itemId: selectedItem._id,
             name: selectedItem.name,
             image: selectedItem.images[selectedItem.color[colorIndex]][0],
-            price: selectedItem.price,
+            price: selectedItem.price - (selectedItem.price * (selectedItem.discount / 100)),
             color: selectedItem.color[colorIndex],
             gender: selectedItem.gender,
             size: selectedSize,

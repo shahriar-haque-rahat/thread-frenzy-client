@@ -94,7 +94,6 @@ const wishlistSlice = createSlice({
                 state.wishlistStatus = 'loading';
             })
             .addCase(getWishlist.fulfilled, (state, action) => {
-                console.log('API Response:', action.payload);
                 state.wishlistStatus = 'succeeded';
                 state.wishlistItems = action.payload.data;
                 state.totalItems = action.payload.totalItems;

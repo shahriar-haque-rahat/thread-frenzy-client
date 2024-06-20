@@ -67,7 +67,14 @@ const Wishlist = () => {
                         <div key={item.itemId._id} className="relative">
                             <Link to={`/product-details/${item.itemId._id}`}>
                                 <img className="h-72 xl:h-96 w-full object-cover object-top" src={item.itemId.images[Object.keys(item.itemId.images)[0]][0]} alt="loading..." />
-                                <p className="absolute top-2 left-2 font-bold">${(item.itemId.price).toFixed(2)}</p>
+                                <div className=" absolute top-2 left-2 font-semibold flex gap-3">
+                                    <p>${(item.itemId.price - (item.itemId.price * (item.itemId.discount / 100))).toFixed(2)}</p>
+                                    {item.itemId.discount !== 0 && (
+                                        <>
+                                            <p className="line-through text-red-500">${(item.itemId.price).toFixed(2)}</p>
+                                        </>
+                                    )}
+                                </div>
                                 <h1 className="absolute bottom-0 w-full h-16 font-semibold text-lg text-white bg-black bg-opacity-55 px-2">{item.itemId.name}</h1>
                             </Link>
                             <button onClick={() => handleDeleteWishlistItem(item._id)} className="z-10 absolute top-2 right-2"><RxCross2 size={28} /></button>

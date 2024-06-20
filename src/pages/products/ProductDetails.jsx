@@ -195,7 +195,7 @@ const ProductDetails = () => {
                                         : <button onClick={handleWishlist}><IoBookmarksOutline size={30} /></button>
                                     }
                                 </div>
-                                {overallRating === 0
+                                {allReviewItems.length === 0
                                     ? <p>No reviews yet</p>
                                     : <div>
                                         <ReactStars value={overallRating} isHalf={true} count={5} size={24} activeColor="#ffd700" edit={false} key={overallRating} />

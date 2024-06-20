@@ -77,7 +77,6 @@ const Review = ({ productId, user }) => {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(getAllReview(productId));
                 dispatch(deleteReview(id))
                     .then(() => {
                         const filters = {
@@ -85,6 +84,7 @@ const Review = ({ productId, user }) => {
                             limit: 3,
                         };
                         dispatch(getReview({ productId, filters }));
+                        dispatch(getAllReview(productId));
                     });
             }
         });

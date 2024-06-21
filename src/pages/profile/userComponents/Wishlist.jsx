@@ -70,28 +70,34 @@ const Wishlist = () => {
                 <title>Wishlist | Thread Frenzy</title>
             </Helmet>
             <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">Wishlist</h1>
-            <div className="pt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-black">
-                {
-                    wishlistItems?.map(item => (
-                        <div key={item.itemId._id} className="relative">
-                            <Link to={`/product-details/${item.itemId._id}`}>
-                                <img className="h-72 xl:h-96 w-full object-cover object-top" src={item.itemId.images[Object.keys(item.itemId.images)[0]][0]} alt="loading..." />
-                                <div className=" absolute top-2 left-2 font-semibold flex gap-3">
-                                    <p>${(item.itemId.price - (item.itemId.price * (item.itemId.discount / 100))).toFixed(2)}</p>
-                                    {item.itemId.discount !== 0 && (
-                                        <>
-                                            <p className="line-through text-red-500">${(item.itemId.price).toFixed(2)}</p>
-                                        </>
-                                    )}
-                                </div>
-                                <h1 className="absolute bottom-0 w-full h-16 font-semibold text-lg text-white bg-black bg-opacity-55 px-2">{item.itemId.name}</h1>
-                            </Link>
-                            <button onClick={() => handleDeleteWishlistItem(item._id)} className="z-10 absolute top-2 right-2"><RxCross2 size={28} /></button>
+            {
+                wishlistStatus === 'succeeded' && wishlistItems.length === 0
+                    ? <p className=" mt-10 text-center">No data found</p>
+                    : <>
+                        <div className="pt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-black">
+                            {
+                                wishlistItems?.map(item => (
+                                    <div key={item.itemId._id} className="relative">
+                                        <Link to={`/product-details/${item.itemId._id}`}>
+                                            <img className="h-72 xl:h-96 w-full object-cover object-top" src={item.itemId.images[Object.keys(item.itemId.images)[0]][0]} alt="loading..." />
+                                            <div className=" absolute top-2 left-2 font-semibold flex gap-3">
+                                                <p>${(item.itemId.price - (item.itemId.price * (item.itemId.discount / 100))).toFixed(2)}</p>
+                                                {item.itemId.discount !== 0 && (
+                                                    <>
+                                                        <p className="line-through text-red-500">${(item.itemId.price).toFixed(2)}</p>
+                                                    </>
+                                                )}
+                                            </div>
+                                            <h1 className="absolute bottom-0 w-full h-16 font-semibold text-lg text-white bg-black bg-opacity-55 px-2">{item.itemId.name}</h1>
+                                        </Link>
+                                        <button onClick={() => handleDeleteWishlistItem(item._id)} className="z-10 absolute top-2 right-2"><RxCross2 size={28} /></button>
+                                    </div>
+                                ))
+                            }
                         </div>
-                    ))
-                }
-            </div>
-            <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                        <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                    </>
+            }
         </>
     );
 };

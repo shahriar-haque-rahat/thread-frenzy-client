@@ -253,11 +253,11 @@ const ManageUsers = () => {
             <div className="space-y-10 mr-2 md:mr-0">
                 <h1 className="h-40 w-full text-5xl font-semibold pl-10 pt-6 text-white bg-black flex gap-4 items-center">User Management</h1>
 
-                <Admins admins={admin} totalAdminItems={totalAdminItems} totalAdminPages={totalAdminPages} currentAdminPage={currentAdminPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
+                <Admins userStatus={userStatus} admins={admin} totalAdminItems={totalAdminItems} totalAdminPages={totalAdminPages} currentAdminPage={currentAdminPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
 
-                <ActiveUsers users={users} totalItems={totalItems} totalPages={totalPages} currentPage={currentPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
+                <ActiveUsers userStatus={userStatus} users={users} totalItems={totalItems} totalPages={totalPages} currentPage={currentPage} handleRoleChange={handleRoleChange} handleDeleteUser={handleDeleteUser} handleBanUser={handleBanUser} />
 
-                <BannedUser bannedUsers={bannedUsers} totalBannedItems={totalBannedItems} totalBannedPages={totalBannedPages} currentBannedPage={currentBannedPage} handleUnbanUser={handleUnbanUser} />
+                <BannedUser userStatus={userStatus} bannedUsers={bannedUsers} totalBannedItems={totalBannedItems} totalBannedPages={totalBannedPages} currentBannedPage={currentBannedPage} handleUnbanUser={handleUnbanUser} />
             </div>
         </>
     );

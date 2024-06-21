@@ -137,33 +137,40 @@ const Review = ({ productId, user }) => {
                     </div>
                 </form>
             </div>
-            <div className="mt-10">
-                {
-                    reviewItems.map((item) => (
-                        <div key={item._id} className="py-5 space-y-2">
-                            <span className=" flex gap-2 items-center">
-                                <p className="font-bold">{item.userName}</p>
-                                <p className=" text-xs">[{item.date.slice(0, item.date.indexOf('T'))}]</p>
-                            </span>
-                            <ReactStars
-                                count={5}
-                                size={24}
-                                value={item.rating}
-                                isHalf={true}
-                                edit={false}
-                                activeColor="#ffd700"
-                            />
-                            <p>{item.review}</p>
-                            {item.userEmail === user.userEmail && (
-                                <button onClick={() => handleDelete(item._id)} className="text-xs text-red-500">
-                                    Delete
-                                </button>
-                            )}
+
+            {
+                reviewStatus === 'succeeded' && reviewItems.length === 0
+                    ? <p className=" mt-10 text-center">No data found </p>
+                    : <>
+                        <div className="mt-10">
+                            {
+                                reviewItems.map((item) => (
+                                    <div key={item._id} className="py-5 space-y-2">
+                                        <span className=" flex gap-2 items-center">
+                                            <p className="font-bold">{item.userName}</p>
+                                            <p className=" text-xs">[{item.date.slice(0, item.date.indexOf('T'))}]</p>
+                                        </span>
+                                        <ReactStars
+                                            count={5}
+                                            size={24}
+                                            value={item.rating}
+                                            isHalf={true}
+                                            edit={false}
+                                            activeColor="#ffd700"
+                                        />
+                                        <p>{item.review}</p>
+                                        {item.userEmail === user.userEmail && (
+                                            <button onClick={() => handleDelete(item._id)} className="text-xs text-red-500">
+                                                Delete
+                                            </button>
+                                        )}
+                                    </div>
+                                ))
+                            }
                         </div>
-                    ))
-                }
-            </div>
-            <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                        <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                    </>
+            }
         </div>
     );
 };

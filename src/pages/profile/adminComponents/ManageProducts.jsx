@@ -190,47 +190,52 @@ const ManageProducts = () => {
 
                 <p className=" text-3xl text-center bg-black text-white font-bold py-3">Products</p>
 
-                <div className=" overflow-x-auto">
-                    <table className="table">
-                        <thead className="text-black dark:text-white font-bold pb-2">
-                            <tr className="border-b border-black dark:border-white">
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Brand</th>
-                                <th>Price</th>
-                                <th>Discount</th>
-                                <th>Color</th>
-                                <th>Gender</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data?.map((item, idx) => (
-                                <tr key={idx} className="border-b border-gray-400">
-                                    <td className="w-24"><img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" /></td>
-                                    <td><Link to={`/product-details/${item._id}`} className=' hover:underline'>{item.name}</Link></td>
-                                    <td>{item.brand}</td>
-                                    <td>${(item.price).toFixed(2)}</td>
-                                    <td>{item.discount}%</td>
-                                    <td>
-                                        {item.color.map((color, index) => (
-                                            <div key={index}>
-                                                {color} <span className=' text-[0.6rem]'>[{item.quantity[color]}]</span>
-                                                {index !== item.color.length - 1 ? ', ' : ''}
-                                            </div>
+                {
+                    allDataStatus === 'succeeded' && data.length === 0
+                        ? <p className=" mt-10 text-center">No data found </p>
+                        : <>
+                            <div className=" overflow-x-auto">
+                                <table className="table">
+                                    <thead className="text-black dark:text-white font-bold pb-2">
+                                        <tr className="border-b border-black dark:border-white">
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Brand</th>
+                                            <th>Price</th>
+                                            <th>Discount</th>
+                                            <th>Color</th>
+                                            <th>Gender</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data?.map((item, idx) => (
+                                            <tr key={idx} className="border-b border-gray-400">
+                                                <td className="w-24"><img className="w-full h-28 object-cover object-top" src={item.images[Object.keys(item.images)[0]][0]} alt="" /></td>
+                                                <td><Link to={`/product-details/${item._id}`} className=' hover:underline'>{item.name}</Link></td>
+                                                <td>{item.brand}</td>
+                                                <td>${(item.price).toFixed(2)}</td>
+                                                <td>{item.discount}%</td>
+                                                <td>
+                                                    {item.color.map((color, index) => (
+                                                        <div key={index}>
+                                                            {color} <span className=' text-[0.6rem]'>[{item.quantity[color]}]</span>
+                                                            {index !== item.color.length - 1 ? ', ' : ''}
+                                                        </div>
+                                                    ))}
+                                                </td>
+                                                <td>{item.gender}</td>
+                                                <td><FaEdit size={20} onClick={() => openModal('update', item)} className="hover:cursor-pointer" /></td>
+                                                <td><MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                            </tr>
                                         ))}
-                                    </td>
-                                    <td>{item.gender}</td>
-                                    <td><FaEdit size={20} onClick={() => openModal('update', item)} className="hover:cursor-pointer" /></td>
-                                    <td><MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                                    </tbody>
+                                </table>
+                            </div>
+                            <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                        </>
+                }
 
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm

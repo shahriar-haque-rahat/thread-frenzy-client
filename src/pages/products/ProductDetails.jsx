@@ -105,6 +105,7 @@ const ProductDetails = () => {
 
                 toast.success('Product added to cart');
                 setProductQuantity(1);
+                setSelectedSize('');
             })
             .catch(() => {
                 toast.error('Failed to add product');

@@ -11,7 +11,7 @@ const MySwal = withReactContent(Swal);
 
 const Review = ({ productId, user }) => {
     const dispatch = useDispatch();
-    const { reviewItems, reviewStatus, reviewError, totalPages, currentPage } = useSelector(state => state.review);
+    const { reviewItems, reviewStatus, reviewError, totalPages, currentPage, totalItems } = useSelector(state => state.review);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [rating, setRating] = useState(0);
 
@@ -163,7 +163,7 @@ const Review = ({ productId, user }) => {
                     ))
                 }
             </div>
-            <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+            <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
         </div>
     );
 };

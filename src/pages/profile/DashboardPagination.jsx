@@ -1,12 +1,18 @@
+import { useEffect } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
-const DashboardPagination = ({ currentPage, totalPages, handlePageChange }) => {
+const DashboardPagination = ({ totalItems, currentPage, totalPages, handlePageChange }) => {
 
+    useEffect(() => {
+        if (totalItems <= (currentPage - 1) * 6 && currentPage > 1) {
+            handlePageChange(currentPage - 1);
+        }
+    }, [totalItems, currentPage, handlePageChange]);
 
     return (
         <div>
             {
-                totalPages === 0 ? <div></div>
+                totalItems === 0 ? <div></div>
                     : <div className="flex justify-center mt-4">
                         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={currentPage === 1 ? " px-4 py-2 border bg-gray-200 text-black" : "px-4 py-2 border"}>
                             <RiArrowLeftSLine size={20} />

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentPage } from "../../../../redux/userSlice";
 
 
-const ActiveUsers = ({ users, totalPages, currentPage, handleRoleChange, handleDeleteUser, handleBanUser }) => {
+const ActiveUsers = ({ users, totalPages, currentPage, handleRoleChange, handleDeleteUser, handleBanUser, totalItems }) => {
     const dispatch = useDispatch();
 
     const handlePageChange = (newPage) => {
@@ -44,7 +44,7 @@ const ActiveUsers = ({ users, totalPages, currentPage, handleRoleChange, handleD
                         </tbody>
                     </table>
                 </div>
-                <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
             </div>
     );
 };

@@ -6,7 +6,7 @@ import DashboardPagination from "../DashboardPagination";
 
 const ManageOrders = () => {
     const dispatch = useDispatch();
-    const { payment, paymentStatus, paymentError, totalPages, currentPage } = useSelector(state => state.payment);
+    const { payment, paymentStatus, paymentError, totalPages, currentPage, totalItems } = useSelector(state => state.payment);
 
     const handleStatus = async (item) => {
         const updatedStatus = item.status === 'pending' ? 'delivered' : 'pending';
@@ -70,7 +70,7 @@ const ManageOrders = () => {
                         </tbody>
                     </table>
                 </div>
-                <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
             </div>
         </>
     );

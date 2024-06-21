@@ -6,7 +6,7 @@ import DashboardPagination from "../DashboardPagination";
 
 const Messages = () => {
     const dispatch = useDispatch();
-    const { messages, messagesStatus, messagesError, totalPages, currentPage } = useSelector(state => state.message);
+    const { messages, messagesStatus, messagesError, totalPages, currentPage, totalItems } = useSelector(state => state.message);
 
     const handlePageChange = (newPage) => {
         dispatch(setCurrentPage(newPage));
@@ -46,7 +46,7 @@ const Messages = () => {
                             ))
                     }
                 </div>
-                <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
             </div>
         </>
     );

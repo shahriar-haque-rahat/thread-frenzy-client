@@ -9,7 +9,7 @@ import DashboardPagination from "../DashboardPagination";
 const OrderHistory = () => {
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { userSpecificPayment, paymentStatus, paymentError, totalUserSpecificPages, UserSpecificCurrentPage } = useSelector(state => state.payment);
+    const { userSpecificPayment, paymentStatus, paymentError, totalUserSpecificPages, UserSpecificCurrentPage, totalUserSpecificItems } = useSelector(state => state.payment);
 
     const handlePageChange = (newPage) => {
         dispatch(setUserSpecificCurrentPage(newPage));
@@ -92,7 +92,7 @@ const OrderHistory = () => {
                         </tbody>
                     </table>
                 </div>
-                <DashboardPagination currentPage={UserSpecificCurrentPage} totalPages={totalUserSpecificPages} handlePageChange={handlePageChange} />
+                <DashboardPagination totalItems={totalUserSpecificItems} currentPage={UserSpecificCurrentPage} totalPages={totalUserSpecificPages} handlePageChange={handlePageChange} />
             </div>
         </>
     );

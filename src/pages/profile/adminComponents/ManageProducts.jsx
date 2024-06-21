@@ -16,7 +16,7 @@ const MySwal = withReactContent(Swal);
 
 const ManageProducts = () => {
     const dispatch = useDispatch();
-    const { data, allDataStatus, error, totalPages, currentPage } = useSelector(state => state.data);
+    const { data, allDataStatus, error, totalPages, currentPage, totalItems } = useSelector(state => state.data);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState('add');
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -230,7 +230,7 @@ const ManageProducts = () => {
                     </table>
                 </div>
 
-                <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
 
                 <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Add Product Modal" ariaHideApp={false} >
                     <AddProductForm

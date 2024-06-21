@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentAdminPage } from "../../../../redux/userSlice";
 
 
-const Admins = ({ admins, totalAdminPages, currentAdminPage, handleRoleChange, handleDeleteUser, handleBanUser,  }) => {
+const Admins = ({ admins, totalAdminPages, currentAdminPage, handleRoleChange, handleDeleteUser, handleBanUser, totalAdminItems }) => {
     const dispatch = useDispatch();
 
     const handlePageChange = (newPage) => {
@@ -45,7 +45,7 @@ const Admins = ({ admins, totalAdminPages, currentAdminPage, handleRoleChange, h
                     </tbody>
                 </table>
             </div>
-            <DashboardPagination currentPage={currentAdminPage} totalPages={totalAdminPages} handlePageChange={handlePageChange} />
+            <DashboardPagination totalItems={totalAdminItems} currentPage={currentAdminPage} totalPages={totalAdminPages} handlePageChange={handlePageChange} />
         </div>
     );
 };

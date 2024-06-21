@@ -3,7 +3,7 @@ import { setCurrentBannedPage } from "../../../../redux/userSlice";
 import DashboardPagination from "../../DashboardPagination";
 
 
-const BannedUser = ({ bannedUsers, totalBannedPages, currentBannedPage, handleUnbanUser }) => {
+const BannedUser = ({ bannedUsers, totalBannedPages, currentBannedPage, handleUnbanUser, totalBannedItems }) => {
     const dispatch = useDispatch();
 
     const handlePageChange = (newPage) => {
@@ -39,7 +39,7 @@ const BannedUser = ({ bannedUsers, totalBannedPages, currentBannedPage, handleUn
                         </tbody>
                     </table>
                 </div>
-                <DashboardPagination currentPage={currentBannedPage} totalPages={totalBannedPages} handlePageChange={handlePageChange} />
+                <DashboardPagination totalItems={totalBannedItems} currentPage={currentBannedPage} totalPages={totalBannedPages} handlePageChange={handlePageChange} />
             </div>
         </>
     );

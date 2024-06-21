@@ -14,7 +14,7 @@ const MySwal = withReactContent(Swal);
 const Wishlist = () => {
     const dispatch = useDispatch();
     const { userByEmail, userByEmailStatus, userByEmailError } = useContext(AuthContext);
-    const { wishlistItems, wishlistStatus, wishlistError, totalPages, currentPage } = useSelector(state => state.wishlist);
+    const { wishlistItems, wishlistStatus, wishlistError, totalPages, currentPage, totalItems } = useSelector(state => state.wishlist);
 
     const handleDeleteWishlistItem = (id) => {
         MySwal.fire({
@@ -91,7 +91,7 @@ const Wishlist = () => {
                     ))
                 }
             </div>
-            <DashboardPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+            <DashboardPagination totalItems={totalItems} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
         </>
     );
 };

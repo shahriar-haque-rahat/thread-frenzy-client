@@ -139,7 +139,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <Link to={"/"}>
-                        <p className="text-xl font-bold">Thread Frenzy</p>
+                        <p className="text-lg md:text-xl font-bold">Thread Frenzy</p>
                     </Link>
                 </div>
                 <div className="hidden lg:flex">

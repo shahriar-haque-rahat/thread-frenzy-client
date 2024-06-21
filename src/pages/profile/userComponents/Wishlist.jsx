@@ -32,7 +32,16 @@ const Wishlist = () => {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteWishlistItem(id));
+                dispatch(deleteWishlistItem(id))
+                    .then(() => {
+                        if (userByEmail) {
+                            const filters = {
+                                page: currentPage,
+                                limit: 6,
+                            };
+                            dispatch(getWishlist({ userId: userByEmail._id, filters }));
+                        }
+                    })
             }
         });
     };

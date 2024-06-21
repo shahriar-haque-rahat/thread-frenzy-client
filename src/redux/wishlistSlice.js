@@ -114,12 +114,6 @@ const wishlistSlice = createSlice({
             .addCase(getAllWishlist.rejected, (state, action) => {
                 state.allWishlistStatus = 'failed';
                 state.allWishlistError = action.payload || action.error.message;
-            })
-            .addCase(addToWishlist.fulfilled, (state, action) => {
-                state.wishlistItems.push(action.payload);
-            })
-            .addCase(deleteWishlistItem.fulfilled, (state, action) => {
-                state.wishlistItems = state.wishlistItems.filter(item => item._id !== action.meta.arg);
             });
     },
 });

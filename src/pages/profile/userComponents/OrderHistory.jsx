@@ -88,7 +88,7 @@ const OrderHistory = () => {
                                                     </div>
                                                 ))}
                                             </td>
-                                            <td>{item.price}</td>
+                                            <td>${parseFloat(item.price).toFixed(2)}</td>
                                             <td className={item.status === 'pending' ? "text-orange-500" : "text-green-500"}>{item.status}</td>
                                         </tr>
                                     ))}

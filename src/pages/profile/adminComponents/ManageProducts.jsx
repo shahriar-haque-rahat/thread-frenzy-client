@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { allData, deleteItem, setCurrentPage } from "../../../redux/dataSlice";
 import { MdOutlineDeleteForever } from "react-icons/md";
@@ -11,10 +11,12 @@ import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
 import { FaEdit } from 'react-icons/fa';
 import DashboardPagination from '../DashboardPagination';
+import { AuthContext } from '../../../provider/AuthProvider';
 
 const MySwal = withReactContent(Swal);
 
 const ManageProducts = () => {
+    const { buttonDisabled } = useContext(AuthContext);
     const dispatch = useDispatch();
     const { data, allDataStatus, error, totalPages, currentPage, totalItems } = useSelector(state => state.data);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -226,8 +228,16 @@ const ManageProducts = () => {
                                                     ))}
                                                 </td>
                                                 <td>{item.gender}</td>
-                                                <td><FaEdit size={20} onClick={() => openModal('update', item)} className="hover:cursor-pointer" /></td>
-                                                <td><MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                                {
+                                                    buttonDisabled
+                                                        ? <td><FaEdit size={20} className="hover:cursor-pointer" /></td>
+                                                        : <td><FaEdit size={20} onClick={() => openModal('update', item)} className="hover:cursor-pointer" /></td>
+                                                }
+                                                {
+                                                    buttonDisabled
+                                                        ? <td><MdOutlineDeleteForever className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                                        : <td><MdOutlineDeleteForever onClick={() => handleDeleteItem(item._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                                }
                                             </tr>
                                         ))}
                                     </tbody>

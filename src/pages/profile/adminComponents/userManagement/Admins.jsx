@@ -3,9 +3,12 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import DashboardPagination from "../../DashboardPagination";
 import { useDispatch } from "react-redux";
 import { setCurrentAdminPage } from "../../../../redux/userSlice";
+import { AuthContext } from "../../../../provider/AuthProvider";
+import { useContext } from "react";
 
 
 const Admins = ({ admins, userStatus, totalAdminPages, currentAdminPage, handleRoleChange, handleDeleteUser, handleBanUser, totalAdminItems }) => {
+    const { buttonDisabled } = useContext(AuthContext);
     const dispatch = useDispatch();
 
     const handlePageChange = (newPage) => {
@@ -39,11 +42,21 @@ const Admins = ({ admins, userStatus, totalAdminPages, currentAdminPage, handleR
                                             <td>{user.firstName}</td>
                                             <td>{user.userEmail}</td>
                                             <td>{user.phoneNumber}</td>
-                                            <td>
-                                                <button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button>
-                                            </td>
-                                            <td><FaBan onClick={() => handleBanUser(user)} className="hover:cursor-pointer" size={18} /></td>
-                                            <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                            {
+                                                buttonDisabled
+                                                    ? <td><button className=" text-blue-500 text-xs font-semibold">Remove Admin</button></td>
+                                                    : <td><button onClick={() => handleRoleChange(user)} className=" text-blue-500 text-xs font-semibold">Remove Admin</button></td>
+                                            }
+                                            {
+                                                buttonDisabled
+                                                    ? <td><FaBan className="hover:cursor-pointer" size={18} /></td>
+                                                    : <td><FaBan onClick={() => handleBanUser(user)} className="hover:cursor-pointer" size={18} /></td>
+                                            }
+                                            {
+                                                buttonDisabled
+                                                    ? <td><MdOutlineDeleteForever className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                                    : <td><MdOutlineDeleteForever onClick={() => handleDeleteUser(user._id)} className="text-red-500 hover:cursor-pointer" size={25} /></td>
+                                            }
                                         </tr>
                                     ))}
                                 </tbody>

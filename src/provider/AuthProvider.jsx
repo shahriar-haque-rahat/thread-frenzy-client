@@ -11,6 +11,8 @@ import { resetReviewState } from "../redux/reviewSlice";
 import { resetWishlistState } from "../redux/wishlistSlice";
 import { resetCartState } from "../redux/cartSlice";
 
+// make buttonDisabled false in order to use delete and edit buttons in product management and user management
+const buttonDisabled = import.meta.env.VITE_DELETE_BUTTON_ENABLED === 'true';
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -144,6 +146,7 @@ const AuthProvider = ({ children }) => {
 
 
     const authInfo = {
+        buttonDisabled,
         loading,
         updateUserProfile,
         setLoading,

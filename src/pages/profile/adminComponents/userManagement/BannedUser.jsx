@@ -1,9 +1,12 @@
 import { useDispatch } from "react-redux";
 import { setCurrentBannedPage } from "../../../../redux/userSlice";
 import DashboardPagination from "../../DashboardPagination";
+import { useContext } from "react";
+import { AuthContext } from "../../../../provider/AuthProvider";
 
 
 const BannedUser = ({ bannedUsers, userStatus, totalBannedPages, currentBannedPage, handleUnbanUser, totalBannedItems }) => {
+    const { buttonDisabled } = useContext(AuthContext);
     const dispatch = useDispatch();
 
     const handlePageChange = (newPage) => {
@@ -35,9 +38,11 @@ const BannedUser = ({ bannedUsers, userStatus, totalBannedPages, currentBannedPa
                                                 <td>{user.firstName}</td>
                                                 <td>{user.userEmail}</td>
                                                 <td>{user.phoneNumber}</td>
-                                                <td>
-                                                    <button onClick={() => handleUnbanUser(user)} className=" text-blue-500 text-xs font-semibold">Unban User</button>
-                                                </td>
+                                                {
+                                                    buttonDisabled
+                                                        ? <td><button className=" text-blue-500 text-xs font-semibold">Unban User</button></td>
+                                                        : <td><button onClick={() => handleUnbanUser(user)} className=" text-blue-500 text-xs font-semibold">Unban User</button></td>
+                                                }
                                             </tr>
                                         ))}
                                     </tbody>

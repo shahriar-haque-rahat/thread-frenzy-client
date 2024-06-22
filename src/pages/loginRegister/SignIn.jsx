@@ -89,7 +89,7 @@ const SignIn = () => {
 
     const handleDemoAdmin = () => {
         const data = {
-            email: 'admin@gmail.com',
+            email: 'demoadmin@gmail.com',
             password: 'Pa$$w0rd!'
         }
         onSubmit(data);
@@ -97,7 +97,7 @@ const SignIn = () => {
 
     const handleUserAdmin = () => {
         const data = {
-            email: 'user@gmail.com',
+            email: 'demouser@gmail.com',
             password: 'Pa$$w0rd!'
         }
         onSubmit(data);

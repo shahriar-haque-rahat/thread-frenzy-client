@@ -123,7 +123,7 @@ const SignUp = () => {
                         </div>
                         {errors.checkbox && <span className="text-red-500">Accept our term & conditions to proceed</span>}
                         <div className="form-control mt-6">
-                            <button className=" border border-black py-2 hover:bg-white transition duration-300 ease-in-out">Sign Up</button>
+                            <button className=" border border-black py-2 hover:bg-black hover:text-white transition duration-300 ease-in-out">Sign Up</button>
                         </div>
                     </form>
                     <GoogleGithub></GoogleGithub>

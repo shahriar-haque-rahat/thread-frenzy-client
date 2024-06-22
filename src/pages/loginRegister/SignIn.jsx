@@ -87,6 +87,21 @@ const SignIn = () => {
         }
     }
 
+    const handleDemoAdmin = () => {
+        const data = {
+            email: 'admin@gmail.com',
+            password: 'Pa$$w0rd!'
+        }
+        onSubmit(data);
+    }
+
+    const handleUserAdmin = () => {
+        const data = {
+            email: 'user@gmail.com',
+            password: 'Pa$$w0rd!'
+        }
+        onSubmit(data);
+    }
 
     return (
         <>
@@ -122,9 +137,13 @@ const SignIn = () => {
                             <p className=" text-end text-gray-500">Forgot password?</p>
                         </div>
                         <div className="form-control mt-6">
-                            <button className=" border border-black py-2 hover:bg-white transition duration-300 ease-in-out">Sign In</button>
+                            <button className=" border border-black py-2 hover:bg-black hover:text-white transition duration-300 ease-in-out">Sign In</button>
                         </div>
                     </form>
+                    <div className=" mt-2 w-full flex justify-between gap-3">
+                        <button onClick={handleDemoAdmin} className=" w-full border border-blue-500 text-blue-500 py-1 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out">Demo Admin</button>
+                        <button onClick={handleUserAdmin} className=" w-full border border-green-500 text-green-500 py-1 hover:bg-green-500 hover:text-white transition duration-300 ease-in-out">Demo User</button>
+                    </div>
                     <GoogleGithub></GoogleGithub>
                     <p className=" mt-3 text-center">Do Not Have An Account ? <Link className=" text-red-500" to={'/sign-up'}>Sign Up</Link></p>
                 </div>

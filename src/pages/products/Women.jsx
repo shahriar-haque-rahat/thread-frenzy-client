@@ -1,26 +1,21 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWomenCollections, setFilters, setWomenCurrentPage } from "../../redux/dataSlice";
-import { useEffect } from "react";
+import { fetchWomenCollections, setFilters } from "../../redux/dataSlice";
 import SliderCards from "./SliderCards";
 import Filters from "./Filters";
-import { Helmet } from "react-helmet-async";
 import Pagination from "./Pagination";
+import { Helmet } from "react-helmet-async";
 
 const Women = () => {
     const dispatch = useDispatch();
-    const { womenCollections, womenDataStatus, error, womenTotalPages, womenCurrentPage, filters } = useSelector(state => state.data);
+    const { womenCollections, womenDataStatus, error, filters, pagination } = useSelector(state => state.data);
 
     useEffect(() => {
-        dispatch(fetchWomenCollections({ ...filters, page: womenCurrentPage, limit: 6 }));
-    }, [dispatch, filters, womenCurrentPage]);
+        dispatch(fetchWomenCollections({ ...filters }));
+    }, [dispatch, filters, pagination.women.page, pagination.women.limit]);
 
     const handleFilterChange = (newFilters) => {
         dispatch(setFilters(newFilters));
-        dispatch(setWomenCurrentPage(1));
-    };
-
-    const handlePageChange = (page) => {
-        dispatch(setWomenCurrentPage(page));
     };
 
     if (womenDataStatus === 'failed') {
@@ -40,7 +35,7 @@ const Women = () => {
                     <Filters onFilterChange={handleFilterChange} />
                     <div className="lg:col-span-4">
                         <SliderCards data={womenCollections} />
-                        <Pagination currentPage={womenCurrentPage} totalPages={womenTotalPages} onPageChange={handlePageChange} />
+                        <Pagination filters={filters} gender="women" />
                     </div>
                 </div>
             </div>

@@ -105,10 +105,13 @@ export const deleteItem = createAsyncThunk('data/deleteItem', async (itemId, { r
     }
 });
 
-export const fetchMenCollections = createAsyncThunk('data/fetchMenCollections', async (filters, { rejectWithValue }) => {
+export const fetchMenCollections = createAsyncThunk('data/fetchMenCollections', async (filters, { getState, rejectWithValue }) => {
     const axiosPublic = useAxiosPublic();
+    const { pagination } = getState().data;
+    const { page, limit } = pagination.men;
+
     try {
-        const query = new URLSearchParams(filters).toString();
+        const query = new URLSearchParams({ ...filters, page, limit }).toString();
         const res = await axiosPublic.get(`/t-shirt/Male?${query}`);
         return res.data;
     } catch (error) {
@@ -120,10 +123,13 @@ export const fetchMenCollections = createAsyncThunk('data/fetchMenCollections', 
     }
 });
 
-export const fetchWomenCollections = createAsyncThunk('data/fetchWomenCollections', async (filters, { rejectWithValue }) => {
+export const fetchWomenCollections = createAsyncThunk('data/fetchWomenCollections', async (filters, { getState, rejectWithValue }) => {
     const axiosPublic = useAxiosPublic();
+    const { pagination } = getState().data;
+    const { page, limit } = pagination.women;
+
     try {
-        const query = new URLSearchParams(filters).toString();
+        const query = new URLSearchParams({ ...filters, page, limit }).toString();
         const res = await axiosPublic.get(`/t-shirt/Female?${query}`);
         return res.data;
     } catch (error) {
@@ -135,7 +141,7 @@ export const fetchWomenCollections = createAsyncThunk('data/fetchWomenCollection
     }
 });
 
-// dataSlice.js
+
 const dataSlice = createSlice({
     name: 'data',
     initialState: {
@@ -155,13 +161,11 @@ const dataSlice = createSlice({
         totalItems: 0,
         totalPages: 0,
         currentPage: 1,
-        menTotalItems: 0,
-        menTotalPages: 0,
-        menCurrentPage: 1,
-        womenTotalItems: 0,
-        womenTotalPages: 0,
-        womenCurrentPage: 1,
         filters: {},
+        pagination: {
+            men: { page: 1, limit: 6, totalItems: 0, totalPages: 0 },
+            women: { page: 1, limit: 6, totalItems: 0, totalPages: 0 }
+        }
     },
     reducers: {
         setSelectedItem: (state, action) => {
@@ -184,22 +188,14 @@ const dataSlice = createSlice({
             state.totalItems = 0;
             state.totalPages = 0;
             state.currentPage = 1;
-            state.menTotalItems = 0;
-            state.menTotalPages = 0;
-            state.menCurrentPage = 1;
-            state.womenTotalItems = 0;
-            state.womenTotalPages = 0;
-            state.womenCurrentPage = 1;
             state.filters = {};
         },
         setCurrentPage(state, action) {
             state.currentPage = action.payload;
         },
-        setMenCurrentPage(state, action) {
-            state.menCurrentPage = action.payload;
-        },
-        setWomenCurrentPage(state, action) {
-            state.womenCurrentPage = action.payload;
+        setPagination(state, action) {
+            const { gender, page, limit } = action.payload;
+            state.pagination[gender] = { ...state.pagination[gender], page, limit };
         },
         setFilters(state, action) {
             state.filters = action.payload;
@@ -260,9 +256,8 @@ const dataSlice = createSlice({
             .addCase(fetchMenCollections.fulfilled, (state, action) => {
                 state.menDataStatus = 'succeeded';
                 state.menCollections = action.payload.data;
-                state.menTotalItems = action.payload.totalItems;
-                state.menTotalPages = action.payload.totalPages;
-                state.menCurrentPage = action.payload.currentPage;
+                state.pagination.men.totalItems = action.payload.totalItems;
+                state.pagination.men.totalPages = action.payload.totalPages;
             })
             .addCase(fetchMenCollections.rejected, (state, action) => {
                 state.menDataStatus = 'failed';
@@ -274,9 +269,8 @@ const dataSlice = createSlice({
             .addCase(fetchWomenCollections.fulfilled, (state, action) => {
                 state.womenDataStatus = 'succeeded';
                 state.womenCollections = action.payload.data;
-                state.womenTotalItems = action.payload.totalItems;
-                state.womenTotalPages = action.payload.totalPages;
-                state.womenCurrentPage = action.payload.currentPage;
+                state.pagination.women.totalItems = action.payload.totalItems;
+                state.pagination.women.totalPages = action.payload.totalPages;
             })
             .addCase(fetchWomenCollections.rejected, (state, action) => {
                 state.womenDataStatus = 'failed';
@@ -285,7 +279,7 @@ const dataSlice = createSlice({
     },
 });
 
-export const { setSelectedItem, resetDataState, setCurrentPage, setMenCurrentPage, setWomenCurrentPage, setFilters } = dataSlice.actions;
+export const { setSelectedItem, resetDataState, setCurrentPage, setPagination, setFilters } = dataSlice.actions;
 
 export default dataSlice.reducer;
 

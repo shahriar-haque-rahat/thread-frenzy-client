@@ -15,14 +15,14 @@ import Swal from 'sweetalert2';
 const MySwal = withReactContent(Swal);
 
 const SignIn = () => {
-    const { userSignIn, users, admin, bannedUsers } = useContext(AuthContext);
+    const { userSignIn, allUser } = useContext(AuthContext);console.log(allUser);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const [showPass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        if (bannedUsers?.find(bannedUser => bannedUser.userEmail === data.email)) {
+        if (allUser?.find(bannedUser => bannedUser.userEmail === data.email && bannedUser.Status === 'banned')) {
             MySwal.fire({
                 title: <p className="text-3xl font-bold text-primary mb-4">User is banned</p>,
                 icon: "error",
@@ -35,7 +35,7 @@ const SignIn = () => {
             })
         }
 
-        else if (admin?.find(admin => admin.userEmail === data.email)) {
+        else if (allUser?.find(admin => admin.userEmail === data.email && admin.role === 'admin')) {
             const { email, password } = data;
 
             userSignIn(email, password)
@@ -50,7 +50,7 @@ const SignIn = () => {
                 })
         }
 
-        else if (users?.find(user => user.userEmail === data.email)) {
+        else if (allUser?.find(user => user.userEmail === data.email && user.role === 'user')) {
             const { email, password } = data;
 
             userSignIn(email, password)

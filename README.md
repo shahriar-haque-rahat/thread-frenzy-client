@@ -1,6 +1,16 @@
 # Thread Frenzy
 Thread Frenzy is a Full stack E-Commerce website built with MERN (MongoDB, Express.js, React.js, Node.js) stack. Thread Frenzy offers a seamless shopping experience with secure authentication, dynamic product exploration, and smooth Stripe-integrated checkout.
 
+# Live Link
+  ```bash
+  https://thread-frenzy.web.app/
+  ```
+
+# Server Side Repository
+  ```bash
+  https://github.com/shRahat10/thread-frenzy-server
+  ```
+
 ## Features:
 
 ### Authentication

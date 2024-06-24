@@ -7,7 +7,7 @@ const DashboardPagination = ({ totalItems, currentPage, totalPages, handlePageCh
         if (totalItems <= (currentPage - 1) * 6 && currentPage > 1) {
             handlePageChange(currentPage - 1);
         }
-    }, [totalItems, currentPage, handlePageChange]);
+    }, [totalItems]);
 
     return (
         <div>

@@ -178,6 +178,20 @@ const AddProductForm = ({ closeModal, allData, initialData = null, isUpdate = fa
                             {errors.details && <span className="text-red-500">This field is required</span>}
                         </div>
                     </div>
+                    <div className="flex gap-6">
+                        <div className="form-control w-full">
+                            <label className="text-gray-600 text-sm">Sizes</label>
+                            <div className="flex space-x-4">
+                                {["s", "m", "l", "xl", "xxl"].map(size => (
+                                    <div key={size} className="flex items-center">
+                                        <input type="checkbox" id={size} value={size} {...register("size", { required: true })} />
+                                        <label htmlFor={size} className="ml-2">{size.toUpperCase()}</label>
+                                    </div>
+                                ))}
+                            </div>
+                            {errors.size && <span className="text-red-500">This field is required</span>}
+                        </div>
+                    </div>
                     <button type="submit" className="bg-black text-white px-4 py-2 w-full">Next</button>
                 </form>
                 {productDetails && (

@@ -8,7 +8,7 @@ Thread Frenzy is a Full stack E-Commerce website built with MERN (MongoDB, Expre
 
 # Server Side Repository
   ```bash
-  https://github.com/shRahat10/thread-frenzy-server
+  https://github.com/shahriar-haque-rahat/thread-frenzy-server
   ```
 
 ## Features:
